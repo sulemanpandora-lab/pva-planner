@@ -570,7 +570,7 @@ async function loadFromConfluence(){
       data=result.data.data||{};
       guests=result.data.guests||[];
       deletedMembers=result.data.deleted||[];
-      sd();render();showToast('Loaded from Confluence!');
+      sd();renderNav();renderCards();renderCal();showToast('Loaded from Confluence!');
     }else{showToast('Load failed');}
   }catch(e){showToast('Load failed — '+e.message);}
 }
