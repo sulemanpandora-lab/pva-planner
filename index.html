@@ -1,559 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PVA Sprint Capacity Planner 2026</title>
-<style>
-:root{--bg:#fff;--bg2:#f8f7f4;--bg3:#f1efe8;--bd:rgba(0,0,0,.10);--bd2:rgba(0,0,0,.20);--tx:#1a1a18;--tx2:#5f5e5a;--tx3:#888780;--ac:#185fa5;--ac-bg:#e6f1fb;--ac-tx:#0c447c;--gn-bg:#eaf3de;--gn-tx:#3b6d11;--am-bg:#faeeda;--am-tx:#854f0b;--rd-bg:#fcebeb;--rd-tx:#a32d2d;--pu-bg:#eeedfe;--pu-tx:#3c3489;--r:10px;--rs:6px}
-@media(prefers-color-scheme:dark){:root{--bg:#1e1e1c;--bg2:#252523;--bg3:#2c2c2a;--bd:rgba(255,255,255,.08);--bd2:rgba(255,255,255,.18);--tx:#f1efe8;--tx2:#b4b2a9;--tx3:#888780;--ac:#85b7eb;--ac-bg:#0c447c;--ac-tx:#b5d4f4;--gn-bg:#27500a;--gn-tx:#c0dd97;--am-bg:#633806;--am-tx:#fac775;--rd-bg:#791f1f;--rd-tx:#f7c1c1;--pu-bg:#26215c;--pu-tx:#cecbf6}}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg2);color:var(--tx);font-size:14px;min-height:100vh}
-header{background:var(--bg);border-bottom:.5px solid var(--bd2);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:10px;flex-wrap:wrap}
-.logo{display:flex;align-items:center;gap:10px}
-.lm{width:30px;height:30px;background:var(--ac);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:11px}
-.lt{font-size:14px;font-weight:500}.ls{font-size:10px;color:var(--tx3)}
-.hr{display:flex;gap:7px;flex-wrap:wrap}
-.btn{padding:6px 13px;border-radius:var(--rs);border:.5px solid var(--bd2);background:var(--bg);color:var(--tx);font-size:12px;cursor:pointer;transition:background .1s;white-space:nowrap}
-.btn:hover{background:var(--bg3)}.bp{background:var(--ac);color:#fff;border-color:transparent}.bp:hover{opacity:.9}
-.bpu{background:var(--pu-bg);color:var(--pu-tx);border-color:transparent}.bpu:hover{opacity:.9}
-.tabs{background:var(--bg);border-bottom:.5px solid var(--bd);padding:0 22px;display:flex;overflow-x:auto}
-.tab{padding:9px 16px;font-size:12px;cursor:pointer;color:var(--tx3);border-bottom:2px solid transparent;white-space:nowrap;transition:all .1s}
-.tab:hover{color:var(--tx);background:var(--bg2)}.tab.on{color:var(--ac);border-bottom-color:var(--ac);font-weight:500}
-.main{max-width:1320px;margin:0 auto;padding:18px 22px}
-/* SPRINT NAV */
-.snav{display:flex;align-items:center;gap:5px;margin-bottom:18px;overflow-x:auto;padding-bottom:3px;flex-wrap:wrap}
-.ql{font-size:10px;font-weight:500;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-right:2px;white-space:nowrap}
-.qsep{color:var(--bd2);font-size:14px;margin:0 2px}
-.sc{padding:4px 11px;border-radius:20px;border:.5px solid var(--bd2);background:var(--bg);color:var(--tx2);font-size:11px;cursor:pointer;white-space:nowrap;transition:all .1s}
-.sc:hover{background:var(--bg3)}.sc.on{background:var(--ac);color:#fff;border-color:transparent}
-.sc.dot::after{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:#97c459;margin-left:4px;vertical-align:middle}
-/* CARDS */
-.srow{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px;margin-bottom:18px}
-.sc2{background:var(--bg);border-radius:var(--rs);border:.5px solid var(--bd);padding:11px 13px}
-.sv{font-size:20px;font-weight:500}.sl{font-size:10px;color:var(--tx3);margin-top:2px}
-.sc2.wn .sv{color:var(--am-tx)}.sc2.ok .sv{color:var(--gn-tx)}
-/* SP */
-.spsec{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd);padding:16px 18px;margin-bottom:18px}
-.spsec h3{font-size:11px;font-weight:500;color:var(--tx2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
-.spgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px}
-.spc{background:var(--bg2);border-radius:var(--rs);padding:11px 13px;border:.5px solid var(--bd)}
-.spr{font-size:10px;color:var(--tx3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px}
-.spv{font-size:19px;font-weight:500}.sps{font-size:10px;color:var(--tx3);margin-top:1px}
-.spbar{height:3px;border-radius:2px;background:var(--bg3);margin-top:5px}
-.spfill{height:100%;border-radius:2px}
-/* ALLOC */
-.alsec{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd);padding:16px 18px;margin-bottom:18px}
-.alsec h3{font-size:11px;font-weight:500;color:var(--tx2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
-.algrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
-.alrow{display:flex;align-items:center;justify-content:space-between;padding:8px 13px;background:var(--bg2);border-radius:var(--rs);font-size:12px}
-.alv{font-weight:500}
-/* TABLE */
-.cw{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd);overflow:hidden;margin-bottom:14px}
-table{width:100%;border-collapse:collapse}
-th{background:var(--bg2);padding:6px 9px;font-size:9px;font-weight:500;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px;text-align:left;border-bottom:.5px solid var(--bd)}
-th.dc{text-align:center;min-width:30px;padding:4px 2px}
-td{border-bottom:.5px solid var(--bd);padding:0;vertical-align:middle}
-tr:last-child td{border-bottom:none}
-.mc{padding:7px 11px;display:flex;align-items:center;gap:8px;min-width:180px}
-.av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;flex-shrink:0}
-.mn{font-size:11px;font-weight:500}.mr{font-size:9px;color:var(--tx3)}
-.guest-badge{font-size:8px;font-weight:500;padding:1px 5px;border-radius:3px;background:var(--pu-bg);color:var(--pu-tx);margin-left:4px;vertical-align:middle}
-.dtd{text-align:center;padding:2px;border-right:.5px solid var(--bd);border-left:.5px solid var(--bd)}
-.dtd+.dtd{border-left:none}
-.dtd:last-of-type{border-right:none}
-.db{width:26px;height:26px;border-radius:5px;border:none;background:transparent;cursor:pointer;font-size:9px;color:var(--tx3);margin:auto;display:flex;align-items:center;justify-content:center;transition:all .1s}
-.db:hover{background:var(--ac-bg);color:var(--ac-tx)}.db.off{background:var(--rd-bg);color:var(--rd-tx);font-weight:700}.db.wknd{background:var(--bg2);cursor:not-allowed;color:var(--bd2)}
-.cc{padding:6px 11px;min-width:85px;text-align:right}
-.cl{font-size:11px;font-weight:500}
-.cb{height:3px;border-radius:2px;background:var(--bg3);margin-top:3px}
-.cf{height:100%;border-radius:2px;background:var(--ac)}
-.cf.lo{background:#97c459}.cf.mi{background:#ef9f27}.cf.hi{background:#e24b4a}
-/* GROUP HEADER */
-.grp-hdr td{background:var(--bg3);padding:5px 11px;font-size:10px;font-weight:500;color:var(--tx2);text-transform:uppercase;letter-spacing:.4px;border-bottom:.5px solid var(--bd)}
-.grp-hdr .add-guest-btn{float:right;font-size:10px;padding:1px 8px;border-radius:3px;border:.5px solid var(--bd2);background:var(--bg);color:var(--tx2);cursor:pointer;transition:background .1s;margin-top:-1px}
-.grp-hdr .add-guest-btn:hover{background:var(--pu-bg);color:var(--pu-tx);border-color:transparent}
-.mrow .del-btn{display:none;font-size:9px;padding:1px 5px;border-radius:3px;border:.5px solid var(--rd-tx);color:var(--rd-tx);background:transparent;cursor:pointer;margin-left:6px;vertical-align:middle;opacity:.6}
-.mrow:hover .del-btn{display:inline}
-.mrow .del-btn:hover{opacity:1;background:var(--rd-bg)}
-/* LEGEND */
-.leg{display:flex;gap:12px;align-items:center;padding:9px 12px;border-top:.5px solid var(--bd);background:var(--bg2);font-size:10px;color:var(--tx2);flex-wrap:wrap}
-.ld{width:11px;height:11px;border-radius:3px;flex-shrink:0}
-/* TOAST */
-.toast{position:fixed;bottom:18px;right:18px;background:var(--tx);color:var(--bg);padding:7px 14px;border-radius:var(--rs);font-size:11px;opacity:0;transform:translateY(6px);transition:all .2s;pointer-events:none;z-index:999}
-.toast.show{opacity:1;transform:translateY(0)}
-/* MODAL */
-.mbg{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;display:flex;align-items:center;justify-content:center;padding:18px}
-.modal{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd2);padding:20px;max-width:460px;width:100%;max-height:80vh;overflow-y:auto}
-.modal h3{font-size:14px;font-weight:500;margin-bottom:12px}
-.modal p{font-size:11px;color:var(--tx2);margin-bottom:8px;line-height:1.6}
-.modal pre{background:var(--bg3);border-radius:var(--rs);padding:9px;font-size:10px;overflow-x:auto;white-space:pre-wrap;word-break:break-all;margin-bottom:9px;border:.5px solid var(--bd)}
-.mbtns{display:flex;gap:7px;justify-content:flex-end;margin-top:12px}
-.form-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-.form-row input,.form-row select{flex:1;min-width:120px;padding:6px 10px;border-radius:var(--rs);border:.5px solid var(--bd2);background:var(--bg);color:var(--tx);font-size:12px}
-.form-row input:focus,.form-row select:focus{outline:none;border-color:var(--ac)}
-.guest-list{margin-top:10px}
-.guest-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--bg2);border-radius:var(--rs);margin-bottom:6px;font-size:12px}
-.guest-item .rm{cursor:pointer;color:var(--rd-tx);font-size:11px;padding:2px 6px;border-radius:3px;border:.5px solid var(--rd-tx);background:transparent}
-.guest-item .rm:hover{background:var(--rd-bg)}
-/* QUARTER VIEW */
-.qblock{margin-bottom:22px}
-.qlabel{font-size:11px;font-weight:500;color:var(--tx2);margin-bottom:9px;text-transform:uppercase;letter-spacing:.5px}
-.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
-/* DAY headers */
-.dh{font-size:9px;color:var(--tx3);text-align:center}
-.dd{font-size:8px;color:var(--bd2);text-align:center}
-@media(max-width:680px){.main{padding:10px 12px}.mc{min-width:140px}}
-</style>
-</head>
-<body>
+// PVA Capacity Planner — Confluence Proxy
+// Deploy as: Web app, Execute as: Me, Access: Anyone
 
-<header>
-  <div class="logo">
-    <div class="lm">PVA</div>
-    <div>
-      <div class="lt">Sprint Capacity Planner 2026</div>
-      <div class="ls">Pandora Digital · Agentforce · SM: Suleman Malik</div>
-    </div>
-  </div>
-  <div class="hr">
-    <button class="btn bpu" onclick="openGuestModal()">+ Guests</button>
-    <button class="btn" onclick="showShare()">Share</button>
-    <button class="btn" onclick="clearAll()">Reset</button>
-  </div>
-</header>
+const CONFLUENCE_BASE = 'https://pandoradigital.atlassian.net/wiki/rest/api';
 
-<div class="tabs">
-  <div class="tab on" onclick="switchTab('cap',this)">Capacity</div>
-  <div class="tab"   onclick="switchTab('sp',this)">SP breakdown</div>
-  <div class="tab"   onclick="switchTab('ov',this)">Quarter view</div>
-</div>
+function doPost(e) {
+  const cors = ContentService.createTextOutput();
+  
+  try {
+    const body = JSON.parse(e.postData.contents);
+    const { action, email, token, pageId, data } = body;
+    const auth = Utilities.base64Encode(email + ':' + token);
+    const headers = {
+      'Authorization': 'Basic ' + auth,
+      'Content-Type': 'application/json'
+    };
 
-<div class="main">
-  <div class="snav" id="snav"></div>
+    if (action === 'save') {
+      // Get current version first
+      const getResp = UrlFetchApp.fetch(
+        CONFLUENCE_BASE + '/content/' + pageId + '?expand=version',
+        { headers, muteHttpExceptions: true }
+      );
+      const current = JSON.parse(getResp.getContentText());
+      const nextVersion = (current.version?.number || 0) + 1;
 
-  <div id="t-cap">
-    <div class="srow" id="scards"></div>
-    <div class="cw"><table id="ctbl"></table></div>
-  </div>
-  <div id="t-sp" style="display:none">
-    <div class="spsec"><h3>Story points available · feature development (70%)</h3><div class="spgrid" id="spgrid"></div></div>
-    <div class="alsec"><h3>Capacity allocation model</h3><div class="algrid" id="algrid"></div></div>
-  </div>
-  <div id="t-ov" style="display:none"></div>
-</div>
+      const payload = {
+        version: { number: nextVersion },
+        title: current.title,
+        type: 'page',
+        body: {
+          storage: {
+            value: '<p>Last synced: ' + new Date().toISOString() + '</p>' +
+                   '<ac:structured-macro ac:name="code">' +
+                   '<ac:parameter ac:name="language">json</ac:parameter>' +
+                   '<ac:plain-text-body><![CDATA[' + JSON.stringify(data) + ']]></ac:plain-text-body>' +
+                   '</ac:structured-macro>',
+            representation: 'storage'
+          }
+        }
+      };
 
-<div class="toast" id="toast"></div>
-<div id="ma"></div>
-
-<script>
-const SPRINTS=[
-  {id:'Q1-S1',l:'S1',q:'Q1',s:'2026-01-08',e:'2026-01-21'},
-  {id:'Q1-S2',l:'S2',q:'Q1',s:'2026-01-22',e:'2026-02-04'},
-  {id:'Q1-S3',l:'S3',q:'Q1',s:'2026-02-05',e:'2026-02-18'},
-  {id:'Q1-S4',l:'S4',q:'Q1',s:'2026-02-19',e:'2026-03-04'},
-  {id:'Q1-S5',l:'S5',q:'Q1',s:'2026-03-05',e:'2026-03-18'},
-  {id:'Q2-S1',l:'S6',q:'Q2',s:'2026-03-19',e:'2026-04-01'},
-  {id:'Q2-S2',l:'S7',q:'Q2',s:'2026-04-02',e:'2026-04-15'},
-  {id:'Q2-S3',l:'S8',q:'Q2',s:'2026-04-16',e:'2026-04-29'},
-  {id:'Q2-S4',l:'S9',q:'Q2',s:'2026-04-30',e:'2026-05-13'},
-  {id:'Q2-S5',l:'S10',q:'Q2',s:'2026-05-14',e:'2026-05-27'},
-  {id:'Q2-S6',l:'S11',q:'Q2',s:'2026-05-28',e:'2026-06-10'},
-  {id:'Q3-S1',l:'S12',q:'Q3',s:'2026-06-11',e:'2026-06-24'},
-  {id:'Q3-S2',l:'S13',q:'Q3',s:'2026-06-25',e:'2026-07-08'},
-  {id:'Q3-S3',l:'S14',q:'Q3',s:'2026-07-09',e:'2026-07-22'},
-  {id:'Q3-S4',l:'S15',q:'Q3',s:'2026-07-23',e:'2026-08-05'},
-  {id:'Q3-S5',l:'S16',q:'Q3',s:'2026-08-06',e:'2026-08-19'},
-  {id:'Q3-S6',l:'S17',q:'Q3',s:'2026-08-20',e:'2026-09-02'},
-  {id:'Q3-S7',l:'S18',q:'Q3',s:'2026-09-03',e:'2026-09-16'},
-  {id:'Q4-S1',l:'S19',q:'Q4',s:'2026-09-17',e:'2026-09-30'},
-  {id:'Q4-S2',l:'S20',q:'Q4',s:'2026-10-01',e:'2026-10-14'},
-  {id:'Q4-S3',l:'S21',q:'Q4',s:'2026-10-15',e:'2026-10-28'},
-  {id:'Q4-S4',l:'S22',q:'Q4',s:'2026-10-29',e:'2026-11-11'},
-  {id:'Q4-S5',l:'S23',q:'Q4',s:'2026-11-12',e:'2026-11-25'},
-  {id:'Q4-S6',l:'S24',q:'Q4',s:'2026-11-26',e:'2026-12-09'},
-  {id:'Q4-S7',l:'S25',q:'Q4',s:'2026-12-10',e:'2026-12-23'},
-];
-
-// Base groups
-const BASE_GROUPS = [
-  { id:'af', label:'Agentforce / AI', sp:'AF',
-    members:[
-      {id:'vinod',  n:'Vinod Karpurne',  r:'Developer Lead',        sp:'AF', c:'#185fa5', i:'VK', f:1.0},
-      {id:'manish', n:'Manish Chetani',  r:'Developer (Salesforce)', sp:'AF', c:'#854f0b', i:'MC', f:1.0},
-      {id:'twinkle',n:'Twinkle Garg',    r:'Developer (Salesforce)', sp:'AF', c:'#993556', i:'TG', f:1.0},
-      {id:'jake',   n:'Jake McCarthy',   r:'Developer (Salesforce)', sp:'AF', c:'#534ab7', i:'JM', f:1.0},
-    ]},
-  { id:'fe', label:'Frontend', sp:'FE',
-    members:[
-      {id:'neeraj',   n:'Neeraj Upadhyay', r:'FE Engineer', sp:'FE', c:'#534ab7', i:'NU', f:1.0},
-      {id:'upender',  n:'Upender Upender', r:'FE Engineer', sp:'FE', c:'#3b6d11', i:'UU', f:1.0},
-      {id:'mohammed', n:'Mohammed',        r:'Developer',   sp:'FE', c:'#0f6e56', i:'MO', f:1.0},
-    ]},
-  { id:'data', label:'Data', sp:'DS',
-    members:[
-      {id:'bahri',     n:'Bahri Benguesmia', r:'Developer (Data)', sp:'DS', c:'#993c1d', i:'BB', f:0.8},
-      {id:'satyabrata',n:'Satyabrata',       r:'Developer (Data)', sp:'DS', c:'#3b6d11', i:'ST', f:1.0},
-    ]},
-  { id:'ux', label:'UX', sp:'UX',
-    members:[
-      {id:'aren', n:'Aren', r:'UX Designer', sp:'UX', c:'#854f0b', i:'AR', f:1.0},
-    ]},
-  { id:'conv', label:'Conversational Expert', sp:'AF',
-    members:[
-      {id:'finka', n:'Finka', r:'Conversational Expert', sp:'CE', c:'#0f6e56', i:'FI', f:1.0},
-    ]},
-  { id:'qa', label:'QA / QE', sp:'QE',
-    members:[
-      {id:'saswata',  n:'Saswata Bhattacharya', r:'QA Lead', sp:'QE', c:'#5f5e5a', i:'SB', f:0.5},
-      {id:'lakshmi',  n:'Lakshmi Ayothi',       r:'QA',      sp:'QE', c:'#185fa5', i:'LA', f:1.0},
-      {id:'shivanand',n:'Shivanand',             r:'QA',      sp:'QE', c:'#993c1d', i:'SH', f:1.0},
-    ]},
-];
-
-let deletedMembers=[];
-
-const SP_ROLES=[
-  {id:'AF',label:'Agentforce / SF',    color:'#534ab7'},
-  {id:'FE',label:'Frontend',           color:'#3b6d11'},
-  {id:'UX',label:'UX Design',          color:'#854f0b'},
-  {id:'CE',label:'Conversational Exp', color:'#0f6e56'},
-  {id:'QE',label:'QA / QE',            color:'#993c1d'},
-  {id:'DS',label:'Data',               color:'#993c1d'},
-];
-const ALLOC=[
-  {l:'Meetings & ceremonies',p:0.10},
-  {l:'Feature development',  p:0.70},
-  {l:'Enhancements & fixes', p:0.10},
-  {l:'Jira / unplanned',     p:0.10},
-];
-const DAYS=['Su','Mo','Tu','We','Th','Fr','Sa'];
-const GROUP_COLORS=['#af98ec','#5dcaa5','#f0997b','#85b7eb','#fac775','#97c459'];
-
-let data={}, guests=[], cur=null, tab='cap';
-
-function ld(){
-  const p=new URLSearchParams(location.search).get('d');
-  if(p){try{const d=JSON.parse(atob(p));data=d.data||{};guests=d.guests||[];deletedMembers=d.deleted||[];}catch(e){}}
-  else{try{const s=JSON.parse(localStorage.getItem('pva26c')||'{}');data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];}catch(e){}}
-}
-function sd(){localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers}));}
-function deleteMember(id){
-  if(!confirm('Remove this team member from the planner?'))return;
-  deletedMembers.push(id);sd();renderCards();renderCal();renderNav();
-  if(tab==='sp')renderSP();showToast('Member removed');
-}
-function restoreMember(id){
-  deletedMembers=deletedMembers.filter(x=>x!==id);sd();renderCards();renderCal();renderNav();
-  if(tab==='sp')renderSP();showToast('Member restored');
-}
-function gs(sid,mid,ds){return data?.[sid]?.[mid]?.[ds]||null;}
-function ss(sid,mid,ds,v){
-  if(!data[sid])data[sid]={};
-  if(!data[sid][mid])data[sid][mid]={};
-  if(v===null)delete data[sid][mid][ds];else data[sid][mid][ds]=v;
-  sd();
-}
-function dlist(sp){const a=[],d=new Date(sp.s),e=new Date(sp.e);while(d<=e){a.push(new Date(d));d.setDate(d.getDate()+1);}return a;}
-function isWk(d){return d.getDay()===0||d.getDay()===6;}
-function fd(d){return d.toISOString().slice(0,10);}
-function fdisp(d){return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});}
-function cap(sid,mid,dl){
-  const w=dl.filter(d=>!isWk(d));
-  const off=w.filter(d=>gs(sid,mid,fd(d))==='off').length;
-  return{t:w.length,off,av:w.length-off};
-}
-
-// Build live groups (base + guests, minus deleted)
-function buildGroups(){
-  const groups=BASE_GROUPS.map(g=>({...g,members:g.members.filter(m=>!deletedMembers.includes(m.id))}));
-  guests.forEach(g=>{
-    const grp=groups.find(gr=>gr.id===g.groupId);
-    if(grp&&!grp.members.find(m=>m.id===g.id)){
-      grp.members.push({
-        id:g.id, n:g.name, r:g.role||'Guest',
-        sp:grp.sp, c:'#7f77dd', i:initials(g.name), f:1.0, isGuest:true
-      });
+      const putResp = UrlFetchApp.fetch(
+        CONFLUENCE_BASE + '/content/' + pageId,
+        { method: 'put', headers, payload: JSON.stringify(payload), muteHttpExceptions: true }
+      );
+      
+      return ContentService.createTextOutput(
+        JSON.stringify({ ok: putResp.getResponseCode() === 200, status: putResp.getResponseCode() })
+      ).setMimeType(ContentService.MimeType.JSON);
     }
-  });
-  return groups.filter(g=>g.members.length>0);
-}
-function initials(name){return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
-function allMembers(){return buildGroups().flatMap(g=>g.members);}
 
-function roleSP(sp,rid){
-  const dl=dlist(sp);
-  const ms=allMembers().filter(m=>m.sp===rid);
-  let h=0;ms.forEach(m=>{const c=cap(sp.id,m.id,dl);h+=c.av*8*m.f;});
-  return Math.round(h*0.70/8*10)/10;
-}
-function totalSP(sp){return SP_ROLES.reduce((a,r)=>a+roleSP(sp,r.id),0);}
+    if (action === 'load') {
+      const resp = UrlFetchApp.fetch(
+        CONFLUENCE_BASE + '/content/' + pageId + '?expand=body.storage',
+        { headers, muteHttpExceptions: true }
+      );
+      const page = JSON.parse(resp.getContentText());
+      const html = page.body?.storage?.value || '';
+      const match = html.match(/<!\[CDATA\[([\s\S]*?)\]\]>/);
+      const data = match ? JSON.parse(match[1]) : {};
+      
+      return ContentService.createTextOutput(
+        JSON.stringify({ ok: true, data })
+      ).setMimeType(ContentService.MimeType.JSON);
+    }
 
-// ---- TABS ----
-function switchTab(name,el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  el.classList.add('on');tab=name;
-  ['cap','sp','ov'].forEach(n=>document.getElementById('t-'+n).style.display=n===name?'':'none');
-  if(name==='sp')renderSP();
-  if(name==='ov')renderOV();
-}
-
-// ---- SPRINT NAV ----
-function renderNav(){
-  let h='',lq=null;
-  SPRINTS.forEach(s=>{
-    if(s.q!==lq){if(lq)h+='<span class="qsep">|</span>';h+=`<span class="ql">${s.q}</span>`;lq=s.q;}
-    const hd=!!(data[s.id]&&Object.keys(data[s.id]).length>0);
-    const on=cur&&cur.id===s.id?' on':'';
-    const dot=hd&&!on?' dot':'';
-    h+=`<button class="sc${on}${dot}" onclick="pick('${s.id}')">${s.l}</button>`;
-  });
-  document.getElementById('snav').innerHTML=h;
+  } catch(err) {
+    return ContentService.createTextOutput(
+      JSON.stringify({ ok: false, error: err.toString() })
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
 }
 
-// ---- SUMMARY CARDS ----
-function renderCards(){
-  const dl=dlist(cur),wd=dl.filter(d=>!isWk(d)).length;
-  const members=allMembers();
-  let off=0;members.forEach(m=>{const c=cap(cur.id,m.id,dl);off+=c.off;});
-  const tot=members.length*wd,av=tot-off,pct=Math.round(av/tot*100);
-  const sp=Math.round(totalSP(cur));
-  const cls=pct<70?'wn':pct>=90?'ok':'';
-  document.getElementById('scards').innerHTML=`
-    <div class="sc2"><div class="sv">${members.length}</div><div class="sl">Team members</div></div>
-    <div class="sc2"><div class="sv">${wd}</div><div class="sl">Working days</div></div>
-    <div class="sc2 ${cls}"><div class="sv">${pct}%</div><div class="sl">Capacity</div></div>
-    <div class="sc2"><div class="sv">${av}</div><div class="sl">Available days</div></div>
-    <div class="sc2 ok"><div class="sv">${sp}</div><div class="sl">Est. SP (70%)</div></div>`;
+function doGet(e) {
+  return ContentService.createTextOutput(
+    JSON.stringify({ ok: true, message: 'PVA Planner Proxy is running' })
+  ).setMimeType(ContentService.MimeType.JSON);
 }
-
-// ---- CAL TABLE ----
-function renderCal(){
-  const dl=dlist(cur),s=cur;
-  const groups=buildGroups();
-  let h=`<thead><tr><th>Member</th>`;
-  dl.forEach(d=>{
-    const wk=isWk(d);
-    h+=`<th class="dc" style="${wk?'opacity:.3':''}"><div class="dh">${DAYS[d.getDay()]}</div><div class="dd">${d.getDate()}/${d.getMonth()+1}</div></th>`;
-  });
-  h+=`<th style="text-align:right;padding-right:11px">Cap.</th></tr></thead><tbody>`;
-
-  groups.forEach(g=>{
-    const guestCount=g.members.filter(m=>m.isGuest).length;
-    const guestNote=guestCount>0?` <span style="color:var(--pu-tx);font-size:9px">(+${guestCount} guest${guestCount>1?'s':''})</span>`:'';
-    h+=`<tr class="grp-hdr"><td colspan="${dl.length+2}">
-      ${g.label}${guestNote}
-      <button class="add-guest-btn" onclick="openGuestModal('${g.id}')">+ Add guest</button>
-    </td></tr>`;
-
-    g.members.forEach(m=>{
-      const c=cap(s.id,m.id,dl);
-      const pct=Math.round(c.av/c.t*100);
-      const fc=pct<60?'hi':pct<80?'mi':'lo';
-      const guestBadge=m.isGuest?'<span class="guest-badge">GUEST</span>':'';
-      const delBtn=`<button class="del-btn" onclick="deleteMember('${m.id}')" title="Remove from planner">✕</button>`;
-      h+=`<tr class="mrow">
-        <td><div class="mc">
-          <div class="av" style="background:${m.c}22;color:${m.c}">${m.i}</div>
-          <div style="flex:1">
-            <div class="mn">${m.n}${guestBadge}${delBtn}</div>
-            <div class="mr">${m.r}</div>
-          </div>
-        </div></td>`;
-      dl.forEach(d=>{
-        if(isWk(d)){h+=`<td class="dtd"><button class="db wknd" disabled></button></td>`;return;}
-        const ds=fd(d),st=gs(s.id,m.id,ds);
-        h+=`<td class="dtd"><button class="db${st==='off'?' off':''}" onclick="tog('${s.id}','${m.id}','${ds}')">${st==='off'?'OFF':''}</button></td>`;
-      });
-      h+=`<td class="cc"><div class="cl">${c.av}/${c.t}d</div><div class="cb"><div class="cf ${fc}" style="width:${pct}%"></div></div></td>
-      </tr>`;
-    });
-  });
-
-  h+=`</tbody>`;
-  const tbl=document.getElementById('ctbl');
-  tbl.innerHTML=h;
-  const old=tbl.parentElement.querySelector('.leg');if(old)old.remove();
-  tbl.parentElement.insertAdjacentHTML('beforeend',`<div class="leg">
-    <span>Click a day to toggle leave/OFF</span>
-    <div style="display:flex;align-items:center;gap:4px"><div class="ld" style="background:var(--rd-bg);border:1px solid var(--rd-tx)"></div>Leave / OFF</div>
-    <div style="display:flex;align-items:center;gap:4px"><div class="ld" style="background:var(--pu-bg);border:1px solid var(--pu-tx)"></div>Guest</div>
-    <span style="color:var(--tx3)">Sprint ${cur.l}: ${fdisp(new Date(cur.s))} → ${fdisp(new Date(cur.e))}</span>
-  </div>`);
-}
-
-function tog(sid,mid,ds){
-  const v=gs(sid,mid,ds);ss(sid,mid,ds,v?null:'off');
-  renderCards();renderCal();renderNav();
-  if(tab==='sp')renderSP();
-  showToast(v?'Cleared':'Marked OFF');
-}
-function pick(id){cur=SPRINTS.find(s=>s.id===id);renderNav();renderCards();renderCal();if(tab==='sp')renderSP();}
-
-// ---- SP BREAKDOWN ----
-function renderSP(){
-  const dl=dlist(cur);
-  const ms=allMembers();
-  const tot=Math.round(totalSP(cur)*10)/10;
-  const mx=Math.max(...SP_ROLES.map(r=>roleSP(cur,r.id)),1);
-
-  // Total SP hero
-  let h=`<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:18px;padding:14px 16px;background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd)">
-    <div style="font-size:32px;font-weight:500;color:var(--ac)">${tot}</div>
-    <div style="font-size:13px;color:var(--tx2)">total story points available this sprint <span style="color:var(--tx3);font-size:11px">(70% feature allocation)</span></div>
-  </div>`;
-
-  // Role cards with per-person breakdown
-  h+=`<div class="spgrid" style="margin-bottom:18px">`;
-  SP_ROLES.forEach(r=>{
-    const v=roleSP(cur,r.id);
-    const pct=Math.round(v/mx*100);
-    const members=ms.filter(m=>m.sp===r.id);
-    const totalOff=members.reduce((a,m)=>a+cap(cur.id,m.id,dl).o,0);
-    // Per person rows
-    const personRows=members.map(m=>{
-      const c=cap(cur.id,m.id,dl);
-      const msp=Math.round(c.av*8*m.f*0.70/8*10)/10;
-      const offNote=c.o>0?`<span style="color:var(--rd-tx);font-size:8px;margin-left:4px">${c.o}d off</span>`:'';
-      return`<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:.5px solid var(--bd);font-size:10px">
-        <span style="color:var(--tx2)">${m.n.split(' ')[0]}${offNote}</span>
-        <span style="font-weight:500;color:var(--tx)">${msp} SP</span>
-      </div>`;
-    }).join('');
-    h+=`<div class="spc">
-      <div class="spr">${r.label}</div>
-      <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:8px">
-        <div class="spv" style="color:${r.color}">${v}</div>
-        <div style="font-size:10px;color:var(--tx3)">SP${totalOff>0?` · ${totalOff}d off`:''}</div>
-      </div>
-      ${personRows}
-      <div class="spbar" style="margin-top:8px"><div class="spfill" style="width:${pct}%;background:${r.color}"></div></div>
-    </div>`;
-  });
-  h+=`</div>`;
-
-  document.getElementById('spgrid').innerHTML=h;
-  document.getElementById('algrid').innerHTML=ALLOC.map(a=>`
-    <div class="alrow"><span style="color:var(--tx2)">${a.l}</span><span class="alv">${Math.round(a.p*100)}% · ~${Math.round(tot*a.p/0.70)}SP</span></div>`).join('');
-}
-
-// ---- QUARTER VIEW ----
-function renderOV(){
-  const el=document.getElementById('t-ov');
-  let h='';
-  ['Q1','Q2','Q3','Q4'].forEach(q=>{
-    const sps=SPRINTS.filter(s=>s.q===q);
-    h+=`<div class="qblock"><div class="qlabel">${q} 2026</div><div class="qgrid">`;
-    sps.forEach(s=>{
-      const dl=dlist(s),wd=dl.filter(d=>!isWk(d)).length;
-      const members=allMembers();
-      let off=0;members.forEach(m=>{const c=cap(s.id,m.id,dl);off+=c.off;});
-      const pct=Math.round((members.length*wd-off)/(members.length*wd)*100);
-      const hd=!!(data[s.id]&&Object.keys(data[s.id]).length>0);
-      const cls=hd?(pct<70?'wn':pct>=90?'ok':''):'';
-      h+=`<div class="sc2 ${cls}" style="cursor:pointer" onclick="pick('${s.id}');switchTab('cap',document.querySelectorAll('.tab')[0])">
-        <div style="font-size:9px;color:var(--tx3);margin-bottom:3px">${s.l} · ${fdisp(new Date(s.s))}</div>
-        <div class="sv">${hd?pct+'%':'—'}</div>
-        <div class="sl">${wd}d ${hd?'planned':'no data'}</div>
-      </div>`;
-    });
-    h+='</div></div>';
-  });
-  el.innerHTML=h;
-}
-
-// ---- GUEST MODAL ----
-function openGuestModal(preselectedGroupId){
-  const groupOptions=BASE_GROUPS.map(g=>`<option value="${g.id}"${g.id===preselectedGroupId?' selected':''}>${g.label}</option>`).join('');
-  const guestItems=guests.length===0
-    ? '<div style="font-size:11px;color:var(--tx3);text-align:center;padding:10px 0">No guests added yet</div>'
-    : guests.map(g=>{
-        const grp=BASE_GROUPS.find(gr=>gr.id===g.groupId);
-        return`<div class="guest-item">
-          <div>
-            <span style="font-weight:500">${g.name}</span>
-            <span style="color:var(--tx3);margin-left:6px">${g.role||'Guest'}</span>
-            <span style="color:var(--pu-tx);font-size:10px;margin-left:6px">→ ${grp?grp.label:'?'}</span>
-          </div>
-          <button class="rm" onclick="removeGuest('${g.id}')">Remove</button>
-        </div>`;
-      }).join('');
-
-  document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)">
-    <div class="modal" onclick="event.stopPropagation()">
-      <h3>Manage guests</h3>
-      <p>Add borrowed team members to a group for this planner. They show up with a GUEST badge and are included in capacity calculations.</p>
-      <div class="form-row">
-        <input id="g-name" placeholder="Full name" />
-        <input id="g-role" placeholder="Role (optional)" />
-      </div>
-      <div class="form-row">
-        <select id="g-group">${groupOptions}</select>
-        <button class="btn bp" onclick="addGuest()">Add guest</button>
-      </div>
-      <div class="guest-list" id="guest-list">${guestItems}</div>
-      <div class="mbtns">
-        <button class="btn" onclick="cm()">Close</button>
-      </div>
-    </div></div>`;
-}
-
-function addGuest(){
-  const name=document.getElementById('g-name').value.trim();
-  const role=document.getElementById('g-role').value.trim();
-  const groupId=document.getElementById('g-group').value;
-  if(!name)return showToast('Enter a name');
-  const id='guest_'+Date.now();
-  guests.push({id,name,role,groupId});
-  sd();
-  openGuestModal(groupId);
-  renderCards();renderCal();
-  if(tab==='sp')renderSP();
-  showToast(`${name} added as guest`);
-}
-
-function removeGuest(id){
-  guests=guests.filter(g=>g.id!==id);
-  sd();
-  openGuestModal();
-  renderCards();renderCal();
-  if(tab==='sp')renderSP();
-  showToast('Guest removed');
-}
-
-// ---- SHARE / EXPORT ----
-function getUrl(){
-  const enc=btoa(JSON.stringify({data,guests,deleted:deletedMembers}));
-  const u=new URL(location.href.split('?')[0]);
-  u.searchParams.set('d',enc);
-  return u.toString();
-}
-function showShare(){
-  document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)">
-    <div class="modal" onclick="event.stopPropagation()">
-      <h3>Share & export</h3>
-      <p>Send this URL to your team — they open it in any browser, mark their leave, and send the URL back. Guest data is included in the URL.</p>
-      <pre id="su">${getUrl()}</pre>
-      <p>Raw JSON:</p><pre id="sj">${JSON.stringify({data,guests},null,2)}</pre>
-      <div class="mbtns">
-        <button class="btn" onclick="cm()">Close</button>
-        <button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('sj').textContent).then(()=>showToast('JSON copied'))">Copy JSON</button>
-        <button class="btn bp" onclick="navigator.clipboard.writeText(document.getElementById('su').textContent).then(()=>showToast('URL copied'))">Copy URL</button>
-      </div>
-    </div></div>`;
-}
-function cm(e){if(!e||e.target.classList.contains('mbg'))document.getElementById('ma').innerHTML='';}
-function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
-function clearAll(){
-  if(!confirm('Clear all leave data? (Guests are kept)'))return;
-  data={};sd();renderNav();renderCards();renderCal();
-}
-
-// ---- INIT ----
-ld();
-const today=new Date().toISOString().slice(0,10);
-cur=SPRINTS.find(s=>today>=s.s&&today<=s.e)||SPRINTS[0];
-renderNav();renderCards();renderCal();
-</script>
-</body>
-</html>
