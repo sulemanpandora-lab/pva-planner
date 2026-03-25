@@ -1,37 +1,32 @@
-// PVA Capacity Planner — Confluence Proxy
-// Deploy as: Web app, Execute as: Me, Access: Anyone
-
 const CONFLUENCE_BASE = 'https://pandoradigital.atlassian.net/wiki/rest/api';
+const SERVICE_EMAIL = 'sulma@pandora.net';
+const SERVICE_TOKEN = 'indsæt din token her';
 
 function doPost(e) {
-  const cors = ContentService.createTextOutput();
-  
   try {
     const body = JSON.parse(e.postData.contents);
-    const { action, email, token, pageId, data } = body;
-    const auth = Utilities.base64Encode(email + ':' + token);
+    const { action, pageId, data } = body;
+    const auth = Utilities.base64Encode(SERVICE_EMAIL + ':' + SERVICE_TOKEN);
     const headers = {
       'Authorization': 'Basic ' + auth,
       'Content-Type': 'application/json'
     };
 
     if (action === 'save') {
-      // Get current version first
       const getResp = UrlFetchApp.fetch(
-        CONFLUENCE_BASE + '/content/' + pageId + '?expand=version',
+        CONFLUENCE_BASE + '/content/' + pageId + '?expand=version,title',
         { headers, muteHttpExceptions: true }
       );
       const current = JSON.parse(getResp.getContentText());
       const nextVersion = (current.version?.number || 0) + 1;
-
       const payload = {
         version: { number: nextVersion },
-        title: current.title,
+        title: current.title || 'PVA Planner Data',
         type: 'page',
         body: {
           storage: {
             value: '<p>Last synced: ' + new Date().toISOString() + '</p>' +
-                   '<ac:structured-macro ac:name="code">' +
+                   '<ac:structured-macro ac:name="code" ac:schema-version="1">' +
                    '<ac:parameter ac:name="language">json</ac:parameter>' +
                    '<ac:plain-text-body><![CDATA[' + JSON.stringify(data) + ']]></ac:plain-text-body>' +
                    '</ac:structured-macro>',
@@ -39,15 +34,11 @@ function doPost(e) {
           }
         }
       };
-
       const putResp = UrlFetchApp.fetch(
         CONFLUENCE_BASE + '/content/' + pageId,
         { method: 'put', headers, payload: JSON.stringify(payload), muteHttpExceptions: true }
       );
-      
-      return ContentService.createTextOutput(
-        JSON.stringify({ ok: putResp.getResponseCode() === 200, status: putResp.getResponseCode() })
-      ).setMimeType(ContentService.MimeType.JSON);
+      return buildResponse({ ok: putResp.getResponseCode() === 200, status: putResp.getResponseCode() });
     }
 
     if (action === 'load') {
@@ -58,22 +49,23 @@ function doPost(e) {
       const page = JSON.parse(resp.getContentText());
       const html = page.body?.storage?.value || '';
       const match = html.match(/<!\[CDATA\[([\s\S]*?)\]\]>/);
-      const data = match ? JSON.parse(match[1]) : {};
-      
-      return ContentService.createTextOutput(
-        JSON.stringify({ ok: true, data })
-      ).setMimeType(ContentService.MimeType.JSON);
+      const parsed = match ? JSON.parse(match[1]) : {};
+      return buildResponse({ ok: true, data: parsed });
     }
 
+    return buildResponse({ ok: false, error: 'Unknown action' });
+
   } catch(err) {
-    return ContentService.createTextOutput(
-      JSON.stringify({ ok: false, error: err.toString() })
-    ).setMimeType(ContentService.MimeType.JSON);
+    return buildResponse({ ok: false, error: err.toString() });
   }
 }
 
 function doGet(e) {
-  return ContentService.createTextOutput(
-    JSON.stringify({ ok: true, message: 'PVA Planner Proxy is running' })
-  ).setMimeType(ContentService.MimeType.JSON);
+  return buildResponse({ ok: true, message: 'PVA Planner Proxy is running' });
+}
+
+function buildResponse(data) {
+  const output = ContentService.createTextOutput(JSON.stringify(data));
+  output.setMimeType(ContentService.MimeType.JSON);
+  return output;
 }
