@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,19 +21,16 @@ header{background:var(--bg);border-bottom:.5px solid var(--bd2);padding:12px 22p
 .tab{padding:9px 16px;font-size:12px;cursor:pointer;color:var(--tx3);border-bottom:2px solid transparent;white-space:nowrap;transition:all .1s}
 .tab:hover{color:var(--tx);background:var(--bg2)}.tab.on{color:var(--ac);border-bottom-color:var(--ac);font-weight:500}
 .main{max-width:1320px;margin:0 auto;padding:18px 22px}
-/* SPRINT NAV */
 .snav{display:flex;align-items:center;gap:5px;margin-bottom:18px;overflow-x:auto;padding-bottom:3px;flex-wrap:wrap}
 .ql{font-size:10px;font-weight:500;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-right:2px;white-space:nowrap}
 .qsep{color:var(--bd2);font-size:14px;margin:0 2px}
 .sc{padding:4px 11px;border-radius:20px;border:.5px solid var(--bd2);background:var(--bg);color:var(--tx2);font-size:11px;cursor:pointer;white-space:nowrap;transition:all .1s}
 .sc:hover{background:var(--bg3)}.sc.on{background:var(--ac);color:#fff;border-color:transparent}
 .sc.dot::after{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:#97c459;margin-left:4px;vertical-align:middle}
-/* CARDS */
 .srow{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px;margin-bottom:18px}
 .sc2{background:var(--bg);border-radius:var(--rs);border:.5px solid var(--bd);padding:11px 13px}
 .sv{font-size:20px;font-weight:500}.sl{font-size:10px;color:var(--tx3);margin-top:2px}
 .sc2.wn .sv{color:var(--am-tx)}.sc2.ok .sv{color:var(--gn-tx)}
-/* SP */
 .spsec{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd);padding:16px 18px;margin-bottom:18px}
 .spsec h3{font-size:11px;font-weight:500;color:var(--tx2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
 .spgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px}
@@ -43,13 +39,11 @@ header{background:var(--bg);border-bottom:.5px solid var(--bd2);padding:12px 22p
 .spv{font-size:19px;font-weight:500}.sps{font-size:10px;color:var(--tx3);margin-top:1px}
 .spbar{height:3px;border-radius:2px;background:var(--bg3);margin-top:5px}
 .spfill{height:100%;border-radius:2px}
-/* ALLOC */
 .alsec{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd);padding:16px 18px;margin-bottom:18px}
 .alsec h3{font-size:11px;font-weight:500;color:var(--tx2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
 .algrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
 .alrow{display:flex;align-items:center;justify-content:space-between;padding:8px 13px;background:var(--bg2);border-radius:var(--rs);font-size:12px}
 .alv{font-weight:500}
-/* TABLE */
 .cw{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd);overflow:hidden;margin-bottom:14px}
 table{width:100%;border-collapse:collapse}
 th{background:var(--bg2);padding:6px 9px;font-size:9px;font-weight:500;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px;text-align:left;border-bottom:.5px solid var(--bd)}
@@ -70,20 +64,16 @@ tr:last-child td{border-bottom:none}
 .cb{height:3px;border-radius:2px;background:var(--bg3);margin-top:3px}
 .cf{height:100%;border-radius:2px;background:var(--ac)}
 .cf.lo{background:#97c459}.cf.mi{background:#ef9f27}.cf.hi{background:#e24b4a}
-/* GROUP HEADER */
 .grp-hdr td{background:var(--bg3);padding:5px 11px;font-size:10px;font-weight:500;color:var(--tx2);text-transform:uppercase;letter-spacing:.4px;border-bottom:.5px solid var(--bd)}
 .grp-hdr .add-guest-btn{float:right;font-size:10px;padding:1px 8px;border-radius:3px;border:.5px solid var(--bd2);background:var(--bg);color:var(--tx2);cursor:pointer;transition:background .1s;margin-top:-1px}
 .grp-hdr .add-guest-btn:hover{background:var(--pu-bg);color:var(--pu-tx);border-color:transparent}
 .mrow .del-btn{display:none;font-size:9px;padding:1px 5px;border-radius:3px;border:.5px solid var(--rd-tx);color:var(--rd-tx);background:transparent;cursor:pointer;margin-left:6px;vertical-align:middle;opacity:.6}
 .mrow:hover .del-btn{display:inline}
 .mrow .del-btn:hover{opacity:1;background:var(--rd-bg)}
-/* LEGEND */
 .leg{display:flex;gap:12px;align-items:center;padding:9px 12px;border-top:.5px solid var(--bd);background:var(--bg2);font-size:10px;color:var(--tx2);flex-wrap:wrap}
 .ld{width:11px;height:11px;border-radius:3px;flex-shrink:0}
-/* TOAST */
 .toast{position:fixed;bottom:18px;right:18px;background:var(--tx);color:var(--bg);padding:7px 14px;border-radius:var(--rs);font-size:11px;opacity:0;transform:translateY(6px);transition:all .2s;pointer-events:none;z-index:999}
 .toast.show{opacity:1;transform:translateY(0)}
-/* MODAL */
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;display:flex;align-items:center;justify-content:center;padding:18px}
 .modal{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd2);padding:20px;max-width:460px;width:100%;max-height:80vh;overflow-y:auto}
 .modal h3{font-size:14px;font-weight:500;margin-bottom:12px}
@@ -97,13 +87,15 @@ tr:last-child td{border-bottom:none}
 .guest-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--bg2);border-radius:var(--rs);margin-bottom:6px;font-size:12px}
 .guest-item .rm{cursor:pointer;color:var(--rd-tx);font-size:11px;padding:2px 6px;border-radius:3px;border:.5px solid var(--rd-tx);background:transparent}
 .guest-item .rm:hover{background:var(--rd-bg)}
-/* QUARTER VIEW */
 .qblock{margin-bottom:22px}
 .qlabel{font-size:11px;font-weight:500;color:var(--tx2);margin-bottom:9px;text-transform:uppercase;letter-spacing:.5px}
 .qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
-/* DAY headers */
 .dh{font-size:9px;color:var(--tx3);text-align:center}
 .dd{font-size:8px;color:var(--bd2);text-align:center}
+.sync-status{font-size:10px;color:var(--tx3);display:flex;align-items:center;gap:5px}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--tx3);flex-shrink:0}
+.sync-dot.ok{background:#97c459}.sync-dot.err{background:#e24b4a}.sync-dot.busy{background:#ef9f27;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 @media(max-width:680px){.main{padding:10px 12px}.mc{min-width:140px}}
 </style>
 </head>
@@ -118,7 +110,8 @@ tr:last-child td{border-bottom:none}
     </div>
   </div>
   <div class="hr">
-    <button class="btn" onclick="openSyncModal()" style="background:var(--gn-bg);color:var(--gn-tx);border-color:transparent">⟳ Sync</button>
+    <div class="sync-status"><div class="sync-dot" id="sdot"></div><span id="slbl">Not synced</span></div>
+    <button class="btn" style="background:var(--gn-bg);color:var(--gn-tx);border-color:transparent" onclick="openSyncModal()">⟳ Sync</button>
     <button class="btn bpu" onclick="openGuestModal()">+ Guests</button>
     <button class="btn" onclick="showShare()">Share</button>
     <button class="btn" onclick="clearAll()">Reset</button>
@@ -133,7 +126,6 @@ tr:last-child td{border-bottom:none}
 
 <div class="main">
   <div class="snav" id="snav"></div>
-
   <div id="t-cap">
     <div class="srow" id="scards"></div>
     <div class="cw"><table id="ctbl"></table></div>
@@ -149,6 +141,10 @@ tr:last-child td{border-bottom:none}
 <div id="ma"></div>
 
 <script>
+// ── CONFIG ──────────────────────────────────────────────────────────────────
+const PROXY_URL = 'https://script.google.com/macros/s/AKfycbzKZycM8lxvENB1x3ZQfhOorKkBfkLAKKCQhgzrUDqb1kanXL7dUPdQDastQ5K3gA7V/exec';
+
+// ── SPRINTS ─────────────────────────────────────────────────────────────────
 const SPRINTS=[
   {id:'Q1-S1',l:'S1',q:'Q1',s:'2026-01-08',e:'2026-01-21'},
   {id:'Q1-S2',l:'S2',q:'Q1',s:'2026-01-22',e:'2026-02-04'},
@@ -177,52 +173,43 @@ const SPRINTS=[
   {id:'Q4-S7',l:'S25',q:'Q4',s:'2026-12-10',e:'2026-12-23'},
 ];
 
-// Base groups
-const BASE_GROUPS = [
-  { id:'af', label:'Agentforce / AI', sp:'AF',
-    members:[
-      {id:'vinod',  n:'Vinod Karpurne',  r:'Developer Lead',        sp:'AF', c:'#185fa5', i:'VK', f:1.0},
-      {id:'manish', n:'Manish Chetani',  r:'Developer (Salesforce)', sp:'AF', c:'#854f0b', i:'MC', f:1.0},
-      {id:'twinkle',n:'Twinkle Garg',    r:'Developer (Salesforce)', sp:'AF', c:'#993556', i:'TG', f:1.0},
-      {id:'jake',   n:'Jake McCarthy',   r:'Developer (Salesforce)', sp:'AF', c:'#534ab7', i:'JM', f:1.0},
-    ]},
-  { id:'fe', label:'Frontend', sp:'FE',
-    members:[
-      {id:'neeraj',   n:'Neeraj Upadhyay', r:'FE Engineer', sp:'FE', c:'#534ab7', i:'NU', f:1.0},
-      {id:'upender',  n:'Upender Upender', r:'FE Engineer', sp:'FE', c:'#3b6d11', i:'UU', f:1.0},
-      {id:'mohammed', n:'Mohammed',        r:'Developer',   sp:'FE', c:'#0f6e56', i:'MO', f:1.0},
-    ]},
-  { id:'data', label:'Data', sp:'DS',
-    members:[
-      {id:'bahri',     n:'Bahri Benguesmia', r:'Developer (Data)', sp:'DS', c:'#993c1d', i:'BB', f:0.8},
-      {id:'satyabrata',n:'Satyabrata',       r:'Developer (Data)', sp:'DS', c:'#3b6d11', i:'ST', f:1.0},
-    ]},
-  { id:'ux', label:'UX', sp:'UX',
-    members:[
-      {id:'aren', n:'Aren', r:'UX Designer', sp:'UX', c:'#854f0b', i:'AR', f:1.0},
-    ]},
-  { id:'conv', label:'Conversational Expert', sp:'AF',
-    members:[
-      {id:'finka', n:'Finka', r:'Conversational Expert', sp:'CE', c:'#0f6e56', i:'FI', f:1.0},
-    ]},
-  { id:'qa', label:'QA / QE', sp:'QE',
-    members:[
-      {id:'saswata',  n:'Saswata Bhattacharya', r:'QA Lead', sp:'QE', c:'#5f5e5a', i:'SB', f:0.5},
-      {id:'lakshmi',  n:'Lakshmi Ayothi',       r:'QA',      sp:'QE', c:'#185fa5', i:'LA', f:1.0},
-      {id:'shivanand',n:'Shivanand',             r:'QA',      sp:'QE', c:'#993c1d', i:'SH', f:1.0},
-    ]},
+// ── TEAM ─────────────────────────────────────────────────────────────────────
+const BASE_GROUPS=[
+  {id:'af',label:'Agentforce / AI',sp:'AF',members:[
+    {id:'vinod',  n:'Vinod Karpurne',  r:'Developer Lead',        sp:'AF',c:'#185fa5',i:'VK',f:1.0},
+    {id:'manish', n:'Manish Chetani',  r:'Developer (Salesforce)',sp:'AF',c:'#854f0b',i:'MC',f:1.0},
+    {id:'twinkle',n:'Twinkle Garg',    r:'Developer (Salesforce)',sp:'AF',c:'#993556',i:'TG',f:1.0},
+    {id:'jake',   n:'Jake McCarthy',   r:'Developer (Salesforce)',sp:'AF',c:'#534ab7',i:'JM',f:1.0},
+  ]},
+  {id:'fe',label:'Frontend',sp:'FE',members:[
+    {id:'neeraj',   n:'Neeraj Upadhyay',r:'FE Engineer',sp:'FE',c:'#534ab7',i:'NU',f:1.0},
+    {id:'upender',  n:'Upender Upender',r:'FE Engineer',sp:'FE',c:'#3b6d11',i:'UU',f:1.0},
+    {id:'mohammed', n:'Mohammed',       r:'Developer',  sp:'FE',c:'#0f6e56',i:'MO',f:1.0},
+  ]},
+  {id:'data',label:'Data',sp:'DS',members:[
+    {id:'bahri',     n:'Bahri Benguesmia',r:'Developer (Data)',sp:'DS',c:'#993c1d',i:'BB',f:0.8},
+    {id:'satyabrata',n:'Satyabrata',      r:'Developer (Data)',sp:'DS',c:'#3b6d11',i:'ST',f:1.0},
+  ]},
+  {id:'ux',label:'UX',sp:'UX',members:[
+    {id:'aren',n:'Aren',r:'UX Designer',sp:'UX',c:'#854f0b',i:'AR',f:1.0},
+  ]},
+  {id:'conv',label:'Conversational Expert',sp:'AF',members:[
+    {id:'finka',n:'Finka',r:'Conversational Expert',sp:'CE',c:'#0f6e56',i:'FI',f:1.0},
+  ]},
+  {id:'qa',label:'QA / QE',sp:'QE',members:[
+    {id:'saswata',  n:'Saswata Bhattacharya',r:'QA Lead',sp:'QE',c:'#5f5e5a',i:'SB',f:0.5},
+    {id:'lakshmi',  n:'Lakshmi Ayothi',      r:'QA',     sp:'QE',c:'#185fa5',i:'LA',f:1.0},
+    {id:'shivanand',n:'Shivanand',            r:'QA',     sp:'QE',c:'#993c1d',i:'SH',f:1.0},
+  ]},
 ];
 
-let deletedMembers=[];
-let confluenceConfig={pageId:'5589467381'};
-
 const SP_ROLES=[
-  {id:'AF',label:'Agentforce / SF',    color:'#534ab7'},
-  {id:'FE',label:'Frontend',           color:'#3b6d11'},
-  {id:'UX',label:'UX Design',          color:'#854f0b'},
-  {id:'CE',label:'Conversational Exp', color:'#0f6e56'},
-  {id:'QE',label:'QA / QE',            color:'#993c1d'},
-  {id:'DS',label:'Data',               color:'#993c1d'},
+  {id:'AF',label:'Agentforce / SF',   color:'#534ab7'},
+  {id:'FE',label:'Frontend',          color:'#3b6d11'},
+  {id:'UX',label:'UX Design',         color:'#854f0b'},
+  {id:'CE',label:'Conversational Exp',color:'#0f6e56'},
+  {id:'QE',label:'QA / QE',           color:'#993c1d'},
+  {id:'DS',label:'Data',              color:'#993c1d'},
 ];
 const ALLOC=[
   {l:'Meetings & ceremonies',p:0.10},
@@ -231,25 +218,107 @@ const ALLOC=[
   {l:'Jira / unplanned',     p:0.10},
 ];
 const DAYS=['Su','Mo','Tu','We','Th','Fr','Sa'];
-const GROUP_COLORS=['#af98ec','#5dcaa5','#f0997b','#85b7eb','#fac775','#97c459'];
 
-let data={}, guests=[], cur=null, tab='cap';
+let data={}, guests=[], deletedMembers=[], cur=null, tab='cap';
+let lastSynced=null;
 
+// ── PERSIST (localStorage as cache) ─────────────────────────────────────────
 function ld(){
-  const p=new URLSearchParams(location.search).get('d');
-  if(p){try{const d=JSON.parse(atob(p));data=d.data||{};guests=d.guests||[];deletedMembers=d.deleted||[];}catch(e){}}
-  else{try{const s=JSON.parse(localStorage.getItem('pva26c')||'{}');data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];}catch(e){}}
+  try{
+    const p=new URLSearchParams(location.search).get('d');
+    if(p){const d=JSON.parse(atob(p));data=d.data||{};guests=d.guests||[];deletedMembers=d.deleted||[];return;}
+    const s=JSON.parse(localStorage.getItem('pva26c')||'{}');
+    data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];
+  }catch(e){}
 }
-function sd(){localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers}));}
-function deleteMember(id){
-  if(!confirm('Remove this team member from the planner?'))return;
-  deletedMembers.push(id);sd();renderCards();renderCal();renderNav();
-  if(tab==='sp')renderSP();showToast('Member removed');
+function sd(){
+  localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers}));
 }
-function restoreMember(id){
-  deletedMembers=deletedMembers.filter(x=>x!==id);sd();renderCards();renderCal();renderNav();
-  if(tab==='sp')renderSP();showToast('Member restored');
+
+// ── GOOGLE SHEETS SYNC ───────────────────────────────────────────────────────
+function setSyncStatus(state, label){
+  const dot=document.getElementById('sdot');
+  const lbl=document.getElementById('slbl');
+  dot.className='sync-dot'+(state?' '+state:'');
+  lbl.textContent=label;
 }
+
+async function syncToSheets(){
+  setSyncStatus('busy','Saving...');
+  try{
+    const res=await fetch(PROXY_URL,{
+      method:'POST',
+      headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({action:'save',data:{data,guests,deleted:deletedMembers}}),
+      redirect:'follow'
+    });
+    const result=await res.json();
+    if(result.ok){
+      lastSynced=new Date();
+      setSyncStatus('ok','Saved '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
+      showToast('Saved to Google Sheets');
+    } else {
+      setSyncStatus('err','Save failed');
+      showToast('Save failed: '+result.error);
+    }
+  }catch(e){
+    setSyncStatus('err','Save failed');
+    showToast('Save failed — '+e.message);
+  }
+}
+
+async function loadFromSheets(){
+  setSyncStatus('busy','Loading...');
+  try{
+    const res=await fetch(PROXY_URL,{
+      method:'POST',
+      headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({action:'load'}),
+      redirect:'follow'
+    });
+    const result=await res.json();
+    if(result.ok&&result.data){
+      data=result.data.data||{};
+      guests=result.data.guests||[];
+      deletedMembers=result.data.deleted||[];
+      sd();
+      renderNav();renderCards();renderCal();
+      if(tab==='sp')renderSP();
+      if(tab==='ov')renderOV();
+      lastSynced=new Date();
+      setSyncStatus('ok','Loaded '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
+      showToast('Loaded from Google Sheets');
+    } else if(result.ok&&!result.data){
+      setSyncStatus('ok','Sheet is empty');
+      showToast('No data in Google Sheets yet — save first');
+    } else {
+      setSyncStatus('err','Load failed');
+      showToast('Load failed: '+result.error);
+    }
+  }catch(e){
+    setSyncStatus('err','Load failed');
+    showToast('Load failed — '+e.message);
+  }
+}
+
+function openSyncModal(){
+  const lastTxt=lastSynced
+    ?'Last synced at '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})
+    :'Not synced yet this session — load to get latest data.';
+  document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h3>Google Sheets sync</h3>
+      <p>Data is stored in a shared Google Sheet. Load to get the latest data, or save to push your changes.</p>
+      <p style="color:var(--ac-tx);font-size:11px">${lastTxt}</p>
+      <div class="mbtns">
+        <button class="btn" onclick="cm()">Cancel</button>
+        <button class="btn" style="color:var(--ac)" onclick="loadFromSheets();cm()">Load latest</button>
+        <button class="btn bp" onclick="syncToSheets();cm()">Save changes</button>
+      </div>
+    </div></div>`;
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
 function gs(sid,mid,ds){return data?.[sid]?.[mid]?.[ds]||null;}
 function ss(sid,mid,ds,v){
   if(!data[sid])data[sid]={};
@@ -266,23 +335,25 @@ function cap(sid,mid,dl){
   const off=w.filter(d=>gs(sid,mid,fd(d))==='off').length;
   return{t:w.length,off,av:w.length-off};
 }
+function initials(name){return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
 
-// Build live groups (base + guests, minus deleted)
 function buildGroups(){
   const groups=BASE_GROUPS.map(g=>({...g,members:g.members.filter(m=>!deletedMembers.includes(m.id))}));
   guests.forEach(g=>{
     const grp=groups.find(gr=>gr.id===g.groupId);
     if(grp&&!grp.members.find(m=>m.id===g.id)){
-      grp.members.push({
-        id:g.id, n:g.name, r:g.role||'Guest',
-        sp:grp.sp, c:'#7f77dd', i:initials(g.name), f:1.0, isGuest:true
-      });
+      grp.members.push({id:g.id,n:g.name,r:g.role||'Guest',sp:grp.sp,c:'#7f77dd',i:initials(g.name),f:1.0,isGuest:true});
     }
   });
   return groups.filter(g=>g.members.length>0);
 }
-function initials(name){return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
 function allMembers(){return buildGroups().flatMap(g=>g.members);}
+
+function deleteMember(id){
+  if(!confirm('Remove this team member from the planner?'))return;
+  deletedMembers.push(id);sd();renderCards();renderCal();renderNav();
+  if(tab==='sp')renderSP();showToast('Member removed');
+}
 
 function roleSP(sp,rid){
   const dl=dlist(sp);
@@ -292,7 +363,7 @@ function roleSP(sp,rid){
 }
 function totalSP(sp){return SP_ROLES.reduce((a,r)=>a+roleSP(sp,r.id),0);}
 
-// ---- TABS ----
+// ── TABS ─────────────────────────────────────────────────────────────────────
 function switchTab(name,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');tab=name;
@@ -301,7 +372,7 @@ function switchTab(name,el){
   if(name==='ov')renderOV();
 }
 
-// ---- SPRINT NAV ----
+// ── SPRINT NAV ────────────────────────────────────────────────────────────────
 function renderNav(){
   let h='',lq=null;
   SPRINTS.forEach(s=>{
@@ -314,7 +385,7 @@ function renderNav(){
   document.getElementById('snav').innerHTML=h;
 }
 
-// ---- SUMMARY CARDS ----
+// ── SUMMARY CARDS ─────────────────────────────────────────────────────────────
 function renderCards(){
   const dl=dlist(cur),wd=dl.filter(d=>!isWk(d)).length;
   const members=allMembers();
@@ -330,7 +401,7 @@ function renderCards(){
     <div class="sc2 ok"><div class="sv">${sp}</div><div class="sl">Est. SP (70%)</div></div>`;
 }
 
-// ---- CAL TABLE ----
+// ── CAL TABLE ─────────────────────────────────────────────────────────────────
 function renderCal(){
   const dl=dlist(cur),s=cur;
   const groups=buildGroups();
@@ -348,37 +419,30 @@ function renderCal(){
       ${g.label}${guestNote}
       <button class="add-guest-btn" onclick="openGuestModal('${g.id}')">+ Add guest</button>
     </td></tr>`;
-
     g.members.forEach(m=>{
       const c=cap(s.id,m.id,dl);
       const pct=Math.round(c.av/c.t*100);
       const fc=pct<60?'hi':pct<80?'mi':'lo';
       const guestBadge=m.isGuest?'<span class="guest-badge">GUEST</span>':'';
       const delBtn=`<button class="del-btn" onclick="deleteMember('${m.id}')" title="Remove from planner">✕</button>`;
-      h+=`<tr class="mrow">
-        <td><div class="mc">
-          <div class="av" style="background:${m.c}22;color:${m.c}">${m.i}</div>
-          <div style="flex:1">
-            <div class="mn">${m.n}${guestBadge}${delBtn}</div>
-            <div class="mr">${m.r}</div>
-          </div>
-        </div></td>`;
+      h+=`<tr class="mrow"><td><div class="mc">
+        <div class="av" style="background:${m.c}22;color:${m.c}">${m.i}</div>
+        <div style="flex:1"><div class="mn">${m.n}${guestBadge}${delBtn}</div><div class="mr">${m.r}</div></div>
+      </div></td>`;
       dl.forEach(d=>{
         if(isWk(d)){h+=`<td class="dtd"><button class="db wknd" disabled></button></td>`;return;}
         const ds=fd(d),st=gs(s.id,m.id,ds);
         h+=`<td class="dtd"><button class="db${st==='off'?' off':''}" onclick="tog('${s.id}','${m.id}','${ds}')">${st==='off'?'OFF':''}</button></td>`;
       });
-      h+=`<td class="cc"><div class="cl">${c.av}/${c.t}d</div><div class="cb"><div class="cf ${fc}" style="width:${pct}%"></div></div></td>
-      </tr>`;
+      h+=`<td class="cc"><div class="cl">${c.av}/${c.t}d</div><div class="cb"><div class="cf ${fc}" style="width:${pct}%"></div></div></td></tr>`;
     });
   });
-
   h+=`</tbody>`;
   const tbl=document.getElementById('ctbl');
   tbl.innerHTML=h;
   const old=tbl.parentElement.querySelector('.leg');if(old)old.remove();
   tbl.parentElement.insertAdjacentHTML('beforeend',`<div class="leg">
-    <span>Click a day to toggle leave/OFF</span>
+    <span>Click a day to toggle leave / OFF</span>
     <div style="display:flex;align-items:center;gap:4px"><div class="ld" style="background:var(--rd-bg);border:1px solid var(--rd-tx)"></div>Leave / OFF</div>
     <div style="display:flex;align-items:center;gap:4px"><div class="ld" style="background:var(--pu-bg);border:1px solid var(--pu-tx)"></div>Guest</div>
     <span style="color:var(--tx3)">Sprint ${cur.l}: ${fdisp(new Date(cur.s))} → ${fdisp(new Date(cur.e))}</span>
@@ -393,31 +457,24 @@ function tog(sid,mid,ds){
 }
 function pick(id){cur=SPRINTS.find(s=>s.id===id);renderNav();renderCards();renderCal();if(tab==='sp')renderSP();}
 
-// ---- SP BREAKDOWN ----
+// ── SP BREAKDOWN ──────────────────────────────────────────────────────────────
 function renderSP(){
   const dl=dlist(cur);
   const ms=allMembers();
   const tot=Math.round(totalSP(cur)*10)/10;
   const mx=Math.max(...SP_ROLES.map(r=>roleSP(cur,r.id)),1);
-
-  // Total SP hero
   let h=`<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:18px;padding:14px 16px;background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd)">
     <div style="font-size:32px;font-weight:500;color:var(--ac)">${tot}</div>
     <div style="font-size:13px;color:var(--tx2)">total story points available this sprint <span style="color:var(--tx3);font-size:11px">(70% feature allocation)</span></div>
-  </div>`;
-
-  // Role cards with per-person breakdown
-  h+=`<div class="spgrid" style="margin-bottom:18px">`;
+  </div><div class="spgrid" style="margin-bottom:18px">`;
   SP_ROLES.forEach(r=>{
     const v=roleSP(cur,r.id);
     const pct=Math.round(v/mx*100);
     const members=ms.filter(m=>m.sp===r.id);
-    const totalOff=members.reduce((a,m)=>a+cap(cur.id,m.id,dl).o,0);
-    // Per person rows
     const personRows=members.map(m=>{
       const c=cap(cur.id,m.id,dl);
       const msp=Math.round(c.av*8*m.f*0.70/8*10)/10;
-      const offNote=c.o>0?`<span style="color:var(--rd-tx);font-size:8px;margin-left:4px">${c.o}d off</span>`:'';
+      const offNote=c.off>0?`<span style="color:var(--rd-tx);font-size:8px;margin-left:4px">${c.off}d off</span>`:'';
       return`<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:.5px solid var(--bd);font-size:10px">
         <span style="color:var(--tx2)">${m.n.split(' ')[0]}${offNote}</span>
         <span style="font-weight:500;color:var(--tx)">${msp} SP</span>
@@ -427,20 +484,19 @@ function renderSP(){
       <div class="spr">${r.label}</div>
       <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:8px">
         <div class="spv" style="color:${r.color}">${v}</div>
-        <div style="font-size:10px;color:var(--tx3)">SP${totalOff>0?` · ${totalOff}d off`:''}</div>
+        <div style="font-size:10px;color:var(--tx3)">SP</div>
       </div>
       ${personRows}
       <div class="spbar" style="margin-top:8px"><div class="spfill" style="width:${pct}%;background:${r.color}"></div></div>
     </div>`;
   });
   h+=`</div>`;
-
   document.getElementById('spgrid').innerHTML=h;
   document.getElementById('algrid').innerHTML=ALLOC.map(a=>`
     <div class="alrow"><span style="color:var(--tx2)">${a.l}</span><span class="alv">${Math.round(a.p*100)}% · ~${Math.round(tot*a.p/0.70)}SP</span></div>`).join('');
 }
 
-// ---- QUARTER VIEW ----
+// ── QUARTER VIEW ──────────────────────────────────────────────────────────────
 function renderOV(){
   const el=document.getElementById('t-ov');
   let h='';
@@ -465,27 +521,24 @@ function renderOV(){
   el.innerHTML=h;
 }
 
-// ---- GUEST MODAL ----
+// ── GUEST MODAL ───────────────────────────────────────────────────────────────
 function openGuestModal(preselectedGroupId){
   const groupOptions=BASE_GROUPS.map(g=>`<option value="${g.id}"${g.id===preselectedGroupId?' selected':''}>${g.label}</option>`).join('');
   const guestItems=guests.length===0
-    ? '<div style="font-size:11px;color:var(--tx3);text-align:center;padding:10px 0">No guests added yet</div>'
-    : guests.map(g=>{
+    ?'<div style="font-size:11px;color:var(--tx3);text-align:center;padding:10px 0">No guests added yet</div>'
+    :guests.map(g=>{
         const grp=BASE_GROUPS.find(gr=>gr.id===g.groupId);
         return`<div class="guest-item">
-          <div>
-            <span style="font-weight:500">${g.name}</span>
-            <span style="color:var(--tx3);margin-left:6px">${g.role||'Guest'}</span>
-            <span style="color:var(--pu-tx);font-size:10px;margin-left:6px">→ ${grp?grp.label:'?'}</span>
-          </div>
+          <div><span style="font-weight:500">${g.name}</span>
+          <span style="color:var(--tx3);margin-left:6px">${g.role||'Guest'}</span>
+          <span style="color:var(--pu-tx);font-size:10px;margin-left:6px">→ ${grp?grp.label:'?'}</span></div>
           <button class="rm" onclick="removeGuest('${g.id}')">Remove</button>
         </div>`;
       }).join('');
-
   document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)">
     <div class="modal" onclick="event.stopPropagation()">
       <h3>Manage guests</h3>
-      <p>Add borrowed team members to a group for this planner. They show up with a GUEST badge and are included in capacity calculations.</p>
+      <p>Add borrowed team members to a group. They show with a GUEST badge and are included in capacity calculations.</p>
       <div class="form-row">
         <input id="g-name" placeholder="Full name" />
         <input id="g-role" placeholder="Role (optional)" />
@@ -495,9 +548,7 @@ function openGuestModal(preselectedGroupId){
         <button class="btn bp" onclick="addGuest()">Add guest</button>
       </div>
       <div class="guest-list" id="guest-list">${guestItems}</div>
-      <div class="mbtns">
-        <button class="btn" onclick="cm()">Close</button>
-      </div>
+      <div class="mbtns"><button class="btn" onclick="cm()">Close</button></div>
     </div></div>`;
 }
 
@@ -506,114 +557,52 @@ function addGuest(){
   const role=document.getElementById('g-role').value.trim();
   const groupId=document.getElementById('g-group').value;
   if(!name)return showToast('Enter a name');
-  const id='guest_'+Date.now();
-  guests.push({id,name,role,groupId});
-  sd();
-  openGuestModal(groupId);
-  renderCards();renderCal();
+  guests.push({id:'guest_'+Date.now(),name,role,groupId});
+  sd();openGuestModal(groupId);renderCards();renderCal();
   if(tab==='sp')renderSP();
-  showToast(`${name} added as guest`);
+  showToast(name+' added as guest');
 }
 
 function removeGuest(id){
   guests=guests.filter(g=>g.id!==id);
-  sd();
-  openGuestModal();
-  renderCards();renderCal();
+  sd();openGuestModal();renderCards();renderCal();
   if(tab==='sp')renderSP();
   showToast('Guest removed');
 }
 
-// ---- SHARE / EXPORT ----
-function getUrl(){
+// ── SHARE ─────────────────────────────────────────────────────────────────────
+function showShare(){
   const enc=btoa(JSON.stringify({data,guests,deleted:deletedMembers}));
   const u=new URL(location.href.split('?')[0]);
   u.searchParams.set('d',enc);
-  return u.toString();
-}
-// ---- CONFLUENCE SYNC ----
-const PROXY_URL='https://script.google.com/macros/s/AKfycbzpXyZB9jO638q1cXCjcSlf2HSKk3vr7NLfci5Xz6XSoXx2KC18Auf_vYsHHuJu2-dP/exec';
-
-async function syncToConfluence(){
-  try{
-    showToast('Syncing...');
-    const r=await fetch(PROXY_URL,{
-      method:'POST',
-      headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({
-        action:'save',
-        pageId:confluenceConfig.pageId,
-        data:{data,guests,deleted:deletedMembers}
-      }),
-      redirect:'follow'
-    });
-    const result=await r.json();
-    if(result.ok){showToast('Synced to Confluence!');}
-    else{showToast('Sync failed: '+result.status);}
-  }catch(e){showToast('Sync failed — '+e.message);}
-}
-
-async function loadFromConfluence(){
-  try{
-    showToast('Loading from Confluence...');
-    const r=await fetch(PROXY_URL,{
-      method:'POST',
-      headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({
-        action:'load',
-        pageId:confluenceConfig.pageId
-      }),
-      redirect:'follow'
-    });
-    const result=await r.json();
-    if(result.ok&&result.data){
-      data=result.data.data||{};
-      guests=result.data.guests||[];
-      deletedMembers=result.data.deleted||[];
-      sd();renderNav();renderCards();renderCal();showToast('Loaded from Confluence!');
-    }else{showToast('Load failed');}
-  }catch(e){showToast('Load failed — '+e.message);}
-}
-
-function openSyncModal(){
-  document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)">
-    <div class="modal" onclick="event.stopPropagation()">
-      <h3>Confluence sync</h3>
-      <p style="color:var(--tx2)">Sync your leave data to Confluence so your SM can see it. Your data is saved securely to a private page.</p>
-      <div class="mbtns">
-        <button class="btn" onclick="cm()">Cancel</button>
-        <button class="btn" onclick="loadFromConfluence();cm()" style="color:var(--ac)">Load from Confluence</button>
-        <button class="btn bp" onclick="syncToConfluence();cm()">Sync now</button>
-      </div>
-    </div></div>`;
-}
-
-function showShare(){
   document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)">
     <div class="modal" onclick="event.stopPropagation()">
       <h3>Share & export</h3>
-      <p>Send this URL to your team — they open it in any browser, mark their leave, and send the URL back. Guest data is included in the URL.</p>
-      <pre id="su">${getUrl()}</pre>
-      <p>Raw JSON:</p><pre id="sj">${JSON.stringify({data,guests},null,2)}</pre>
+      <p>Or send this URL — it includes all current leave data in the link itself.</p>
+      <pre id="su">${u.toString()}</pre>
       <div class="mbtns">
         <button class="btn" onclick="cm()">Close</button>
-        <button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('sj').textContent).then(()=>showToast('JSON copied'))">Copy JSON</button>
         <button class="btn bp" onclick="navigator.clipboard.writeText(document.getElementById('su').textContent).then(()=>showToast('URL copied'))">Copy URL</button>
       </div>
     </div></div>`;
 }
+
 function cm(e){if(!e||e.target.classList.contains('mbg'))document.getElementById('ma').innerHTML='';}
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
 function clearAll(){
-  if(!confirm('Clear all leave data? (Guests are kept)'))return;
+  if(!confirm('Clear all leave data? Guests are kept.'))return;
   data={};sd();renderNav();renderCards();renderCal();
+  setSyncStatus('','Cleared — remember to save');
 }
 
-// ---- INIT ----
+// ── INIT ──────────────────────────────────────────────────────────────────────
 ld();
 const today=new Date().toISOString().slice(0,10);
 cur=SPRINTS.find(s=>today>=s.s&&today<=s.e)||SPRINTS[0];
 renderNav();renderCards();renderCal();
+
+// Auto-load from Google Sheets on startup
+loadFromSheets();
 </script>
 </body>
 </html>
