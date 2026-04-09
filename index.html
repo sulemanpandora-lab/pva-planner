@@ -97,6 +97,68 @@ tr:last-child td{border-bottom:none}
 .sync-dot.ok{background:#97c459}.sync-dot.err{background:#e24b4a}.sync-dot.busy{background:#ef9f27;animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 @media(max-width:680px){.main{padding:10px 12px}.mc{min-width:140px}}
+
+/* ── ROADMAP STYLES ──────────────────────────────────────────────────────── */
+.rm-wrap{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd);overflow:hidden;margin-bottom:18px}
+.rm-toolbar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:.5px solid var(--bd);gap:10px;flex-wrap:wrap}
+.rm-toolbar h3{font-size:11px;font-weight:500;color:var(--tx2);text-transform:uppercase;letter-spacing:.5px}
+.rm-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.rm-scroll{overflow-x:auto}
+.rm-grid{min-width:900px}
+.rm-head-q{display:grid;border-bottom:.5px solid var(--bd)}
+.rm-head-q-row{display:flex}
+.rm-name-col{width:220px;min-width:220px;flex-shrink:0;padding:6px 12px;font-size:9px;font-weight:500;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px;border-right:.5px solid var(--bd)}
+.rm-sprints-row{flex:1;display:flex}
+.rm-q-cell{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--tx2);border-right:.5px solid var(--bd);padding:4px 0}
+.rm-q-cell:last-child{border-right:none}
+.rm-s-labels{display:flex;flex:1}
+.rm-s-label{flex:1;text-align:center;font-size:9px;color:var(--tx3);padding:3px 0;border-right:.5px solid var(--bd);white-space:nowrap;overflow:hidden}
+.rm-s-label:last-child{border-right:none}
+.rm-s-label.today-s{color:var(--ac);font-weight:600}
+
+/* release marker row */
+.rm-releases-row{display:flex;border-bottom:.5px solid var(--bd);background:var(--bg2)}
+.rm-releases-inner{flex:1;position:relative;height:22px}
+.rm-rel-marker{position:absolute;top:2px;transform:translateX(-50%);font-size:8px;font-weight:500;padding:1px 5px;border-radius:3px;white-space:nowrap;cursor:default;z-index:2}
+.rm-rel-pva{background:#185fa5;color:#fff}
+.rm-rel-platform{background:var(--bg3);color:var(--tx2);border:.5px solid var(--bd2)}
+
+/* epic rows */
+.rm-section-hdr{padding:5px 12px;font-size:10px;font-weight:500;color:var(--tx2);text-transform:uppercase;letter-spacing:.4px;background:var(--bg3);border-bottom:.5px solid var(--bd);border-top:.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.rm-epic-row{display:flex;align-items:center;border-bottom:.5px solid var(--bd);min-height:36px}
+.rm-epic-row:last-child{border-bottom:none}
+.rm-epic-row:hover{background:var(--bg2)}
+.rm-epic-name{width:220px;min-width:220px;flex-shrink:0;padding:6px 12px;font-size:11px;color:var(--tx);border-right:.5px solid var(--bd);display:flex;align-items:center;gap:6px;cursor:default}
+.rm-epic-key{font-size:9px;color:var(--tx3);font-family:monospace;white-space:nowrap}
+.rm-epic-title{font-size:10px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.rm-epic-cells{flex:1;display:flex;position:relative;height:36px}
+.rm-cell{flex:1;border-right:.5px solid var(--bd);cursor:pointer;position:relative;transition:background .1s}
+.rm-cell:last-child{border-right:none}
+.rm-cell:hover{background:var(--ac-bg)}
+.rm-cell.sel{background:var(--ac-bg)}
+.rm-cell.today-s{background:rgba(24,95,165,.04)}
+.rm-bar{position:absolute;top:6px;bottom:6px;border-radius:4px;pointer-events:none;display:flex;align-items:center;padding:0 6px;overflow:hidden;z-index:1}
+.rm-bar span{font-size:9px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* status badges */
+.rm-status{font-size:8px;padding:1px 5px;border-radius:3px;white-space:nowrap;flex-shrink:0}
+.rm-st-ip{background:var(--ac-bg);color:var(--ac-tx)}
+.rm-st-fn{background:var(--bg3);color:var(--tx3)}
+.rm-st-dn{background:var(--gn-bg);color:var(--gn-tx)}
+
+.rm-legend{display:flex;gap:14px;align-items:center;padding:8px 14px;background:var(--bg2);border-top:.5px solid var(--bd);font-size:10px;color:var(--tx2);flex-wrap:wrap}
+.rm-legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+
+.rm-empty{padding:32px;text-align:center;color:var(--tx3);font-size:12px}
+
+/* add epic modal */
+.modal.wide{max-width:600px}
+.epic-sel-list{max-height:300px;overflow-y:auto;border:.5px solid var(--bd2);border-radius:var(--rs);margin-top:8px}
+.epic-sel-item{display:flex;align-items:center;gap:8px;padding:7px 11px;border-bottom:.5px solid var(--bd);cursor:pointer;transition:background .1s}
+.epic-sel-item:last-child{border-bottom:none}
+.epic-sel-item:hover{background:var(--bg2)}
+.epic-sel-item.added{background:var(--gn-bg)}
+.epic-sel-item input[type=checkbox]{accent-color:var(--ac)}
 </style>
 </head>
 <body>
@@ -122,6 +184,7 @@ tr:last-child td{border-bottom:none}
   <div class="tab on" onclick="switchTab('cap',this)">Capacity</div>
   <div class="tab"   onclick="switchTab('sp',this)">SP breakdown</div>
   <div class="tab"   onclick="switchTab('ov',this)">Quarter view</div>
+  <div class="tab"   onclick="switchTab('rm',this)">Roadmap</div>
 </div>
 
 <div class="main">
@@ -135,6 +198,7 @@ tr:last-child td{border-bottom:none}
     <div class="alsec"><h3>Capacity allocation model</h3><div class="algrid" id="algrid"></div></div>
   </div>
   <div id="t-ov" style="display:none"></div>
+  <div id="t-rm" style="display:none"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -219,20 +283,74 @@ const ALLOC=[
 ];
 const DAYS=['Su','Mo','Tu','We','Th','Fr','Sa'];
 
-let data={}, guests=[], deletedMembers=[], cur=null, tab='cap';
+// ── EPICS FROM JIRA (active/in-progress only for roadmap) ───────────────────
+const JIRA_EPICS=[
+  {key:'PVA-2006',title:'Gemma OOS — Out of stock handling in React',status:'Funnel',color:'#534ab7'},
+  {key:'PVA-1973',title:'Entry points in browse',status:'Funnel',color:'#185fa5'},
+  {key:'PVA-1717',title:'Engineering initiatives 2026 — Agentforce / React',status:'Funnel',color:'#854f0b'},
+  {key:'PVA-1476',title:'Pipeline — quality checks on sprint tickets',status:'In Progress',color:'#3b6d11'},
+  {key:'PVA-1377',title:'H1 26 — Continuous improvements: product discovery',status:'Funnel',color:'#993c1d'},
+  {key:'PVA-1376',title:'H1 26 — Continuous improvements: conversational AX',status:'Funnel',color:'#0f6e56'},
+  {key:'PVA-1361',title:'GEMMA — Connect stores inventories',status:'In Progress',color:'#993556'},
+  {key:'PVA-1312',title:'Production release — phased releases',status:'In Progress',color:'#534ab7'},
+  {key:'PVA-1293',title:'GEMMA — Retail excellence / agent optimisation',status:'In Progress',color:'#854f0b'},
+  {key:'PVA-1006',title:'Gemma country rollout — global scalability',status:'In Progress',color:'#185fa5'},
+  {key:'PVA-387', title:'Gemma FAQ — expansion to UK & other markets',status:'In Progress',color:'#3b6d11'},
+  {key:'PVA-377', title:'UI on React mobile',status:'In Progress',color:'#0f6e56'},
+  {key:'PVA-331', title:'Gemma CS — enhancements',status:'In Progress',color:'#993c1d'},
+  {key:'PVA-1543',title:'Agentforce test automation — feasibility',status:'Funnel',color:'#534ab7'},
+  {key:'PVA-1544',title:'Gemma conversation analytics — Salesforce tooling',status:'Funnel',color:'#185fa5'},
+  {key:'PVA-1273',title:'UX Q1',status:'Funnel',color:'#854f0b'},
+  {key:'PVA-1239',title:'Emotional storytelling',status:'Funnel',color:'#0f6e56'},
+  {key:'PVA-1238',title:'Personalisation on Gemma React app',status:'Funnel',color:'#993556'},
+  {key:'PVA-1235',title:'QA automation',status:'Funnel',color:'#3b6d11'},
+  {key:'PVA-1193',title:'GEMMA — Run H1 2026',status:'Funnel',color:'#534ab7'},
+  {key:'PVA-1117',title:'GEMMA — Rollout H1',status:'Funnel',color:'#185fa5'},
+];
+
+// ── RELEASE CALENDAR (from Confluence — platform + PVA releases) ─────────────
+// Each entry: { label, date (YYYY-MM-DD), type: 'pva'|'platform' }
+const RELEASES=[
+  {label:'PVA 2.0',     date:'2026-02-17',type:'pva'},
+  {label:'26.1 PVA',    date:'2026-03-18',type:'pva'},
+  {label:'R126',        date:'2026-01-14',type:'platform'},
+  {label:'R226',        date:'2026-01-28',type:'platform'},
+  {label:'R326',        date:'2026-02-25',type:'platform'},
+  {label:'R426',        date:'2026-03-18',type:'platform'},
+  {label:'R526',        date:'2026-03-25',type:'platform'},
+  {label:'R626',        date:'2026-04-15',type:'platform'},
+  {label:'R726',        date:'2026-04-22',type:'platform'},
+  {label:'R826',        date:'2026-05-13',type:'platform'},
+  {label:'R926',        date:'2026-05-27',type:'platform'},
+  {label:'R1026',       date:'2026-06-10',type:'platform'},
+  {label:'R1126',       date:'2026-06-24',type:'platform'},
+  {label:'R1226',       date:'2026-07-08',type:'platform'},
+  {label:'R1326',       date:'2026-07-22',type:'platform'},
+  {label:'R1426',       date:'2026-08-12',type:'platform'},
+  {label:'R1526',       date:'2026-08-26',type:'platform'},
+  {label:'R1626',       date:'2026-09-09',type:'platform'},
+  {label:'R1726',       date:'2026-09-23',type:'platform'},
+  {label:'R1826',       date:'2026-10-14',type:'platform'},
+  {label:'R1926',       date:'2026-10-28',type:'platform'},
+  {label:'R2026',       date:'2026-11-11',type:'platform'},
+  {label:'R2126',       date:'2026-11-25',type:'platform'},
+];
+
+let data={}, guests=[], deletedMembers=[], roadmap={}, cur=null, tab='cap';
+// roadmap[epicKey] = { startSprint: 'Q1-S1', endSprint: 'Q1-S3', visible: true }
 let lastSynced=null;
 
-// ── PERSIST (localStorage as cache) ─────────────────────────────────────────
+// ── PERSIST ──────────────────────────────────────────────────────────────────
 function ld(){
   try{
     const p=new URLSearchParams(location.search).get('d');
-    if(p){const d=JSON.parse(atob(p));data=d.data||{};guests=d.guests||[];deletedMembers=d.deleted||[];return;}
+    if(p){const d=JSON.parse(atob(p));data=d.data||{};guests=d.guests||[];deletedMembers=d.deleted||[];roadmap=d.roadmap||{};return;}
     const s=JSON.parse(localStorage.getItem('pva26c')||'{}');
-    data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];
+    data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];roadmap=s.roadmap||{};
   }catch(e){}
 }
 function sd(){
-  localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers}));
+  localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers,roadmap}));
 }
 
 // ── GOOGLE SHEETS SYNC ───────────────────────────────────────────────────────
@@ -249,7 +367,7 @@ async function syncToSheets(){
     const res=await fetch(PROXY_URL,{
       method:'POST',
       headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({action:'save',data:{data,guests,deleted:deletedMembers}}),
+      body:JSON.stringify({action:'save',data:{data,guests,deleted:deletedMembers,roadmap}}),
       redirect:'follow'
     });
     const result=await res.json();
@@ -281,10 +399,12 @@ async function loadFromSheets(){
       data=result.data.data||{};
       guests=result.data.guests||[];
       deletedMembers=result.data.deleted||[];
+      roadmap=result.data.roadmap||{};
       sd();
       renderNav();renderCards();renderCal();
       if(tab==='sp')renderSP();
       if(tab==='ov')renderOV();
+      if(tab==='rm')renderRM();
       lastSynced=new Date();
       setSyncStatus('ok','Loaded '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
       showToast('Loaded from Google Sheets');
@@ -367,9 +487,10 @@ function totalSP(sp){return SP_ROLES.reduce((a,r)=>a+roleSP(sp,r.id),0);}
 function switchTab(name,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');tab=name;
-  ['cap','sp','ov'].forEach(n=>document.getElementById('t-'+n).style.display=n===name?'':'none');
+  ['cap','sp','ov','rm'].forEach(n=>document.getElementById('t-'+n).style.display=n===name?'':'none');
   if(name==='sp')renderSP();
   if(name==='ov')renderOV();
+  if(name==='rm')renderRM();
 }
 
 // ── SPRINT NAV ────────────────────────────────────────────────────────────────
@@ -521,6 +642,207 @@ function renderOV(){
   el.innerHTML=h;
 }
 
+// ── ROADMAP VIEW ──────────────────────────────────────────────────────────────
+let rmDragState=null; // {epicKey, dragType:'start'|'end'|'move', startIdx, origStart, origEnd}
+const today=new Date().toISOString().slice(0,10);
+
+function sprintIdx(id){return SPRINTS.findIndex(s=>s.id===id);}
+function todaySprint(){return SPRINTS.findIndex(s=>today>=s.s&&today<=s.e);}
+
+// Get which sprints a release falls within
+function releaseSprintPct(date){
+  for(let i=0;i<SPRINTS.length;i++){
+    const s=SPRINTS[i];
+    if(date>=s.s&&date<=s.e){
+      const total=new Date(s.e)-new Date(s.s);
+      const offset=new Date(date)-new Date(s.s);
+      return{idx:i,pct:offset/total};
+    }
+  }
+  return null;
+}
+
+function visibleEpics(){
+  return JIRA_EPICS.filter(e=>{
+    const rm=roadmap[e.key];
+    return rm&&rm.visible!==false;
+  });
+}
+
+function renderRM(){
+  const el=document.getElementById('t-rm');
+  const todayIdx=todaySprint();
+  const n=SPRINTS.length;
+
+  // Build Q widths for header
+  const qCounts={Q1:0,Q2:0,Q3:0,Q4:0};
+  SPRINTS.forEach(s=>qCounts[s.q]++);
+
+  // Sprint header
+  let sLabels='';
+  SPRINTS.forEach((s,i)=>{
+    const isTod=i===todayIdx;
+    sLabels+=`<div class="rm-s-label${isTod?' today-s':''}" title="${s.s} → ${s.e}">${s.l}</div>`;
+  });
+
+  // Quarter header
+  let qCells='';
+  ['Q1','Q2','Q3','Q4'].forEach(q=>{
+    const cnt=qCounts[q];
+    qCells+=`<div class="rm-q-cell" style="flex:${cnt}">${q} 2026</div>`;
+  });
+
+  // Release markers row — compute position as % within the timeline
+  let relMarkers='';
+  RELEASES.forEach(r=>{
+    const pos=releaseSprintPct(r.date);
+    if(!pos)return;
+    // position as % of total width
+    const leftPct=((pos.idx+pos.pct)/n)*100;
+    const cls=r.type==='pva'?'rm-rel-marker rm-rel-pva':'rm-rel-marker rm-rel-platform';
+    relMarkers+=`<div class="${cls}" style="left:${leftPct}%" title="${r.label} · ${r.date}">${r.label}</div>`;
+  });
+
+  // Epic rows grouped by status
+  const active=JIRA_EPICS.filter(e=>e.status==='In Progress');
+  const funnel=JIRA_EPICS.filter(e=>e.status==='Funnel');
+  const placed=Object.keys(roadmap).filter(k=>roadmap[k]&&roadmap[k].visible!==false);
+
+  let epicRows='';
+
+  function buildEpicRow(epic){
+    const rm=roadmap[epic.key];
+    const cells=SPRINTS.map((s,i)=>{
+      const isTod=i===todayIdx;
+      return`<div class="rm-cell${isTod?' today-s':''}" data-epic="${epic.key}" data-idx="${i}"
+        onclick="rmCellClick('${epic.key}',${i})"
+        title="${s.l}: ${s.s} → ${s.e}"></div>`;
+    }).join('');
+
+    // Bar overlay
+    let bar='';
+    if(rm&&rm.startSprint&&rm.endSprint){
+      const si=sprintIdx(rm.startSprint);
+      const ei=sprintIdx(rm.endSprint);
+      if(si>=0&&ei>=0&&ei>=si){
+        const leftPct=(si/n)*100;
+        const widthPct=((ei-si+1)/n)*100;
+        bar=`<div class="rm-bar" style="left:${leftPct}%;width:${widthPct}%;background:${epic.color}cc">
+          <span>${epic.key}: ${epic.title}</span>
+        </div>`;
+      }
+    }
+
+    const stCls=epic.status==='In Progress'?'rm-st-ip':epic.status==='Funnel'?'rm-st-fn':'rm-st-dn';
+    const stLbl=epic.status==='In Progress'?'Active':'Funnel';
+    const clearBtn=rm?`<button onclick="rmClear('${epic.key}')" title="Clear sprint assignment" style="margin-left:auto;font-size:9px;padding:1px 5px;border-radius:3px;border:.5px solid var(--bd2);background:transparent;color:var(--tx3);cursor:pointer;flex-shrink:0">✕</button>`:'';
+
+    return`<div class="rm-epic-row">
+      <div class="rm-epic-name">
+        <span class="rm-epic-key">${epic.key}</span>
+        <span class="rm-epic-title" title="${epic.title}">${epic.title}</span>
+        <span class="rm-status ${stCls}">${stLbl}</span>
+        ${clearBtn}
+      </div>
+      <div class="rm-epic-cells" id="rmcells-${epic.key}">
+        ${cells}
+        ${bar}
+      </div>
+    </div>`;
+  }
+
+  const activeRows=active.map(buildEpicRow).join('');
+  const funnelRows=funnel.map(buildEpicRow).join('');
+
+  const placedCount=placed.length;
+
+  el.innerHTML=`<div class="rm-wrap">
+    <div class="rm-toolbar">
+      <h3>Roadmap 2026 · Epics × Sprints</h3>
+      <div class="rm-actions">
+        <span style="font-size:11px;color:var(--tx3)">${placedCount} epic${placedCount!==1?'s':''} planned · Click cell to set start, click again to set end</span>
+        <button class="btn" onclick="rmClearAll()" style="font-size:11px">Clear all</button>
+      </div>
+    </div>
+    <div class="rm-scroll">
+      <div class="rm-grid">
+        <!-- Quarter header -->
+        <div style="display:flex;border-bottom:.5px solid var(--bd);background:var(--bg3)">
+          <div class="rm-name-col" style="font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px">Epic</div>
+          <div style="flex:1;display:flex">${qCells}</div>
+        </div>
+        <!-- Sprint labels -->
+        <div style="display:flex;border-bottom:.5px solid var(--bd)">
+          <div class="rm-name-col"></div>
+          <div style="flex:1;display:flex">${sLabels}</div>
+        </div>
+        <!-- Release markers -->
+        <div class="rm-releases-row">
+          <div class="rm-name-col" style="font-size:9px;color:var(--tx3);display:flex;align-items:center">Releases</div>
+          <div style="flex:1;position:relative;height:22px">${relMarkers}</div>
+        </div>
+        <!-- Active epics -->
+        <div class="rm-section-hdr">
+          <span>In progress (${active.length})</span>
+          <span style="font-size:10px;color:var(--tx3);font-weight:400">Click a sprint cell to assign start → end</span>
+        </div>
+        ${activeRows}
+        <!-- Funnel epics -->
+        <div class="rm-section-hdr">
+          <span>Funnel / planned (${funnel.length})</span>
+        </div>
+        ${funnelRows}
+      </div>
+    </div>
+    <div class="rm-legend">
+      <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:#185fa5"></div>PVA release</div>
+      <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:var(--bg3);border:.5px solid var(--bd2)"></div>Platform release</div>
+      <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:rgba(24,95,165,.08)"></div>Current sprint</div>
+      <span style="color:var(--tx3)">Click once = set start · Click again = set end · Click ✕ to clear</span>
+    </div>
+  </div>`;
+}
+
+// Roadmap cell interaction: 1st click = set start, 2nd click = set end
+const rmClickState={};
+function rmCellClick(epicKey, idx){
+  const sid=SPRINTS[idx].id;
+  if(!rmClickState[epicKey]){
+    // First click — set start sprint
+    if(!roadmap[epicKey])roadmap[epicKey]={};
+    roadmap[epicKey].startSprint=sid;
+    roadmap[epicKey].endSprint=sid;
+    roadmap[epicKey].visible=true;
+    rmClickState[epicKey]=idx;
+    sd();renderRM();
+    showToast('Start set to '+SPRINTS[idx].l+' — click end sprint');
+  } else {
+    // Second click — set end sprint
+    const startIdx=rmClickState[epicKey];
+    const realStart=Math.min(startIdx,idx);
+    const realEnd=Math.max(startIdx,idx);
+    roadmap[epicKey].startSprint=SPRINTS[realStart].id;
+    roadmap[epicKey].endSprint=SPRINTS[realEnd].id;
+    delete rmClickState[epicKey];
+    sd();renderRM();
+    showToast(SPRINTS[realStart].l+' → '+SPRINTS[realEnd].l);
+  }
+}
+
+function rmClear(epicKey){
+  delete roadmap[epicKey];
+  delete rmClickState[epicKey];
+  sd();renderRM();
+  showToast('Cleared');
+}
+
+function rmClearAll(){
+  if(!confirm('Clear all roadmap sprint assignments?'))return;
+  Object.keys(roadmap).forEach(k=>delete roadmap[k]);
+  sd();renderRM();
+  showToast('Roadmap cleared');
+}
+
 // ── GUEST MODAL ───────────────────────────────────────────────────────────────
 function openGuestModal(preselectedGroupId){
   const groupOptions=BASE_GROUPS.map(g=>`<option value="${g.id}"${g.id===preselectedGroupId?' selected':''}>${g.label}</option>`).join('');
@@ -572,13 +894,13 @@ function removeGuest(id){
 
 // ── SHARE ─────────────────────────────────────────────────────────────────────
 function showShare(){
-  const enc=btoa(JSON.stringify({data,guests,deleted:deletedMembers}));
+  const enc=btoa(JSON.stringify({data,guests,deleted:deletedMembers,roadmap}));
   const u=new URL(location.href.split('?')[0]);
   u.searchParams.set('d',enc);
   document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)">
     <div class="modal" onclick="event.stopPropagation()">
       <h3>Share & export</h3>
-      <p>Or send this URL — it includes all current leave data in the link itself.</p>
+      <p>Or send this URL — it includes all current leave data and roadmap in the link itself.</p>
       <pre id="su">${u.toString()}</pre>
       <div class="mbtns">
         <button class="btn" onclick="cm()">Close</button>
@@ -590,15 +912,15 @@ function showShare(){
 function cm(e){if(!e||e.target.classList.contains('mbg'))document.getElementById('ma').innerHTML='';}
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
 function clearAll(){
-  if(!confirm('Clear all leave data? Guests are kept.'))return;
+  if(!confirm('Clear all leave data? Guests and roadmap are kept.'))return;
   data={};sd();renderNav();renderCards();renderCal();
   setSyncStatus('','Cleared — remember to save');
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 ld();
-const today=new Date().toISOString().slice(0,10);
-cur=SPRINTS.find(s=>today>=s.s&&today<=s.e)||SPRINTS[0];
+const todayStr=new Date().toISOString().slice(0,10);
+cur=SPRINTS.find(s=>todayStr>=s.s&&todayStr<=s.e)||SPRINTS[0];
 renderNav();renderCards();renderCal();
 
 // Auto-load from Google Sheets on startup
