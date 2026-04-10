@@ -17,6 +17,7 @@ header{background:var(--bg);border-bottom:.5px solid var(--bd2);padding:12px 22p
 .btn{padding:6px 13px;border-radius:var(--rs);border:.5px solid var(--bd2);background:var(--bg);color:var(--tx);font-size:12px;cursor:pointer;transition:background .1s;white-space:nowrap}
 .btn:hover{background:var(--bg3)}.bp{background:var(--ac);color:#fff;border-color:transparent}.bp:hover{opacity:.9}
 .bpu{background:var(--pu-bg);color:var(--pu-tx);border-color:transparent}.bpu:hover{opacity:.9}
+.bam{background:var(--am-bg);color:var(--am-tx);border-color:transparent}.bam:hover{opacity:.9}
 .tabs{background:var(--bg);border-bottom:.5px solid var(--bd);padding:0 22px;display:flex;overflow-x:auto}
 .tab{padding:9px 16px;font-size:12px;cursor:pointer;color:var(--tx3);border-bottom:2px solid transparent;white-space:nowrap;transition:all .1s}
 .tab:hover{color:var(--tx);background:var(--bg2)}.tab.on{color:var(--ac);border-bottom-color:var(--ac);font-weight:500}
@@ -36,7 +37,7 @@ header{background:var(--bg);border-bottom:.5px solid var(--bd2);padding:12px 22p
 .spgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px}
 .spc{background:var(--bg2);border-radius:var(--rs);padding:11px 13px;border:.5px solid var(--bd)}
 .spr{font-size:10px;color:var(--tx3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px}
-.spv{font-size:19px;font-weight:500}.sps{font-size:10px;color:var(--tx3);margin-top:1px}
+.spv{font-size:19px;font-weight:500}
 .spbar{height:3px;border-radius:2px;background:var(--bg3);margin-top:5px}
 .spfill{height:100%;border-radius:2px}
 .alsec{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd);padding:16px 18px;margin-bottom:18px}
@@ -55,8 +56,7 @@ tr:last-child td{border-bottom:none}
 .mn{font-size:11px;font-weight:500}.mr{font-size:9px;color:var(--tx3)}
 .guest-badge{font-size:8px;font-weight:500;padding:1px 5px;border-radius:3px;background:var(--pu-bg);color:var(--pu-tx);margin-left:4px;vertical-align:middle}
 .dtd{text-align:center;padding:2px;border-right:.5px solid var(--bd);border-left:.5px solid var(--bd)}
-.dtd+.dtd{border-left:none}
-.dtd:last-of-type{border-right:none}
+.dtd+.dtd{border-left:none}.dtd:last-of-type{border-right:none}
 .db{width:26px;height:26px;border-radius:5px;border:none;background:transparent;cursor:pointer;font-size:9px;color:var(--tx3);margin:auto;display:flex;align-items:center;justify-content:center;transition:all .1s}
 .db:hover{background:var(--ac-bg);color:var(--ac-tx)}.db.off{background:var(--rd-bg);color:var(--rd-tx);font-weight:700}.db.wknd{background:var(--bg2);cursor:not-allowed;color:var(--bd2)}
 .cc{padding:6px 11px;min-width:85px;text-align:right}
@@ -68,21 +68,23 @@ tr:last-child td{border-bottom:none}
 .grp-hdr .add-guest-btn{float:right;font-size:10px;padding:1px 8px;border-radius:3px;border:.5px solid var(--bd2);background:var(--bg);color:var(--tx2);cursor:pointer;transition:background .1s;margin-top:-1px}
 .grp-hdr .add-guest-btn:hover{background:var(--pu-bg);color:var(--pu-tx);border-color:transparent}
 .mrow .del-btn{display:none;font-size:9px;padding:1px 5px;border-radius:3px;border:.5px solid var(--rd-tx);color:var(--rd-tx);background:transparent;cursor:pointer;margin-left:6px;vertical-align:middle;opacity:.6}
-.mrow:hover .del-btn{display:inline}
-.mrow .del-btn:hover{opacity:1;background:var(--rd-bg)}
+.mrow:hover .del-btn{display:inline}.mrow .del-btn:hover{opacity:1;background:var(--rd-bg)}
 .leg{display:flex;gap:12px;align-items:center;padding:9px 12px;border-top:.5px solid var(--bd);background:var(--bg2);font-size:10px;color:var(--tx2);flex-wrap:wrap}
 .ld{width:11px;height:11px;border-radius:3px;flex-shrink:0}
-.toast{position:fixed;bottom:18px;right:18px;background:var(--tx);color:var(--bg);padding:7px 14px;border-radius:var(--rs);font-size:11px;opacity:0;transform:translateY(6px);transition:all .2s;pointer-events:none;z-index:999}
-.toast.show{opacity:1;transform:translateY(0)}
+.toast{position:fixed;bottom:18px;right:18px;background:var(--tx);color:var(--bg);padding:7px 14px;border-radius:var(--rs);font-size:11px;opacity:0;transform:translateY(6px);transition:all .2s;pointer-events:none;z-index:999;display:flex;align-items:center;gap:10px}
+.toast.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.toast-undo{background:transparent;border:.5px solid rgba(255,255,255,.4);color:inherit;padding:2px 8px;border-radius:3px;font-size:10px;cursor:pointer;font-weight:500}
+.toast-undo:hover{background:rgba(255,255,255,.15)}
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;display:flex;align-items:center;justify-content:center;padding:18px}
-.modal{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd2);padding:20px;max-width:460px;width:100%;max-height:80vh;overflow-y:auto}
+.modal{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd2);padding:20px;max-width:480px;width:100%;max-height:85vh;overflow-y:auto}
 .modal h3{font-size:14px;font-weight:500;margin-bottom:12px}
 .modal p{font-size:11px;color:var(--tx2);margin-bottom:8px;line-height:1.6}
 .modal pre{background:var(--bg3);border-radius:var(--rs);padding:9px;font-size:10px;overflow-x:auto;white-space:pre-wrap;word-break:break-all;margin-bottom:9px;border:.5px solid var(--bd)}
-.mbtns{display:flex;gap:7px;justify-content:flex-end;margin-top:12px}
+.mbtns{display:flex;gap:7px;justify-content:flex-end;margin-top:14px}
 .form-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
 .form-row input,.form-row select{flex:1;min-width:120px;padding:6px 10px;border-radius:var(--rs);border:.5px solid var(--bd2);background:var(--bg);color:var(--tx);font-size:12px}
 .form-row input:focus,.form-row select:focus{outline:none;border-color:var(--ac)}
+.form-label{font-size:10px;font-weight:500;color:var(--tx2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
 .guest-list{margin-top:10px}
 .guest-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--bg2);border-radius:var(--rs);margin-bottom:6px;font-size:12px}
 .guest-item .rm{cursor:pointer;color:var(--rd-tx);font-size:11px;padding:2px 6px;border-radius:3px;border:.5px solid var(--rd-tx);background:transparent}
@@ -96,69 +98,58 @@ tr:last-child td{border-bottom:none}
 .sync-dot{width:6px;height:6px;border-radius:50%;background:var(--tx3);flex-shrink:0}
 .sync-dot.ok{background:#97c459}.sync-dot.err{background:#e24b4a}.sync-dot.busy{background:#ef9f27;animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* Holiday */
+.hol-preview{background:var(--bg2);border-radius:var(--rs);border:.5px solid var(--bd);padding:10px 12px;margin-top:10px;font-size:11px}
+.hol-preview-hdr{font-size:10px;font-weight:500;color:var(--tx2);margin-bottom:6px}
+.hol-sprint-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:.5px solid var(--bd);font-size:10px}
+.hol-sprint-row:last-child{border-bottom:none}
+.hol-days{color:var(--rd-tx);font-weight:500}
+
+/* Sprint context */
+.ctx-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+@media(max-width:800px){.ctx-grid{grid-template-columns:1fr}}
+.ctx-panel{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd);overflow:hidden}
+.ctx-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:.5px solid var(--bd);background:var(--bg3);gap:8px;flex-wrap:wrap}
+.ctx-hdr h3{font-size:10px;font-weight:500;color:var(--tx2);text-transform:uppercase;letter-spacing:.5px}
+.ctx-body{padding:12px 14px}
+.rel-card{padding:10px 12px;border-radius:var(--rs);border:.5px solid var(--bd);margin-bottom:8px;background:var(--bg2)}
+.rel-card:last-child{margin-bottom:0}
+.rel-card.live-in-sprint{border-color:var(--am-tx);background:var(--am-bg)}
+.rel-name{font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px;margin-bottom:7px;flex-wrap:wrap}
+.rbadge{font-size:9px;padding:1px 6px;border-radius:3px;font-weight:500;white-space:nowrap}
+.rbadge-pva{background:#185fa5;color:#fff}
+.rbadge-platform{background:var(--bg3);color:var(--tx2);border:.5px solid var(--bd2)}
+.rbadge-live{background:var(--am-bg);color:var(--am-tx)}
+.rel-row{display:flex;align-items:center;gap:7px;font-size:10px;color:var(--tx2);margin-bottom:3px}
+.rel-row:last-child{margin-bottom:0}
+.rdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.rdot-green{background:#97c459}.rdot-yellow{background:#ef9f27}
+.rdot-blue{background:#185fa5}.rdot-purple{background:#7f77dd}
+.rlabel{color:var(--tx3);min-width:76px;flex-shrink:0}
+.rval{color:var(--tx);font-weight:500}
+.rvers{font-size:9px;color:var(--tx3);margin-top:4px;font-family:monospace;line-height:1.5}
+.rnote{font-size:9px;color:var(--tx2);margin-top:4px;line-height:1.4}
+.no-rel{padding:20px;text-align:center;color:var(--tx3);font-size:11px}
+
+/* Epic panel — live from Jira */
+.epic-live-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:.5px solid var(--bd)}
+.epic-live-item:last-child{border-bottom:none}
+.epic-live-key{font-size:9px;font-family:monospace;color:var(--tx3);white-space:nowrap;min-width:68px}
+.epic-live-title{font-size:11px;color:var(--tx);flex:1;line-height:1.4}
+.epic-live-title a{color:var(--ac);text-decoration:none}
+.epic-live-title a:hover{text-decoration:underline}
+.epic-live-st{font-size:8px;padding:2px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0}
+.est-implementing{background:var(--ac-bg);color:var(--ac-tx)}
+.est-funnel{background:var(--bg3);color:var(--tx3)}
+.est-done{background:var(--gn-bg);color:var(--gn-tx)}
+.est-other{background:var(--am-bg);color:var(--am-tx)}
+.epic-loading{padding:16px;text-align:center;color:var(--tx3);font-size:11px}
+.epic-error{padding:12px;background:var(--rd-bg);border-radius:var(--rs);font-size:11px;color:var(--rd-tx)}
+.epic-refresh{font-size:10px;color:var(--ac);cursor:pointer;background:none;border:none;padding:0}
+.epic-refresh:hover{text-decoration:underline}
+
 @media(max-width:680px){.main{padding:10px 12px}.mc{min-width:140px}}
-
-/* ── ROADMAP STYLES ──────────────────────────────────────────────────────── */
-.rm-wrap{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd);overflow:hidden;margin-bottom:18px}
-.rm-toolbar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:.5px solid var(--bd);gap:10px;flex-wrap:wrap}
-.rm-toolbar h3{font-size:11px;font-weight:500;color:var(--tx2);text-transform:uppercase;letter-spacing:.5px}
-.rm-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
-.rm-scroll{overflow-x:auto}
-.rm-grid{min-width:900px}
-.rm-head-q{display:grid;border-bottom:.5px solid var(--bd)}
-.rm-head-q-row{display:flex}
-.rm-name-col{width:220px;min-width:220px;flex-shrink:0;padding:6px 12px;font-size:9px;font-weight:500;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px;border-right:.5px solid var(--bd)}
-.rm-sprints-row{flex:1;display:flex}
-.rm-q-cell{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--tx2);border-right:.5px solid var(--bd);padding:4px 0}
-.rm-q-cell:last-child{border-right:none}
-.rm-s-labels{display:flex;flex:1}
-.rm-s-label{flex:1;text-align:center;font-size:9px;color:var(--tx3);padding:3px 0;border-right:.5px solid var(--bd);white-space:nowrap;overflow:hidden}
-.rm-s-label:last-child{border-right:none}
-.rm-s-label.today-s{color:var(--ac);font-weight:600}
-
-/* release marker row */
-.rm-releases-row{display:flex;border-bottom:.5px solid var(--bd);background:var(--bg2)}
-.rm-releases-inner{flex:1;position:relative;height:22px}
-.rm-rel-marker{position:absolute;top:2px;transform:translateX(-50%);font-size:8px;font-weight:500;padding:1px 5px;border-radius:3px;white-space:nowrap;cursor:default;z-index:2}
-.rm-rel-pva{background:#185fa5;color:#fff}
-.rm-rel-platform{background:var(--bg3);color:var(--tx2);border:.5px solid var(--bd2)}
-
-/* epic rows */
-.rm-section-hdr{padding:5px 12px;font-size:10px;font-weight:500;color:var(--tx2);text-transform:uppercase;letter-spacing:.4px;background:var(--bg3);border-bottom:.5px solid var(--bd);border-top:.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
-.rm-epic-row{display:flex;align-items:center;border-bottom:.5px solid var(--bd);min-height:36px}
-.rm-epic-row:last-child{border-bottom:none}
-.rm-epic-row:hover{background:var(--bg2)}
-.rm-epic-name{width:220px;min-width:220px;flex-shrink:0;padding:6px 12px;font-size:11px;color:var(--tx);border-right:.5px solid var(--bd);display:flex;align-items:center;gap:6px;cursor:default}
-.rm-epic-key{font-size:9px;color:var(--tx3);font-family:monospace;white-space:nowrap}
-.rm-epic-title{font-size:10px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
-.rm-epic-cells{flex:1;display:flex;position:relative;height:36px}
-.rm-cell{flex:1;border-right:.5px solid var(--bd);cursor:pointer;position:relative;transition:background .1s}
-.rm-cell:last-child{border-right:none}
-.rm-cell:hover{background:var(--ac-bg)}
-.rm-cell.sel{background:var(--ac-bg)}
-.rm-cell.today-s{background:rgba(24,95,165,.04)}
-.rm-bar{position:absolute;top:6px;bottom:6px;border-radius:4px;pointer-events:none;display:flex;align-items:center;padding:0 6px;overflow:hidden;z-index:1}
-.rm-bar span{font-size:9px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-/* status badges */
-.rm-status{font-size:8px;padding:1px 5px;border-radius:3px;white-space:nowrap;flex-shrink:0}
-.rm-st-ip{background:var(--ac-bg);color:var(--ac-tx)}
-.rm-st-fn{background:var(--bg3);color:var(--tx3)}
-.rm-st-dn{background:var(--gn-bg);color:var(--gn-tx)}
-
-.rm-legend{display:flex;gap:14px;align-items:center;padding:8px 14px;background:var(--bg2);border-top:.5px solid var(--bd);font-size:10px;color:var(--tx2);flex-wrap:wrap}
-.rm-legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
-
-.rm-empty{padding:32px;text-align:center;color:var(--tx3);font-size:12px}
-
-/* add epic modal */
-.modal.wide{max-width:600px}
-.epic-sel-list{max-height:300px;overflow-y:auto;border:.5px solid var(--bd2);border-radius:var(--rs);margin-top:8px}
-.epic-sel-item{display:flex;align-items:center;gap:8px;padding:7px 11px;border-bottom:.5px solid var(--bd);cursor:pointer;transition:background .1s}
-.epic-sel-item:last-child{border-bottom:none}
-.epic-sel-item:hover{background:var(--bg2)}
-.epic-sel-item.added{background:var(--gn-bg)}
-.epic-sel-item input[type=checkbox]{accent-color:var(--ac)}
 </style>
 </head>
 <body>
@@ -174,6 +165,7 @@ tr:last-child td{border-bottom:none}
   <div class="hr">
     <div class="sync-status"><div class="sync-dot" id="sdot"></div><span id="slbl">Not synced</span></div>
     <button class="btn" style="background:var(--gn-bg);color:var(--gn-tx);border-color:transparent" onclick="openSyncModal()">⟳ Sync</button>
+    <button class="btn bam" onclick="openHolidayModal()">Plan longer leave</button>
     <button class="btn bpu" onclick="openGuestModal()">+ Guests</button>
     <button class="btn" onclick="showShare()">Share</button>
     <button class="btn" onclick="clearAll()">Reset</button>
@@ -184,13 +176,13 @@ tr:last-child td{border-bottom:none}
   <div class="tab on" onclick="switchTab('cap',this)">Capacity</div>
   <div class="tab"   onclick="switchTab('sp',this)">SP breakdown</div>
   <div class="tab"   onclick="switchTab('ov',this)">Quarter view</div>
-  <div class="tab"   onclick="switchTab('rm',this)">Roadmap</div>
 </div>
 
 <div class="main">
   <div class="snav" id="snav"></div>
   <div id="t-cap">
     <div class="srow" id="scards"></div>
+    <div class="ctx-grid" id="ctx-grid"></div>
     <div class="cw"><table id="ctbl"></table></div>
   </div>
   <div id="t-sp" style="display:none">
@@ -198,17 +190,14 @@ tr:last-child td{border-bottom:none}
     <div class="alsec"><h3>Capacity allocation model</h3><div class="algrid" id="algrid"></div></div>
   </div>
   <div id="t-ov" style="display:none"></div>
-  <div id="t-rm" style="display:none"></div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast"><span id="toast-msg"></span></div>
 <div id="ma"></div>
 
 <script>
-// ── CONFIG ──────────────────────────────────────────────────────────────────
-const PROXY_URL = 'https://script.google.com/macros/s/AKfycbzKZycM8lxvENB1x3ZQfhOorKkBfkLAKKCQhgzrUDqb1kanXL7dUPdQDastQ5K3gA7V/exec';
+const PROXY_URL='https://script.google.com/macros/s/AKfycbzKZycM8lxvENB1x3ZQfhOorKkBfkLAKKCQhgzrUDqb1kanXL7dUPdQDastQ5K3gA7V/exec';
 
-// ── SPRINTS ─────────────────────────────────────────────────────────────────
 const SPRINTS=[
   {id:'Q1-S1',l:'S1',q:'Q1',s:'2026-01-08',e:'2026-01-21'},
   {id:'Q1-S2',l:'S2',q:'Q1',s:'2026-01-22',e:'2026-02-04'},
@@ -237,7 +226,6 @@ const SPRINTS=[
   {id:'Q4-S7',l:'S25',q:'Q4',s:'2026-12-10',e:'2026-12-23'},
 ];
 
-// ── TEAM ─────────────────────────────────────────────────────────────────────
 const BASE_GROUPS=[
   {id:'af',label:'Agentforce / AI',sp:'AF',members:[
     {id:'vinod',  n:'Vinod Karpurne',  r:'Developer Lead',        sp:'AF',c:'#185fa5',i:'VK',f:1.0},
@@ -268,229 +256,185 @@ const BASE_GROUPS=[
 ];
 
 const SP_ROLES=[
-  {id:'AF',label:'Agentforce / SF',   color:'#534ab7'},
-  {id:'FE',label:'Frontend',          color:'#3b6d11'},
-  {id:'UX',label:'UX Design',         color:'#854f0b'},
-  {id:'CE',label:'Conversational Exp',color:'#0f6e56'},
-  {id:'QE',label:'QA / QE',           color:'#993c1d'},
-  {id:'DS',label:'Data',              color:'#993c1d'},
+  {id:'AF',label:'Agentforce / SF',color:'#534ab7'},{id:'FE',label:'Frontend',color:'#3b6d11'},
+  {id:'UX',label:'UX Design',color:'#854f0b'},{id:'CE',label:'Conversational Exp',color:'#0f6e56'},
+  {id:'QE',label:'QA / QE',color:'#993c1d'},{id:'DS',label:'Data',color:'#993c1d'},
 ];
 const ALLOC=[
-  {l:'Meetings & ceremonies',p:0.10},
-  {l:'Feature development',  p:0.70},
-  {l:'Enhancements & fixes', p:0.10},
-  {l:'Jira / unplanned',     p:0.10},
+  {l:'Meetings & ceremonies',p:0.10},{l:'Feature development',p:0.70},
+  {l:'Enhancements & fixes',p:0.10},{l:'Jira / unplanned',p:0.10},
 ];
 const DAYS=['Su','Mo','Tu','We','Th','Fr','Sa'];
 
-// ── EPICS FROM JIRA (active/in-progress only for roadmap) ───────────────────
-const JIRA_EPICS=[
-  {key:'PVA-2006',title:'Gemma OOS — Out of stock handling in React',status:'Funnel',color:'#534ab7'},
-  {key:'PVA-1973',title:'Entry points in browse',status:'Funnel',color:'#185fa5'},
-  {key:'PVA-1717',title:'Engineering initiatives 2026 — Agentforce / React',status:'Funnel',color:'#854f0b'},
-  {key:'PVA-1476',title:'Pipeline — quality checks on sprint tickets',status:'In Progress',color:'#3b6d11'},
-  {key:'PVA-1377',title:'H1 26 — Continuous improvements: product discovery',status:'Funnel',color:'#993c1d'},
-  {key:'PVA-1376',title:'H1 26 — Continuous improvements: conversational AX',status:'Funnel',color:'#0f6e56'},
-  {key:'PVA-1361',title:'GEMMA — Connect stores inventories',status:'In Progress',color:'#993556'},
-  {key:'PVA-1312',title:'Production release — phased releases',status:'In Progress',color:'#534ab7'},
-  {key:'PVA-1293',title:'GEMMA — Retail excellence / agent optimisation',status:'In Progress',color:'#854f0b'},
-  {key:'PVA-1006',title:'Gemma country rollout — global scalability',status:'In Progress',color:'#185fa5'},
-  {key:'PVA-387', title:'Gemma FAQ — expansion to UK & other markets',status:'In Progress',color:'#3b6d11'},
-  {key:'PVA-377', title:'UI on React mobile',status:'In Progress',color:'#0f6e56'},
-  {key:'PVA-331', title:'Gemma CS — enhancements',status:'In Progress',color:'#993c1d'},
-  {key:'PVA-1543',title:'Agentforce test automation — feasibility',status:'Funnel',color:'#534ab7'},
-  {key:'PVA-1544',title:'Gemma conversation analytics — Salesforce tooling',status:'Funnel',color:'#185fa5'},
-  {key:'PVA-1273',title:'UX Q1',status:'Funnel',color:'#854f0b'},
-  {key:'PVA-1239',title:'Emotional storytelling',status:'Funnel',color:'#0f6e56'},
-  {key:'PVA-1238',title:'Personalisation on Gemma React app',status:'Funnel',color:'#993556'},
-  {key:'PVA-1235',title:'QA automation',status:'Funnel',color:'#3b6d11'},
-  {key:'PVA-1193',title:'GEMMA — Run H1 2026',status:'Funnel',color:'#534ab7'},
-  {key:'PVA-1117',title:'GEMMA — Rollout H1',status:'Funnel',color:'#185fa5'},
-];
-
-// ── RELEASE CALENDAR (from Confluence — platform + PVA releases) ─────────────
-// Each entry: { label, date (YYYY-MM-DD), type: 'pva'|'platform' }
 const RELEASES=[
-  {label:'PVA 2.0',     date:'2026-02-17',type:'pva'},
-  {label:'26.1 PVA',    date:'2026-03-18',type:'pva'},
-  {label:'R126',        date:'2026-01-14',type:'platform'},
-  {label:'R226',        date:'2026-01-28',type:'platform'},
-  {label:'R326',        date:'2026-02-25',type:'platform'},
-  {label:'R426',        date:'2026-03-18',type:'platform'},
-  {label:'R526',        date:'2026-03-25',type:'platform'},
-  {label:'R626',        date:'2026-04-15',type:'platform'},
-  {label:'R726',        date:'2026-04-22',type:'platform'},
-  {label:'R826',        date:'2026-05-13',type:'platform'},
-  {label:'R926',        date:'2026-05-27',type:'platform'},
-  {label:'R1026',       date:'2026-06-10',type:'platform'},
-  {label:'R1126',       date:'2026-06-24',type:'platform'},
-  {label:'R1226',       date:'2026-07-08',type:'platform'},
-  {label:'R1326',       date:'2026-07-22',type:'platform'},
-  {label:'R1426',       date:'2026-08-12',type:'platform'},
-  {label:'R1526',       date:'2026-08-26',type:'platform'},
-  {label:'R1626',       date:'2026-09-09',type:'platform'},
-  {label:'R1726',       date:'2026-09-23',type:'platform'},
-  {label:'R1826',       date:'2026-10-14',type:'platform'},
-  {label:'R1926',       date:'2026-10-28',type:'platform'},
-  {label:'R2026',       date:'2026-11-11',type:'platform'},
-  {label:'R2126',       date:'2026-11-25',type:'platform'},
+  {id:'PVA-2.0', label:'PVA 2.0',type:'pva',goLive:'2026-02-17',notes:'Major Agentforce release — React frontend, multi-country scalability'},
+  {id:'PVA-26.1',label:'26.1.0 PVA',type:'pva',goLive:'2026-03-18',notes:'React SPARK release — UI improvements, FAB icon, favorites notifications'},
+  {id:'R126',label:'R126',type:'platform',team:'Inspire Team',branchCut:'2026-01-06',translations2:'2026-01-12',staging:'2026-01-12',goLive:'2026-01-14',versions:'26.1.0_SFRA · 26.1.0_SAMP · 26.1.0_PWA · 26.1.0_INTS'},
+  {id:'R226',label:'R226',type:'platform',team:'Decide Team',branchCut:'2026-01-19',translations2:'2026-01-26',staging:'2026-01-21',goLive:'2026-01-28',versions:'26.2.0_SFCC · 26.2.0_PWA · 26.2.0_AMP · 26.2.0_INTS'},
+  {id:'R326',label:'R326',type:'platform',team:'Pay Team',branchCut:'2026-02-16',translations2:'2026-02-23',staging:'2026-02-23',goLive:'2026-02-25',versions:'26.3.0_SFCC · 26.3.0_PWA · 26.3.0_AMP · 26.3.0_INTS'},
+  {id:'R426',label:'R426',type:'platform',team:'Styling Studio',branchCut:'2026-03-02',translations2:'2026-03-09',staging:'2026-03-09',goLive:'2026-03-18',versions:'26.4.0_SFCC · 26.4.0_PWA · 26.4.0_AMP · 26.4.0_INTS'},
+  {id:'R526',label:'R526',type:'platform',team:'Find Team',branchCut:'2026-03-16',translations2:'2026-03-23',staging:'2026-03-23',goLive:'2026-03-25',versions:'26.5.0_SFCC · 26.5.0_PWA · 26.5.0_AMP · 26.5.0_INTS'},
+  {id:'R626',label:'R626',type:'platform',team:'Loyalty Team',branchCut:'2026-04-07',translations2:'2026-04-13',staging:'2026-04-13',goLive:'2026-04-15',versions:'26.6.0_SFCC · 26.6.0_PWA · 26.6.0_AMP · 26.6.0_INTS'},
+  {id:'R726',label:'R726',type:'platform',team:'Engraving Team',branchCut:'2026-04-20',translations2:'2026-04-27',staging:'2026-04-27',goLive:'2026-04-22',versions:'26.7.0_SFCC · 26.7.0_PWA · 26.7.0_AMP · 26.7.0_INTS'},
+  {id:'R826',label:'R826',type:'platform',team:'Deliver Team',branchCut:'2026-05-05',translations2:'2026-05-11',staging:'2026-05-11',goLive:'2026-05-13',versions:'26.8.0_SFCC · 26.8.0_PWA · 26.8.0_AMP · 26.8.0_INTS'},
+  {id:'R926',label:'R926',type:'platform',team:'Inspire Team',branchCut:'2026-05-18',translations2:'2026-05-25',staging:'2026-05-25',goLive:'2026-05-27',versions:'26.9.0_SFCC · 26.9.0_PWA · 26.9.0_AMP · 26.9.0_INTS'},
+  {id:'R1026',label:'R1026',type:'platform',team:'Decide Team',branchCut:'2026-06-02',translations2:'2026-06-08',staging:'2026-06-08',goLive:'2026-06-10',versions:'26.10.0_SFCC · 26.10.0_PWA · 26.10.0_AMP · 26.10.0_INTS'},
+  {id:'R1126',label:'R1126',type:'platform',team:'Pay Team',branchCut:'2026-06-15',translations2:'2026-06-22',staging:'2026-06-22',goLive:'2026-06-24',versions:'26.11.0_SFCC · 26.11.0_PWA · 26.11.0_AMP · 26.11.0_INTS'},
+  {id:'R1226',label:'R1226',type:'platform',team:'Styling Studio',branchCut:'2026-07-06',translations2:'2026-07-13',staging:'2026-07-13',goLive:'2026-07-08',versions:'26.12.0_SFCC · 26.12.0_PWA · 26.12.0_AMP · 26.12.0_INTS'},
+  {id:'R1326',label:'R1326',type:'platform',team:'Find Team',branchCut:null,translations2:'2026-07-27',staging:'2026-07-27',goLive:'2026-07-22',versions:'26.13.0_SFCC · 26.13.0_PWA · 26.13.0_AMP · 26.13.0_INTS'},
+  {id:'R1426',label:'R1426',type:'platform',team:'Loyalty Team',branchCut:'2026-08-17',translations2:'2026-08-10',staging:'2026-08-10',goLive:'2026-08-12',versions:'26.14.0_SFCC · 26.14.0_PWA · 26.14.0_AMP · 26.14.0_INTS'},
+  {id:'R1526',label:'R1526',type:'platform',team:'Engraving Team',branchCut:'2026-08-24',translations2:'2026-08-31',staging:'2026-08-31',goLive:'2026-08-26',versions:'26.15.0_SFCC · 26.15.0_PWA · 26.15.0_AMP · 26.15.0_INTS'},
+  {id:'R1626',label:'R1626',type:'platform',team:'Deliver Team',branchCut:'2026-09-07',translations2:'2026-09-14',staging:'2026-09-14',goLive:'2026-09-09',versions:'26.16.0_SFCC · 26.16.0_PWA · 26.16.0_AMP · 26.16.0_INTS'},
+  {id:'R1726',label:'R1726',type:'platform',team:'Decide Team',branchCut:'2026-09-21',translations2:'2026-09-28',staging:'2026-09-28',goLive:'2026-09-23',versions:'26.17.0_SFCC · 26.17.0_PWA · 26.17.0_AMP · 26.17.0_INTS'},
+  {id:'R1826',label:'R1826',type:'platform',team:'Pay Team',branchCut:'2026-10-06',translations2:'2026-10-12',staging:'2026-10-12',goLive:'2026-10-14',versions:'26.18.0_SFCC · 26.18.0_PWA · 26.18.0_AMP · 26.18.0_INTS'},
+  {id:'R1926',label:'R1926',type:'platform',team:'Engraving Team',branchCut:'2026-10-26',translations2:'2026-10-19',staging:'2026-10-19',goLive:'2026-10-28',versions:'26.19.0_SFCC · 26.19.0_PWA · 26.19.0_AMP · 26.19.0_INTS'},
+  {id:'R2026',label:'R2026',type:'platform',team:'Find Team',branchCut:'2026-10-20',translations2:null,staging:null,goLive:'2026-11-11',versions:'26.20.0_SFCC · 26.20.0_PWA · 26.20.0_AMP · 26.20.0_INTS'},
+  {id:'R2126',label:'R2126',type:'platform',team:'Deliver Team',branchCut:null,translations2:null,staging:null,goLive:'2026-11-25',versions:'26.21.0_SFCC · 26.21.0_PWA · 26.21.0_AMP · 26.21.0_INTS',notes:'Soft Freeze'},
 ];
 
-let data={}, guests=[], deletedMembers=[], roadmap={}, cur=null, tab='cap';
-// roadmap[epicKey] = { startSprint: 'Q1-S1', endSprint: 'Q1-S3', visible: true }
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let data={}, guests=[], deletedMembers=[], cur=null, tab='cap';
 let lastSynced=null;
+let liveEpics=null; // cached from Jira via Apps Script
+let toastTimer=null;
 
-// ── PERSIST ──────────────────────────────────────────────────────────────────
 function ld(){
   try{
     const p=new URLSearchParams(location.search).get('d');
-    if(p){const d=JSON.parse(atob(p));data=d.data||{};guests=d.guests||[];deletedMembers=d.deleted||[];roadmap=d.roadmap||{};return;}
+    if(p){const d=JSON.parse(atob(p));data=d.data||{};guests=d.guests||[];deletedMembers=d.deleted||[];return;}
     const s=JSON.parse(localStorage.getItem('pva26c')||'{}');
-    data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];roadmap=s.roadmap||{};
+    data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];
   }catch(e){}
 }
-function sd(){
-  localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers,roadmap}));
-}
+function sd(){localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers}));}
 
-// ── GOOGLE SHEETS SYNC ───────────────────────────────────────────────────────
-function setSyncStatus(state, label){
-  const dot=document.getElementById('sdot');
-  const lbl=document.getElementById('slbl');
-  dot.className='sync-dot'+(state?' '+state:'');
-  lbl.textContent=label;
+// ── SYNC ──────────────────────────────────────────────────────────────────────
+function setSyncStatus(st,label){
+  document.getElementById('sdot').className='sync-dot'+(st?' '+st:'');
+  document.getElementById('slbl').textContent=label;
 }
-
 async function syncToSheets(){
   setSyncStatus('busy','Saving...');
   try{
-    const res=await fetch(PROXY_URL,{
-      method:'POST',
-      headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({action:'save',data:{data,guests,deleted:deletedMembers,roadmap}}),
-      redirect:'follow'
-    });
-    const result=await res.json();
-    if(result.ok){
-      lastSynced=new Date();
-      setSyncStatus('ok','Saved '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
-      showToast('Saved to Google Sheets');
-    } else {
-      setSyncStatus('err','Save failed');
-      showToast('Save failed: '+result.error);
-    }
-  }catch(e){
-    setSyncStatus('err','Save failed');
-    showToast('Save failed — '+e.message);
-  }
+    const r=await(await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({action:'save',data:{data,guests,deleted:deletedMembers}}),redirect:'follow'})).json();
+    if(r.ok){lastSynced=new Date();setSyncStatus('ok','Saved '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));showToast('Saved to Google Sheets');}
+    else{setSyncStatus('err','Save failed');showToast('Save failed: '+r.error);}
+  }catch(e){setSyncStatus('err','Save failed');showToast('Save failed — '+e.message);}
 }
-
 async function loadFromSheets(){
   setSyncStatus('busy','Loading...');
   try{
-    const res=await fetch(PROXY_URL,{
-      method:'POST',
-      headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({action:'load'}),
-      redirect:'follow'
-    });
-    const result=await res.json();
-    if(result.ok&&result.data){
-      data=result.data.data||{};
-      guests=result.data.guests||[];
-      deletedMembers=result.data.deleted||[];
-      roadmap=result.data.roadmap||{};
-      sd();
-      renderNav();renderCards();renderCal();
-      if(tab==='sp')renderSP();
-      if(tab==='ov')renderOV();
-      if(tab==='rm')renderRM();
-      lastSynced=new Date();
-      setSyncStatus('ok','Loaded '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
+    const r=await(await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({action:'load'}),redirect:'follow'})).json();
+    if(r.ok&&r.data){
+      data=r.data.data||{};guests=r.data.guests||[];deletedMembers=r.data.deleted||[];
+      sd();renderNav();renderCards();renderCtx();renderCal();
+      if(tab==='sp')renderSP();if(tab==='ov')renderOV();
+      lastSynced=new Date();setSyncStatus('ok','Loaded '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
       showToast('Loaded from Google Sheets');
-    } else if(result.ok&&!result.data){
-      setSyncStatus('ok','Sheet is empty');
-      showToast('No data in Google Sheets yet — save first');
-    } else {
-      setSyncStatus('err','Load failed');
-      showToast('Load failed: '+result.error);
+    }else if(r.ok&&!r.data){setSyncStatus('ok','Sheet is empty');showToast('No data yet — save first');}
+    else{setSyncStatus('err','Load failed');showToast('Load failed: '+r.error);}
+  }catch(e){setSyncStatus('err','Load failed');showToast('Load failed — '+e.message);}
+}
+
+// ── LIVE EPICS from Jira via Apps Script ──────────────────────────────────────
+async function fetchLiveEpics(force){
+  if(liveEpics&&!force)return liveEpics;
+  try{
+    const r=await(await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({action:'loadEpics'}),redirect:'follow'})).json();
+    if(r.ok&&r.epics){
+      liveEpics=r.epics;
+      return liveEpics;
     }
-  }catch(e){
-    setSyncStatus('err','Load failed');
-    showToast('Load failed — '+e.message);
-  }
+  }catch(e){}
+  return null;
+}
+
+function epicStatusClass(status){
+  if(!status)return 'est-other';
+  const s=status.toLowerCase();
+  if(s==='implementing'||s==='developing'||s==='in progress'||s==='review'||s==='testing')return 'est-implementing';
+  if(s==='done'||s==='archived')return 'est-done';
+  if(s==='funnel'||s==='to do')return 'est-funnel';
+  return 'est-other';
 }
 
 function openSyncModal(){
-  const lastTxt=lastSynced
-    ?'Last synced at '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})
-    :'Not synced yet this session — load to get latest data.';
-  document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)">
-    <div class="modal" onclick="event.stopPropagation()">
-      <h3>Google Sheets sync</h3>
-      <p>Data is stored in a shared Google Sheet. Load to get the latest data, or save to push your changes.</p>
-      <p style="color:var(--ac-tx);font-size:11px">${lastTxt}</p>
-      <div class="mbtns">
-        <button class="btn" onclick="cm()">Cancel</button>
-        <button class="btn" style="color:var(--ac)" onclick="loadFromSheets();cm()">Load latest</button>
-        <button class="btn bp" onclick="syncToSheets();cm()">Save changes</button>
-      </div>
-    </div></div>`;
+  const t=lastSynced?'Last synced at '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):'Not synced yet this session.';
+  document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)"><div class="modal" onclick="event.stopPropagation()">
+    <h3>Google Sheets sync</h3><p>Load to get latest shared data, or save to push your changes.</p>
+    <p style="color:var(--ac-tx);font-size:11px">${t}</p>
+    <div class="mbtns"><button class="btn" onclick="cm()">Cancel</button>
+    <button class="btn" style="color:var(--ac)" onclick="loadFromSheets();cm()">Load latest</button>
+    <button class="btn bp" onclick="syncToSheets();cm()">Save changes</button></div>
+  </div></div>`;
 }
 
-// ── HELPERS ──────────────────────────────────────────────────────────────────
+// ── HELPERS ───────────────────────────────────────────────────────────────────
 function gs(sid,mid,ds){return data?.[sid]?.[mid]?.[ds]||null;}
 function ss(sid,mid,ds,v){
-  if(!data[sid])data[sid]={};
-  if(!data[sid][mid])data[sid][mid]={};
-  if(v===null)delete data[sid][mid][ds];else data[sid][mid][ds]=v;
-  sd();
+  if(!data[sid])data[sid]={};if(!data[sid][mid])data[sid][mid]={};
+  if(v===null)delete data[sid][mid][ds];else data[sid][mid][ds]=v;sd();
 }
 function dlist(sp){const a=[],d=new Date(sp.s),e=new Date(sp.e);while(d<=e){a.push(new Date(d));d.setDate(d.getDate()+1);}return a;}
 function isWk(d){return d.getDay()===0||d.getDay()===6;}
 function fd(d){return d.toISOString().slice(0,10);}
 function fdisp(d){return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});}
-function cap(sid,mid,dl){
-  const w=dl.filter(d=>!isWk(d));
-  const off=w.filter(d=>gs(sid,mid,fd(d))==='off').length;
-  return{t:w.length,off,av:w.length-off};
-}
-function initials(name){return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
-
+function fshort(ds){if(!ds)return'—';return new Date(ds).toLocaleDateString('en-GB',{day:'2-digit',month:'short'});}
+function cap(sid,mid,dl){const w=dl.filter(d=>!isWk(d));const off=w.filter(d=>gs(sid,mid,fd(d))==='off').length;return{t:w.length,off,av:w.length-off};}
+function initials(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
 function buildGroups(){
   const groups=BASE_GROUPS.map(g=>({...g,members:g.members.filter(m=>!deletedMembers.includes(m.id))}));
-  guests.forEach(g=>{
-    const grp=groups.find(gr=>gr.id===g.groupId);
-    if(grp&&!grp.members.find(m=>m.id===g.id)){
+  guests.forEach(g=>{const grp=groups.find(gr=>gr.id===g.groupId);
+    if(grp&&!grp.members.find(m=>m.id===g.id))
       grp.members.push({id:g.id,n:g.name,r:g.role||'Guest',sp:grp.sp,c:'#7f77dd',i:initials(g.name),f:1.0,isGuest:true});
-    }
   });
   return groups.filter(g=>g.members.length>0);
 }
 function allMembers(){return buildGroups().flatMap(g=>g.members);}
-
-function deleteMember(id){
-  if(!confirm('Remove this team member from the planner?'))return;
-  deletedMembers.push(id);sd();renderCards();renderCal();renderNav();
-  if(tab==='sp')renderSP();showToast('Member removed');
+function deleteMember(id,isGuest){
+  if(isGuest){
+    const saved=guests.find(g=>g.id===id);if(!saved)return;
+    const s={...saved};guests=guests.filter(g=>g.id!==id);sd();renderAll();
+    showToast(s.name+' removed',()=>{guests.push(s);sd();renderAll();showToast(s.name+' restored');});
+  }else{
+    const m=BASE_GROUPS.flatMap(g=>g.members).find(m=>m.id===id);if(!m)return;
+    deletedMembers.push(id);sd();renderAll();
+    showToast(m.n.split(' ')[0]+' removed',()=>{deletedMembers=deletedMembers.filter(d=>d!==id);sd();renderAll();showToast(m.n.split(' ')[0]+' restored');});
+  }
 }
-
+function renderAll(){renderNav();renderCards();renderCtx();renderCal();if(tab==='sp')renderSP();if(tab==='ov')renderOV();}
 function roleSP(sp,rid){
-  const dl=dlist(sp);
-  const ms=allMembers().filter(m=>m.sp===rid);
+  const dl=dlist(sp),ms=allMembers().filter(m=>m.sp===rid);
   let h=0;ms.forEach(m=>{const c=cap(sp.id,m.id,dl);h+=c.av*8*m.f;});
   return Math.round(h*0.70/8*10)/10;
 }
 function totalSP(sp){return SP_ROLES.reduce((a,r)=>a+roleSP(sp,r.id),0);}
 
-// ── TABS ─────────────────────────────────────────────────────────────────────
+// ── TOAST WITH UNDO ───────────────────────────────────────────────────────────
+function showToast(msg,undoFn,undoLabel='Undo'){
+  clearTimeout(toastTimer);
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  const old=t.querySelector('.toast-undo');if(old)old.remove();
+  if(undoFn){
+    const btn=document.createElement('button');
+    btn.className='toast-undo';btn.textContent=undoLabel;
+    btn.onclick=()=>{undoFn();t.classList.remove('show');};
+    t.appendChild(btn);
+  }
+  t.classList.add('show');
+  toastTimer=setTimeout(()=>t.classList.remove('show'),undoFn?8000:2000);
+}
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
 function switchTab(name,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');tab=name;
-  ['cap','sp','ov','rm'].forEach(n=>document.getElementById('t-'+n).style.display=n===name?'':'none');
-  if(name==='sp')renderSP();
-  if(name==='ov')renderOV();
-  if(name==='rm')renderRM();
+  ['cap','sp','ov'].forEach(n=>document.getElementById('t-'+n).style.display=n===name?'':'none');
+  if(name==='sp')renderSP();if(name==='ov')renderOV();
 }
 
 // ── SPRINT NAV ────────────────────────────────────────────────────────────────
@@ -509,8 +453,8 @@ function renderNav(){
 // ── SUMMARY CARDS ─────────────────────────────────────────────────────────────
 function renderCards(){
   const dl=dlist(cur),wd=dl.filter(d=>!isWk(d)).length;
-  const members=allMembers();
-  let off=0;members.forEach(m=>{const c=cap(cur.id,m.id,dl);off+=c.off;});
+  const members=allMembers();let off=0;
+  members.forEach(m=>{const c=cap(cur.id,m.id,dl);off+=c.off;});
   const tot=members.length*wd,av=tot-off,pct=Math.round(av/tot*100);
   const sp=Math.round(totalSP(cur));
   const cls=pct<70?'wn':pct>=90?'ok':'';
@@ -522,34 +466,118 @@ function renderCards(){
     <div class="sc2 ok"><div class="sv">${sp}</div><div class="sl">Est. SP (70%)</div></div>`;
 }
 
-// ── CAL TABLE ─────────────────────────────────────────────────────────────────
+// ── SPRINT CONTEXT ─────────────────────────────────────────────────────────────
+function relOverlapsSprint(rel,ss,se){
+  const buf=2*86400000;
+  const lo=new Date(ss).getTime()-buf,hi=new Date(se).getTime()+buf;
+  return [rel.goLive,rel.branchCut,rel.translations2,rel.staging]
+    .filter(Boolean).some(d=>new Date(d).getTime()>=lo&&new Date(d).getTime()<=hi);
+}
+
+function renderCtx(){
+  const sp=cur;
+  const relevant=RELEASES.filter(r=>relOverlapsSprint(r,sp.s,sp.e));
+  let relHtml='';
+  if(!relevant.length){relHtml=`<div class="no-rel">No releases in or around this sprint</div>`;}
+  else{
+    relevant.forEach(r=>{
+      const inSprint=r.goLive&&r.goLive>=sp.s&&r.goLive<=sp.e;
+      const cardCls=inSprint?'rel-card live-in-sprint':'rel-card';
+      const bc=r.type==='pva'?'rbadge rbadge-pva':'rbadge rbadge-platform';
+      let rows='';
+      if(r.branchCut)    rows+=`<div class="rel-row"><div class="rdot rdot-green"></div><span class="rlabel">Branch cut</span><span class="rval">${fshort(r.branchCut)}</span></div>`;
+      if(r.translations2)rows+=`<div class="rel-row"><div class="rdot rdot-yellow"></div><span class="rlabel">Translations</span><span class="rval">${fshort(r.translations2)}</span></div>`;
+      if(r.staging)      rows+=`<div class="rel-row"><div class="rdot rdot-purple"></div><span class="rlabel">Staging / Go-No-Go</span><span class="rval">${fshort(r.staging)}</span></div>`;
+      if(r.goLive)       rows+=`<div class="rel-row"><div class="rdot rdot-blue"></div><span class="rlabel">Go live</span><span class="rval">${fshort(r.goLive)}</span></div>`;
+      const teamTxt=r.team?`<span style="font-size:9px;color:var(--tx3)">${r.team}</span>`:'';
+      const liveBadge=inSprint?`<span class="rbadge rbadge-live" style="margin-left:auto">Go-live this sprint</span>`:'';
+      relHtml+=`<div class="${cardCls}">
+        <div class="rel-name"><span class="${bc}">${r.type==='pva'?'PVA':'Platform'}</span><strong>${r.label}</strong>${teamTxt}${liveBadge}</div>
+        ${rows}
+        ${r.versions?`<div class="rvers">${r.versions}</div>`:''}
+        ${r.notes?`<div class="rnote">${r.notes}</div>`:''}
+      </div>`;
+    });
+  }
+
+  // Epic panel — show loading state, then fetch
+  const isCurrentSprint=cur.s<=new Date().toISOString().slice(0,10)&&new Date().toISOString().slice(0,10)<=cur.e;
+  let epicHtml=`<div class="epic-loading">Loading epics from Jira...</div>`;
+  if(!isCurrentSprint){
+    epicHtml=`<div class="no-rel">Epic data is only available for the current open sprint in Jira.</div>`;
+  }
+
+  document.getElementById('ctx-grid').innerHTML=`
+    <div class="ctx-panel">
+      <div class="ctx-hdr">
+        <h3>Release calendar — ${sp.l} (${fdisp(new Date(sp.s))} – ${fdisp(new Date(sp.e))})</h3>
+        <a href="https://pandoradigital.atlassian.net/wiki/spaces/Architecture/pages/5564235896"
+           target="_blank" style="font-size:10px;color:var(--ac);text-decoration:none">Full calendar ↗</a>
+      </div>
+      <div class="ctx-body">${relHtml}</div>
+    </div>
+    <div class="ctx-panel">
+      <div class="ctx-hdr">
+        <h3>Active epics — ${sp.l}</h3>
+        <button class="epic-refresh" onclick="refreshEpics()">⟳ Refresh</button>
+      </div>
+      <div class="ctx-body" id="epic-panel">${epicHtml}</div>
+    </div>`;
+
+  if(isCurrentSprint) loadAndRenderEpics();
+}
+
+async function loadAndRenderEpics(force){
+  const panel=document.getElementById('epic-panel');
+  if(!panel)return;
+  if(force) liveEpics=null;
+  const epics=await fetchLiveEpics(force);
+  if(!epics){
+    panel.innerHTML=`<div class="epic-error">Could not load epics from Jira. Check that your API token is set in Apps Script properties.</div>`;
+    return;
+  }
+  if(!epics.length){
+    panel.innerHTML=`<div class="no-rel">No epics found in the current sprint.</div>`;
+    return;
+  }
+  const rows=epics.map(e=>`
+    <div class="epic-live-item">
+      <span class="epic-live-key">${e.key}</span>
+      <span class="epic-live-title"><a href="${e.url}" target="_blank">${e.title.replace(/^PVA \| /,'')}</a></span>
+      <span class="epic-live-st ${epicStatusClass(e.status)}">${e.status}</span>
+    </div>`).join('');
+  panel.innerHTML=`${rows}
+    <div style="font-size:10px;color:var(--tx3);padding-top:8px;border-top:.5px solid var(--bd);margin-top:4px">
+      ${epics.length} epic${epics.length!==1?'s':''} active · live from Jira ·
+      <a href="https://pandoradigital.atlassian.net/jira/software/c/projects/PVA/boards" target="_blank" style="color:var(--ac);text-decoration:none">Open board ↗</a>
+    </div>`;
+}
+
+function refreshEpics(){
+  const panel=document.getElementById('epic-panel');
+  if(panel)panel.innerHTML=`<div class="epic-loading">Refreshing from Jira...</div>`;
+  loadAndRenderEpics(true);
+}
+
+// ── CALENDAR ──────────────────────────────────────────────────────────────────
 function renderCal(){
-  const dl=dlist(cur),s=cur;
-  const groups=buildGroups();
+  const dl=dlist(cur),s=cur,groups=buildGroups();
   let h=`<thead><tr><th>Member</th>`;
-  dl.forEach(d=>{
-    const wk=isWk(d);
+  dl.forEach(d=>{const wk=isWk(d);
     h+=`<th class="dc" style="${wk?'opacity:.3':''}"><div class="dh">${DAYS[d.getDay()]}</div><div class="dd">${d.getDate()}/${d.getMonth()+1}</div></th>`;
   });
   h+=`<th style="text-align:right;padding-right:11px">Cap.</th></tr></thead><tbody>`;
-
   groups.forEach(g=>{
-    const guestCount=g.members.filter(m=>m.isGuest).length;
-    const guestNote=guestCount>0?` <span style="color:var(--pu-tx);font-size:9px">(+${guestCount} guest${guestCount>1?'s':''})</span>`:'';
-    h+=`<tr class="grp-hdr"><td colspan="${dl.length+2}">
-      ${g.label}${guestNote}
-      <button class="add-guest-btn" onclick="openGuestModal('${g.id}')">+ Add guest</button>
-    </td></tr>`;
+    const gc=g.members.filter(m=>m.isGuest).length;
+    const gn=gc>0?` <span style="color:var(--pu-tx);font-size:9px">(+${gc} guest${gc>1?'s':''})</span>`:'';
+    h+=`<tr class="grp-hdr"><td colspan="${dl.length+2}">${g.label}${gn}<button class="add-guest-btn" onclick="openGuestModal('${g.id}')">+ Add guest</button></td></tr>`;
     g.members.forEach(m=>{
-      const c=cap(s.id,m.id,dl);
-      const pct=Math.round(c.av/c.t*100);
+      const c=cap(s.id,m.id,dl),pct=Math.round(c.av/c.t*100);
       const fc=pct<60?'hi':pct<80?'mi':'lo';
-      const guestBadge=m.isGuest?'<span class="guest-badge">GUEST</span>':'';
-      const delBtn=`<button class="del-btn" onclick="deleteMember('${m.id}')" title="Remove from planner">✕</button>`;
-      h+=`<tr class="mrow"><td><div class="mc">
-        <div class="av" style="background:${m.c}22;color:${m.c}">${m.i}</div>
-        <div style="flex:1"><div class="mn">${m.n}${guestBadge}${delBtn}</div><div class="mr">${m.r}</div></div>
-      </div></td>`;
+      const gb=m.isGuest?'<span class="guest-badge">GUEST</span>':'';
+      const db=`<button class="del-btn" onclick="deleteMember('${m.id}',${m.isGuest?'true':'false'})" title="Remove">✕</button>`;
+      h+=`<tr class="mrow"><td><div class="mc"><div class="av" style="background:${m.c}22;color:${m.c}">${m.i}</div>
+        <div style="flex:1"><div class="mn">${m.n}${gb}${db}</div><div class="mr">${m.r}</div></div></div></td>`;
       dl.forEach(d=>{
         if(isWk(d)){h+=`<td class="dtd"><button class="db wknd" disabled></button></td>`;return;}
         const ds=fd(d),st=gs(s.id,m.id,ds);
@@ -559,29 +587,26 @@ function renderCal(){
     });
   });
   h+=`</tbody>`;
-  const tbl=document.getElementById('ctbl');
-  tbl.innerHTML=h;
+  const tbl=document.getElementById('ctbl');tbl.innerHTML=h;
   const old=tbl.parentElement.querySelector('.leg');if(old)old.remove();
   tbl.parentElement.insertAdjacentHTML('beforeend',`<div class="leg">
     <span>Click a day to toggle leave / OFF</span>
     <div style="display:flex;align-items:center;gap:4px"><div class="ld" style="background:var(--rd-bg);border:1px solid var(--rd-tx)"></div>Leave / OFF</div>
     <div style="display:flex;align-items:center;gap:4px"><div class="ld" style="background:var(--pu-bg);border:1px solid var(--pu-tx)"></div>Guest</div>
     <span style="color:var(--tx3)">Sprint ${cur.l}: ${fdisp(new Date(cur.s))} → ${fdisp(new Date(cur.e))}</span>
+    <span style="color:var(--tx3);margin-left:auto">Hover name to see ✕ remove</span>
   </div>`);
 }
-
 function tog(sid,mid,ds){
   const v=gs(sid,mid,ds);ss(sid,mid,ds,v?null:'off');
-  renderCards();renderCal();renderNav();
-  if(tab==='sp')renderSP();
+  renderCards();renderCal();renderNav();if(tab==='sp')renderSP();
   showToast(v?'Cleared':'Marked OFF');
 }
-function pick(id){cur=SPRINTS.find(s=>s.id===id);renderNav();renderCards();renderCal();if(tab==='sp')renderSP();}
+function pick(id){cur=SPRINTS.find(s=>s.id===id);renderNav();renderCards();renderCtx();renderCal();if(tab==='sp')renderSP();}
 
 // ── SP BREAKDOWN ──────────────────────────────────────────────────────────────
 function renderSP(){
-  const dl=dlist(cur);
-  const ms=allMembers();
+  const dl=dlist(cur),ms=allMembers();
   const tot=Math.round(totalSP(cur)*10)/10;
   const mx=Math.max(...SP_ROLES.map(r=>roleSP(cur,r.id)),1);
   let h=`<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:18px;padding:14px 16px;background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd)">
@@ -589,27 +614,19 @@ function renderSP(){
     <div style="font-size:13px;color:var(--tx2)">total story points available this sprint <span style="color:var(--tx3);font-size:11px">(70% feature allocation)</span></div>
   </div><div class="spgrid" style="margin-bottom:18px">`;
   SP_ROLES.forEach(r=>{
-    const v=roleSP(cur,r.id);
-    const pct=Math.round(v/mx*100);
+    const v=roleSP(cur,r.id),pct=Math.round(v/mx*100);
     const members=ms.filter(m=>m.sp===r.id);
-    const personRows=members.map(m=>{
-      const c=cap(cur.id,m.id,dl);
-      const msp=Math.round(c.av*8*m.f*0.70/8*10)/10;
-      const offNote=c.off>0?`<span style="color:var(--rd-tx);font-size:8px;margin-left:4px">${c.off}d off</span>`:'';
+    const rows=members.map(m=>{
+      const c=cap(cur.id,m.id,dl),msp=Math.round(c.av*8*m.f*0.70/8*10)/10;
+      const on=c.off>0?`<span style="color:var(--rd-tx);font-size:8px;margin-left:4px">${c.off}d off</span>`:'';
       return`<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:.5px solid var(--bd);font-size:10px">
-        <span style="color:var(--tx2)">${m.n.split(' ')[0]}${offNote}</span>
-        <span style="font-weight:500;color:var(--tx)">${msp} SP</span>
-      </div>`;
+        <span style="color:var(--tx2)">${m.n.split(' ')[0]}${on}</span>
+        <span style="font-weight:500;color:var(--tx)">${msp} SP</span></div>`;
     }).join('');
-    h+=`<div class="spc">
-      <div class="spr">${r.label}</div>
+    h+=`<div class="spc"><div class="spr">${r.label}</div>
       <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:8px">
-        <div class="spv" style="color:${r.color}">${v}</div>
-        <div style="font-size:10px;color:var(--tx3)">SP</div>
-      </div>
-      ${personRows}
-      <div class="spbar" style="margin-top:8px"><div class="spfill" style="width:${pct}%;background:${r.color}"></div></div>
-    </div>`;
+        <div class="spv" style="color:${r.color}">${v}</div><div style="font-size:10px;color:var(--tx3)">SP</div></div>
+      ${rows}<div class="spbar" style="margin-top:8px"><div class="spfill" style="width:${pct}%;background:${r.color}"></div></div></div>`;
   });
   h+=`</div>`;
   document.getElementById('spgrid').innerHTML=h;
@@ -619,14 +636,12 @@ function renderSP(){
 
 // ── QUARTER VIEW ──────────────────────────────────────────────────────────────
 function renderOV(){
-  const el=document.getElementById('t-ov');
-  let h='';
+  const el=document.getElementById('t-ov');let h='';
   ['Q1','Q2','Q3','Q4'].forEach(q=>{
     const sps=SPRINTS.filter(s=>s.q===q);
     h+=`<div class="qblock"><div class="qlabel">${q} 2026</div><div class="qgrid">`;
     sps.forEach(s=>{
-      const dl=dlist(s),wd=dl.filter(d=>!isWk(d)).length;
-      const members=allMembers();
+      const dl=dlist(s),wd=dl.filter(d=>!isWk(d)).length,members=allMembers();
       let off=0;members.forEach(m=>{const c=cap(s.id,m.id,dl);off+=c.off;});
       const pct=Math.round((members.length*wd-off)/(members.length*wd)*100);
       const hd=!!(data[s.id]&&Object.keys(data[s.id]).length>0);
@@ -642,288 +657,129 @@ function renderOV(){
   el.innerHTML=h;
 }
 
-// ── ROADMAP VIEW ──────────────────────────────────────────────────────────────
-let rmDragState=null; // {epicKey, dragType:'start'|'end'|'move', startIdx, origStart, origEnd}
-const today=new Date().toISOString().slice(0,10);
-
-function sprintIdx(id){return SPRINTS.findIndex(s=>s.id===id);}
-function todaySprint(){return SPRINTS.findIndex(s=>today>=s.s&&today<=s.e);}
-
-// Get which sprints a release falls within
-function releaseSprintPct(date){
-  for(let i=0;i<SPRINTS.length;i++){
-    const s=SPRINTS[i];
-    if(date>=s.s&&date<=s.e){
-      const total=new Date(s.e)-new Date(s.s);
-      const offset=new Date(date)-new Date(s.s);
-      return{idx:i,pct:offset/total};
-    }
-  }
-  return null;
+// ── HOLIDAY MODAL ─────────────────────────────────────────────────────────────
+function openHolidayModal(){
+  const memberOpts=allMembers().map(m=>`<option value="${m.id}">${m.n} (${m.r})</option>`).join('');
+  document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)"><div class="modal" onclick="event.stopPropagation()">
+    <h3>Plan longer leave</h3>
+    <p>Select a team member and date range. All working days (Mon–Fri) in that period will be marked as OFF — even across multiple sprints.</p>
+    <div style="margin-bottom:10px">
+      <div class="form-label">Team member</div>
+      <div class="form-row"><select id="hol-member">${memberOpts}</select></div>
+    </div>
+    <div style="margin-bottom:10px">
+      <div class="form-label">Leave period</div>
+      <div class="form-row">
+        <div style="flex:1"><div style="font-size:10px;color:var(--tx3);margin-bottom:3px">From</div>
+          <input type="date" id="hol-from" min="2026-01-08" max="2026-12-23" onchange="previewHoliday()"/></div>
+        <div style="flex:1"><div style="font-size:10px;color:var(--tx3);margin-bottom:3px">To</div>
+          <input type="date" id="hol-to" min="2026-01-08" max="2026-12-23" onchange="previewHoliday()"/></div>
+      </div>
+    </div>
+    <div id="hol-preview"></div>
+    <div class="mbtns"><button class="btn" onclick="cm()">Cancel</button>
+    <button class="btn bp" onclick="bookHoliday()">Confirm leave</button></div>
+  </div></div>`;
 }
 
-function visibleEpics(){
-  return JIRA_EPICS.filter(e=>{
-    const rm=roadmap[e.key];
-    return rm&&rm.visible!==false;
-  });
-}
-
-function renderRM(){
-  const el=document.getElementById('t-rm');
-  const todayIdx=todaySprint();
-  const n=SPRINTS.length;
-
-  // Build Q widths for header
-  const qCounts={Q1:0,Q2:0,Q3:0,Q4:0};
-  SPRINTS.forEach(s=>qCounts[s.q]++);
-
-  // Sprint header
-  let sLabels='';
-  SPRINTS.forEach((s,i)=>{
-    const isTod=i===todayIdx;
-    sLabels+=`<div class="rm-s-label${isTod?' today-s':''}" title="${s.s} → ${s.e}">${s.l}</div>`;
-  });
-
-  // Quarter header
-  let qCells='';
-  ['Q1','Q2','Q3','Q4'].forEach(q=>{
-    const cnt=qCounts[q];
-    qCells+=`<div class="rm-q-cell" style="flex:${cnt}">${q} 2026</div>`;
-  });
-
-  // Release markers row — compute position as % within the timeline
-  let relMarkers='';
-  RELEASES.forEach(r=>{
-    const pos=releaseSprintPct(r.date);
-    if(!pos)return;
-    // position as % of total width
-    const leftPct=((pos.idx+pos.pct)/n)*100;
-    const cls=r.type==='pva'?'rm-rel-marker rm-rel-pva':'rm-rel-marker rm-rel-platform';
-    relMarkers+=`<div class="${cls}" style="left:${leftPct}%" title="${r.label} · ${r.date}">${r.label}</div>`;
-  });
-
-  // Epic rows grouped by status
-  const active=JIRA_EPICS.filter(e=>e.status==='In Progress');
-  const funnel=JIRA_EPICS.filter(e=>e.status==='Funnel');
-  const placed=Object.keys(roadmap).filter(k=>roadmap[k]&&roadmap[k].visible!==false);
-
-  let epicRows='';
-
-  function buildEpicRow(epic){
-    const rm=roadmap[epic.key];
-    const cells=SPRINTS.map((s,i)=>{
-      const isTod=i===todayIdx;
-      return`<div class="rm-cell${isTod?' today-s':''}" data-epic="${epic.key}" data-idx="${i}"
-        onclick="rmCellClick('${epic.key}',${i})"
-        title="${s.l}: ${s.s} → ${s.e}"></div>`;
-    }).join('');
-
-    // Bar overlay
-    let bar='';
-    if(rm&&rm.startSprint&&rm.endSprint){
-      const si=sprintIdx(rm.startSprint);
-      const ei=sprintIdx(rm.endSprint);
-      if(si>=0&&ei>=0&&ei>=si){
-        const leftPct=(si/n)*100;
-        const widthPct=((ei-si+1)/n)*100;
-        bar=`<div class="rm-bar" style="left:${leftPct}%;width:${widthPct}%;background:${epic.color}cc">
-          <span>${epic.key}: ${epic.title}</span>
-        </div>`;
-      }
-    }
-
-    const stCls=epic.status==='In Progress'?'rm-st-ip':epic.status==='Funnel'?'rm-st-fn':'rm-st-dn';
-    const stLbl=epic.status==='In Progress'?'Active':'Funnel';
-    const clearBtn=rm?`<button onclick="rmClear('${epic.key}')" title="Clear sprint assignment" style="margin-left:auto;font-size:9px;padding:1px 5px;border-radius:3px;border:.5px solid var(--bd2);background:transparent;color:var(--tx3);cursor:pointer;flex-shrink:0">✕</button>`:'';
-
-    return`<div class="rm-epic-row">
-      <div class="rm-epic-name">
-        <span class="rm-epic-key">${epic.key}</span>
-        <span class="rm-epic-title" title="${epic.title}">${epic.title}</span>
-        <span class="rm-status ${stCls}">${stLbl}</span>
-        ${clearBtn}
-      </div>
-      <div class="rm-epic-cells" id="rmcells-${epic.key}">
-        ${cells}
-        ${bar}
-      </div>
-    </div>`;
-  }
-
-  const activeRows=active.map(buildEpicRow).join('');
-  const funnelRows=funnel.map(buildEpicRow).join('');
-
-  const placedCount=placed.length;
-
-  el.innerHTML=`<div class="rm-wrap">
-    <div class="rm-toolbar">
-      <h3>Roadmap 2026 · Epics × Sprints</h3>
-      <div class="rm-actions">
-        <span style="font-size:11px;color:var(--tx3)">${placedCount} epic${placedCount!==1?'s':''} planned · Click cell to set start, click again to set end</span>
-        <button class="btn" onclick="rmClearAll()" style="font-size:11px">Clear all</button>
-      </div>
-    </div>
-    <div class="rm-scroll">
-      <div class="rm-grid">
-        <!-- Quarter header -->
-        <div style="display:flex;border-bottom:.5px solid var(--bd);background:var(--bg3)">
-          <div class="rm-name-col" style="font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px">Epic</div>
-          <div style="flex:1;display:flex">${qCells}</div>
-        </div>
-        <!-- Sprint labels -->
-        <div style="display:flex;border-bottom:.5px solid var(--bd)">
-          <div class="rm-name-col"></div>
-          <div style="flex:1;display:flex">${sLabels}</div>
-        </div>
-        <!-- Release markers -->
-        <div class="rm-releases-row">
-          <div class="rm-name-col" style="font-size:9px;color:var(--tx3);display:flex;align-items:center">Releases</div>
-          <div style="flex:1;position:relative;height:22px">${relMarkers}</div>
-        </div>
-        <!-- Active epics -->
-        <div class="rm-section-hdr">
-          <span>In progress (${active.length})</span>
-          <span style="font-size:10px;color:var(--tx3);font-weight:400">Click a sprint cell to assign start → end</span>
-        </div>
-        ${activeRows}
-        <!-- Funnel epics -->
-        <div class="rm-section-hdr">
-          <span>Funnel / planned (${funnel.length})</span>
-        </div>
-        ${funnelRows}
-      </div>
-    </div>
-    <div class="rm-legend">
-      <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:#185fa5"></div>PVA release</div>
-      <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:var(--bg3);border:.5px solid var(--bd2)"></div>Platform release</div>
-      <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:rgba(24,95,165,.08)"></div>Current sprint</div>
-      <span style="color:var(--tx3)">Click once = set start · Click again = set end · Click ✕ to clear</span>
-    </div>
+function previewHoliday(){
+  const from=document.getElementById('hol-from').value;
+  const to=document.getElementById('hol-to').value;
+  const mid=document.getElementById('hol-member').value;
+  if(!from||!to||from>to){document.getElementById('hol-preview').innerHTML='';return;}
+  const preview=calcHolidayDays(mid,from,to);
+  if(!preview.length){document.getElementById('hol-preview').innerHTML='<div style="font-size:11px;color:var(--tx3);padding:8px 0">No working days found in this range</div>';return;}
+  let rows=preview.map(p=>`<div class="hol-sprint-row"><span>${p.sprint}</span><span class="hol-days">-${p.days} day${p.days!==1?'s':''}</span></div>`).join('');
+  const total=preview.reduce((a,p)=>a+p.days,0);
+  document.getElementById('hol-preview').innerHTML=`<div class="hol-preview">
+    <div class="hol-preview-hdr">Preview — ${total} working day${total!==1?'s':''} across ${preview.length} sprint${preview.length!==1?'s':''}</div>
+    ${rows}
   </div>`;
 }
 
-// Roadmap cell interaction: 1st click = set start, 2nd click = set end
-const rmClickState={};
-function rmCellClick(epicKey, idx){
-  const sid=SPRINTS[idx].id;
-  if(!rmClickState[epicKey]){
-    // First click — set start sprint
-    if(!roadmap[epicKey])roadmap[epicKey]={};
-    roadmap[epicKey].startSprint=sid;
-    roadmap[epicKey].endSprint=sid;
-    roadmap[epicKey].visible=true;
-    rmClickState[epicKey]=idx;
-    sd();renderRM();
-    showToast('Start set to '+SPRINTS[idx].l+' — click end sprint');
-  } else {
-    // Second click — set end sprint
-    const startIdx=rmClickState[epicKey];
-    const realStart=Math.min(startIdx,idx);
-    const realEnd=Math.max(startIdx,idx);
-    roadmap[epicKey].startSprint=SPRINTS[realStart].id;
-    roadmap[epicKey].endSprint=SPRINTS[realEnd].id;
-    delete rmClickState[epicKey];
-    sd();renderRM();
-    showToast(SPRINTS[realStart].l+' → '+SPRINTS[realEnd].l);
-  }
+function calcHolidayDays(mid,from,to){
+  const result=[];
+  SPRINTS.forEach(sp=>{
+    const dl=dlist(sp);
+    const affected=dl.filter(d=>{
+      if(isWk(d))return false;
+      const ds=fd(d);return ds>=from&&ds<=to&&gs(sp.id,mid,ds)!=='off';
+    });
+    if(affected.length>0)result.push({sprint:sp.l,days:affected.length,sprintId:sp.id,dates:affected.map(d=>fd(d))});
+  });
+  return result;
 }
 
-function rmClear(epicKey){
-  delete roadmap[epicKey];
-  delete rmClickState[epicKey];
-  sd();renderRM();
-  showToast('Cleared');
-}
-
-function rmClearAll(){
-  if(!confirm('Clear all roadmap sprint assignments?'))return;
-  Object.keys(roadmap).forEach(k=>delete roadmap[k]);
-  sd();renderRM();
-  showToast('Roadmap cleared');
+function bookHoliday(){
+  const from=document.getElementById('hol-from').value;
+  const to=document.getElementById('hol-to').value;
+  const mid=document.getElementById('hol-member').value;
+  if(!from||!to){showToast('Please select both dates');return;}
+  if(from>to){showToast('End date must be after start date');return;}
+  const preview=calcHolidayDays(mid,from,to);
+  if(!preview.length){showToast('No working days to mark in this range');return;}
+  const changes=[];
+  preview.forEach(p=>{p.dates.forEach(ds=>{changes.push({sid:p.sprintId,mid,ds});ss(p.sprintId,mid,ds,'off');});});
+  cm();renderAll();
+  const total=preview.reduce((a,p)=>a+p.days,0);
+  const memberName=allMembers().find(m=>m.id===mid)?.n.split(' ')[0]||'Member';
+  showToast(`${memberName}: ${total} days planned off`,()=>{
+    changes.forEach(c=>ss(c.sid,c.mid,c.ds,null));renderAll();showToast('Leave cancelled');
+  },'Cancel leave');
 }
 
 // ── GUEST MODAL ───────────────────────────────────────────────────────────────
-function openGuestModal(preselectedGroupId){
-  const groupOptions=BASE_GROUPS.map(g=>`<option value="${g.id}"${g.id===preselectedGroupId?' selected':''}>${g.label}</option>`).join('');
-  const guestItems=guests.length===0
-    ?'<div style="font-size:11px;color:var(--tx3);text-align:center;padding:10px 0">No guests added yet</div>'
-    :guests.map(g=>{
-        const grp=BASE_GROUPS.find(gr=>gr.id===g.groupId);
-        return`<div class="guest-item">
-          <div><span style="font-weight:500">${g.name}</span>
-          <span style="color:var(--tx3);margin-left:6px">${g.role||'Guest'}</span>
-          <span style="color:var(--pu-tx);font-size:10px;margin-left:6px">→ ${grp?grp.label:'?'}</span></div>
-          <button class="rm" onclick="removeGuest('${g.id}')">Remove</button>
-        </div>`;
-      }).join('');
-  document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)">
-    <div class="modal" onclick="event.stopPropagation()">
-      <h3>Manage guests</h3>
-      <p>Add borrowed team members to a group. They show with a GUEST badge and are included in capacity calculations.</p>
-      <div class="form-row">
-        <input id="g-name" placeholder="Full name" />
-        <input id="g-role" placeholder="Role (optional)" />
-      </div>
-      <div class="form-row">
-        <select id="g-group">${groupOptions}</select>
-        <button class="btn bp" onclick="addGuest()">Add guest</button>
-      </div>
-      <div class="guest-list" id="guest-list">${guestItems}</div>
-      <div class="mbtns"><button class="btn" onclick="cm()">Close</button></div>
-    </div></div>`;
+function openGuestModal(pre){
+  const opts=BASE_GROUPS.map(g=>`<option value="${g.id}"${g.id===pre?' selected':''}>${g.label}</option>`).join('');
+  const items=guests.length===0?'<div style="font-size:11px;color:var(--tx3);text-align:center;padding:10px 0">No guests added yet</div>'
+    :guests.map(g=>{const grp=BASE_GROUPS.find(gr=>gr.id===g.groupId);
+      return`<div class="guest-item"><div><span style="font-weight:500">${g.name}</span>
+        <span style="color:var(--tx3);margin-left:6px">${g.role||'Guest'}</span>
+        <span style="color:var(--pu-tx);font-size:10px;margin-left:6px">→ ${grp?grp.label:'?'}</span></div>
+        <button class="rm" onclick="removeGuestById('${g.id}')">Remove</button></div>`;}).join('');
+  document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)"><div class="modal" onclick="event.stopPropagation()">
+    <h3>Manage guests</h3>
+    <p>Add borrowed team members to a group. You can also remove guests by hovering their name in the calendar and pressing ✕.</p>
+    <div class="form-row"><input id="g-name" placeholder="Full name"/><input id="g-role" placeholder="Role (optional)"/></div>
+    <div class="form-row"><select id="g-group">${opts}</select><button class="btn bp" onclick="addGuest()">Add guest</button></div>
+    <div class="guest-list" id="guest-list">${items}</div>
+    <div class="mbtns"><button class="btn" onclick="cm()">Close</button></div>
+  </div></div>`;
 }
-
 function addGuest(){
-  const name=document.getElementById('g-name').value.trim();
-  const role=document.getElementById('g-role').value.trim();
-  const groupId=document.getElementById('g-group').value;
+  const name=document.getElementById('g-name').value.trim(),role=document.getElementById('g-role').value.trim(),groupId=document.getElementById('g-group').value;
   if(!name)return showToast('Enter a name');
   guests.push({id:'guest_'+Date.now(),name,role,groupId});
-  sd();openGuestModal(groupId);renderCards();renderCal();
-  if(tab==='sp')renderSP();
-  showToast(name+' added as guest');
+  sd();openGuestModal(groupId);renderAll();showToast(name+' added as guest');
 }
-
-function removeGuest(id){
-  guests=guests.filter(g=>g.id!==id);
-  sd();openGuestModal();renderCards();renderCal();
-  if(tab==='sp')renderSP();
-  showToast('Guest removed');
+function removeGuestById(id){
+  const g=guests.find(x=>x.id===id);if(!g)return;
+  const saved={...g};guests=guests.filter(x=>x.id!==id);sd();openGuestModal();renderAll();
+  showToast(saved.name+' removed',()=>{guests.push(saved);sd();openGuestModal();renderAll();showToast(saved.name+' restored');});
 }
 
 // ── SHARE ─────────────────────────────────────────────────────────────────────
 function showShare(){
-  const enc=btoa(JSON.stringify({data,guests,deleted:deletedMembers,roadmap}));
-  const u=new URL(location.href.split('?')[0]);
-  u.searchParams.set('d',enc);
-  document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)">
-    <div class="modal" onclick="event.stopPropagation()">
-      <h3>Share & export</h3>
-      <p>Or send this URL — it includes all current leave data and roadmap in the link itself.</p>
-      <pre id="su">${u.toString()}</pre>
-      <div class="mbtns">
-        <button class="btn" onclick="cm()">Close</button>
-        <button class="btn bp" onclick="navigator.clipboard.writeText(document.getElementById('su').textContent).then(()=>showToast('URL copied'))">Copy URL</button>
-      </div>
-    </div></div>`;
+  const enc=btoa(JSON.stringify({data,guests,deleted:deletedMembers}));
+  const u=new URL(location.href.split('?')[0]);u.searchParams.set('d',enc);
+  document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)"><div class="modal" onclick="event.stopPropagation()">
+    <h3>Share & export</h3><p>This URL includes all leave data.</p>
+    <pre id="su">${u.toString()}</pre>
+    <div class="mbtns"><button class="btn" onclick="cm()">Close</button>
+    <button class="btn bp" onclick="navigator.clipboard.writeText(document.getElementById('su').textContent).then(()=>showToast('URL copied'))">Copy URL</button></div>
+  </div></div>`;
 }
-
 function cm(e){if(!e||e.target.classList.contains('mbg'))document.getElementById('ma').innerHTML='';}
-function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
 function clearAll(){
-  if(!confirm('Clear all leave data? Guests and roadmap are kept.'))return;
-  data={};sd();renderNav();renderCards();renderCal();
-  setSyncStatus('','Cleared — remember to save');
+  if(!confirm('Clear all leave data?'))return;
+  data={};sd();renderAll();setSyncStatus('','Cleared — remember to save');
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 ld();
 const todayStr=new Date().toISOString().slice(0,10);
 cur=SPRINTS.find(s=>todayStr>=s.s&&todayStr<=s.e)||SPRINTS[0];
-renderNav();renderCards();renderCal();
-
-// Auto-load from Google Sheets on startup
+renderNav();renderCards();renderCtx();renderCal();
 loadFromSheets();
 </script>
 </body>
