@@ -28,6 +28,8 @@ header{background:var(--bg);border-bottom:.5px solid var(--bd2);padding:12px 22p
 .sc{padding:4px 11px;border-radius:20px;border:.5px solid var(--bd2);background:var(--bg);color:var(--tx2);font-size:11px;cursor:pointer;white-space:nowrap;transition:all .1s}
 .sc:hover{background:var(--bg3)}.sc.on{background:var(--ac);color:#fff;border-color:transparent}
 .sc.dot::after{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:#97c459;margin-left:4px;vertical-align:middle}
+.sc.modified{border-color:var(--am-tx);color:var(--am-tx)}
+.sc.modified.on{background:var(--am-tx);color:#fff;border-color:transparent}
 .srow{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px;margin-bottom:18px}
 .sc2{background:var(--bg);border-radius:var(--rs);border:.5px solid var(--bd);padding:11px 13px}
 .sv{font-size:20px;font-weight:500}.sl{font-size:10px;color:var(--tx3);margin-top:2px}
@@ -100,7 +102,7 @@ tr:last-child td{border-bottom:none}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* Holiday */
-.hol-preview{background:var(--bg2);border-radius:var(--rs);border:.5px solid var(--bd);padding:10px 12px;margin-top:10px;font-size:11px}
+.hol-preview{background:var(--bg2);border-radius:var(--rs);border:.5px solid var(--bd);padding:10px 12px;margin-top:10px}
 .hol-preview-hdr{font-size:10px;font-weight:500;color:var(--tx2);margin-bottom:6px}
 .hol-sprint-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:.5px solid var(--bd);font-size:10px}
 .hol-sprint-row:last-child{border-bottom:none}
@@ -113,6 +115,8 @@ tr:last-child td{border-bottom:none}
 .ctx-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:.5px solid var(--bd);background:var(--bg3);gap:8px;flex-wrap:wrap}
 .ctx-hdr h3{font-size:10px;font-weight:500;color:var(--tx2);text-transform:uppercase;letter-spacing:.5px}
 .ctx-body{padding:12px 14px}
+
+/* Release cards */
 .rel-card{padding:10px 12px;border-radius:var(--rs);border:.5px solid var(--bd);margin-bottom:8px;background:var(--bg2)}
 .rel-card:last-child{margin-bottom:0}
 .rel-card.live-in-sprint{border-color:var(--am-tx);background:var(--am-bg)}
@@ -132,22 +136,12 @@ tr:last-child td{border-bottom:none}
 .rnote{font-size:9px;color:var(--tx2);margin-top:4px;line-height:1.4}
 .no-rel{padding:20px;text-align:center;color:var(--tx3);font-size:11px}
 
-/* Epic panel — live from Jira */
-.epic-live-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:.5px solid var(--bd)}
-.epic-live-item:last-child{border-bottom:none}
-.epic-live-key{font-size:9px;font-family:monospace;color:var(--tx3);white-space:nowrap;min-width:68px}
-.epic-live-title{font-size:11px;color:var(--tx);flex:1;line-height:1.4}
-.epic-live-title a{color:var(--ac);text-decoration:none}
-.epic-live-title a:hover{text-decoration:underline}
-.epic-live-st{font-size:8px;padding:2px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0}
-.est-implementing{background:var(--ac-bg);color:var(--ac-tx)}
-.est-funnel{background:var(--bg3);color:var(--tx3)}
-.est-done{background:var(--gn-bg);color:var(--gn-tx)}
-.est-other{background:var(--am-bg);color:var(--am-tx)}
-.epic-loading{padding:16px;text-align:center;color:var(--tx3);font-size:11px}
-.epic-error{padding:12px;background:var(--rd-bg);border-radius:var(--rs);font-size:11px;color:var(--rd-tx)}
-.epic-refresh{font-size:10px;color:var(--ac);cursor:pointer;background:none;border:none;padding:0}
-.epic-refresh:hover{text-decoration:underline}
+/* Sprint notes */
+.notes-area{width:100%;min-height:140px;border:.5px solid var(--bd2);border-radius:var(--rs);background:var(--bg2);color:var(--tx);font-size:12px;padding:10px 12px;line-height:1.6;resize:vertical;font-family:inherit}
+.notes-area:focus{outline:none;border-color:var(--ac);background:var(--bg)}
+.notes-hint{font-size:10px;color:var(--tx3);margin-top:6px;line-height:1.5}
+.notes-saved{font-size:10px;color:var(--gn-tx);margin-top:4px;opacity:0;transition:opacity .3s}
+.notes-saved.show{opacity:1}
 
 @media(max-width:680px){.main{padding:10px 12px}.mc{min-width:140px}}
 </style>
@@ -198,7 +192,8 @@ tr:last-child td{border-bottom:none}
 <script>
 const PROXY_URL='https://script.google.com/macros/s/AKfycbzKZycM8lxvENB1x3ZQfhOorKkBfkLAKKCQhgzrUDqb1kanXL7dUPdQDastQ5K3gA7V/exec';
 
-const SPRINTS=[
+// ── DEFAULT SPRINTS ───────────────────────────────────────────────────────────
+const DEFAULT_SPRINTS=[
   {id:'Q1-S1',l:'S1',q:'Q1',s:'2026-01-08',e:'2026-01-21'},
   {id:'Q1-S2',l:'S2',q:'Q1',s:'2026-01-22',e:'2026-02-04'},
   {id:'Q1-S3',l:'S3',q:'Q1',s:'2026-02-05',e:'2026-02-18'},
@@ -293,20 +288,29 @@ const RELEASES=[
 ];
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let data={}, guests=[], deletedMembers=[], cur=null, tab='cap';
-let lastSynced=null;
-let liveEpics=null; // cached from Jira via Apps Script
-let toastTimer=null;
+let data={}, guests=[], deletedMembers=[], sprintDates={}, sprintNotes={}, cur=null, tab='cap';
+// sprintDates[sprintId] = {s:'2026-04-02', e:'2026-04-29'} — overrides default dates
+// sprintNotes[sprintId] = 'text...'
+let lastSynced=null, toastTimer=null;
+
+// Get effective sprint dates (custom or default)
+function getSprint(id){
+  const def=DEFAULT_SPRINTS.find(s=>s.id===id);
+  if(!def)return null;
+  if(sprintDates[id])return {...def,...sprintDates[id]};
+  return def;
+}
+function SPRINTS(){return DEFAULT_SPRINTS.map(s=>getSprint(s.id));}
 
 function ld(){
   try{
     const p=new URLSearchParams(location.search).get('d');
-    if(p){const d=JSON.parse(atob(p));data=d.data||{};guests=d.guests||[];deletedMembers=d.deleted||[];return;}
+    if(p){const d=JSON.parse(atob(p));data=d.data||{};guests=d.guests||[];deletedMembers=d.deleted||[];sprintDates=d.sprintDates||{};sprintNotes=d.sprintNotes||{};return;}
     const s=JSON.parse(localStorage.getItem('pva26c')||'{}');
-    data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];
+    data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];sprintDates=s.sprintDates||{};sprintNotes=s.sprintNotes||{};
   }catch(e){}
 }
-function sd(){localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers}));}
+function sd(){localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers,sprintDates,sprintNotes}));}
 
 // ── SYNC ──────────────────────────────────────────────────────────────────────
 function setSyncStatus(st,label){
@@ -317,7 +321,7 @@ async function syncToSheets(){
   setSyncStatus('busy','Saving...');
   try{
     const r=await(await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({action:'save',data:{data,guests,deleted:deletedMembers}}),redirect:'follow'})).json();
+      body:JSON.stringify({action:'save',data:{data,guests,deleted:deletedMembers,sprintDates,sprintNotes}}),redirect:'follow'})).json();
     if(r.ok){lastSynced=new Date();setSyncStatus('ok','Saved '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));showToast('Saved to Google Sheets');}
     else{setSyncStatus('err','Save failed');showToast('Save failed: '+r.error);}
   }catch(e){setSyncStatus('err','Save failed');showToast('Save failed — '+e.message);}
@@ -329,6 +333,7 @@ async function loadFromSheets(){
       body:JSON.stringify({action:'load'}),redirect:'follow'})).json();
     if(r.ok&&r.data){
       data=r.data.data||{};guests=r.data.guests||[];deletedMembers=r.data.deleted||[];
+      sprintDates=r.data.sprintDates||{};sprintNotes=r.data.sprintNotes||{};
       sd();renderNav();renderCards();renderCtx();renderCal();
       if(tab==='sp')renderSP();if(tab==='ov')renderOV();
       lastSynced=new Date();setSyncStatus('ok','Loaded '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
@@ -337,30 +342,6 @@ async function loadFromSheets(){
     else{setSyncStatus('err','Load failed');showToast('Load failed: '+r.error);}
   }catch(e){setSyncStatus('err','Load failed');showToast('Load failed — '+e.message);}
 }
-
-// ── LIVE EPICS from Jira via Apps Script ──────────────────────────────────────
-async function fetchLiveEpics(force){
-  if(liveEpics&&!force)return liveEpics;
-  try{
-    const r=await(await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({action:'loadEpics'}),redirect:'follow'})).json();
-    if(r.ok&&r.epics){
-      liveEpics=r.epics;
-      return liveEpics;
-    }
-  }catch(e){}
-  return null;
-}
-
-function epicStatusClass(status){
-  if(!status)return 'est-other';
-  const s=status.toLowerCase();
-  if(s==='implementing'||s==='developing'||s==='in progress'||s==='review'||s==='testing')return 'est-implementing';
-  if(s==='done'||s==='archived')return 'est-done';
-  if(s==='funnel'||s==='to do')return 'est-funnel';
-  return 'est-other';
-}
-
 function openSyncModal(){
   const t=lastSynced?'Last synced at '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):'Not synced yet this session.';
   document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)"><div class="modal" onclick="event.stopPropagation()">
@@ -370,6 +351,51 @@ function openSyncModal(){
     <button class="btn" style="color:var(--ac)" onclick="loadFromSheets();cm()">Load latest</button>
     <button class="btn bp" onclick="syncToSheets();cm()">Save changes</button></div>
   </div></div>`;
+}
+
+// ── EDIT SPRINT DATES ─────────────────────────────────────────────────────────
+function openEditSprintModal(id){
+  const sp=getSprint(id);
+  const def=DEFAULT_SPRINTS.find(s=>s.id===id);
+  const isModified=!!sprintDates[id];
+  document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)"><div class="modal" onclick="event.stopPropagation()">
+    <h3>Edit sprint ${sp.l} dates</h3>
+    <p>Change the start and end date for this sprint — useful for double sprints, shortened sprints, or holiday periods. Capacity recalculates automatically.</p>
+    ${isModified?`<p style="color:var(--am-tx);font-size:11px">This sprint has custom dates. Default: ${def.s} → ${def.e}</p>`:''}
+    <div style="margin-bottom:10px">
+      <div class="form-label">Start date</div>
+      <div class="form-row"><input type="date" id="sp-from" value="${sp.s}"/></div>
+    </div>
+    <div style="margin-bottom:10px">
+      <div class="form-label">End date</div>
+      <div class="form-row"><input type="date" id="sp-to" value="${sp.e}"/></div>
+    </div>
+    <div class="mbtns">
+      <button class="btn" onclick="cm()">Cancel</button>
+      ${isModified?`<button class="btn" style="color:var(--rd-tx)" onclick="resetSprintDates('${id}')">Reset to default</button>`:''}
+      <button class="btn bp" onclick="saveSprintDates('${id}')">Save dates</button>
+    </div>
+  </div></div>`;
+}
+
+function saveSprintDates(id){
+  const from=document.getElementById('sp-from').value;
+  const to=document.getElementById('sp-to').value;
+  if(!from||!to){showToast('Select both dates');return;}
+  if(from>to){showToast('End date must be after start date');return;}
+  sprintDates[id]={s:from,e:to};
+  sd();cm();
+  if(cur&&cur.id===id){cur=getSprint(id);}
+  renderAll();
+  showToast('Sprint dates updated');
+}
+
+function resetSprintDates(id){
+  delete sprintDates[id];
+  sd();cm();
+  if(cur&&cur.id===id){cur=getSprint(id);}
+  renderAll();
+  showToast('Sprint dates reset to default');
 }
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
@@ -440,13 +466,19 @@ function switchTab(name,el){
 // ── SPRINT NAV ────────────────────────────────────────────────────────────────
 function renderNav(){
   let h='',lq=null;
-  SPRINTS.forEach(s=>{
+  DEFAULT_SPRINTS.forEach(def=>{
+    const s=getSprint(def.id);
     if(s.q!==lq){if(lq)h+='<span class="qsep">|</span>';h+=`<span class="ql">${s.q}</span>`;lq=s.q;}
     const hd=!!(data[s.id]&&Object.keys(data[s.id]).length>0);
     const on=cur&&cur.id===s.id?' on':'';
     const dot=hd&&!on?' dot':'';
-    h+=`<button class="sc${on}${dot}" onclick="pick('${s.id}')">${s.l}</button>`;
+    const mod=sprintDates[s.id]?' modified':'';
+    h+=`<button class="sc${on}${dot}${mod}" onclick="pick('${s.id}')" title="${s.s} → ${s.e}${sprintDates[s.id]?' (custom dates)':''}">${s.l}</button>`;
   });
+  // Edit button for current sprint
+  if(cur){
+    h+=`<button class="btn" style="font-size:10px;padding:3px 9px;margin-left:6px" onclick="openEditSprintModal('${cur.id}')">Edit sprint dates</button>`;
+  }
   document.getElementById('snav').innerHTML=h;
 }
 
@@ -458,12 +490,14 @@ function renderCards(){
   const tot=members.length*wd,av=tot-off,pct=Math.round(av/tot*100);
   const sp=Math.round(totalSP(cur));
   const cls=pct<70?'wn':pct>=90?'ok':'';
+  const modBadge=sprintDates[cur.id]?`<div class="sc2" style="border-color:var(--am-tx)"><div class="sv" style="font-size:13px;color:var(--am-tx)">${fdisp(new Date(cur.s))}–${fdisp(new Date(cur.e))}</div><div class="sl">Custom dates</div></div>`:'';
   document.getElementById('scards').innerHTML=`
     <div class="sc2"><div class="sv">${members.length}</div><div class="sl">Team members</div></div>
     <div class="sc2"><div class="sv">${wd}</div><div class="sl">Working days</div></div>
     <div class="sc2 ${cls}"><div class="sv">${pct}%</div><div class="sl">Capacity</div></div>
     <div class="sc2"><div class="sv">${av}</div><div class="sl">Available days</div></div>
-    <div class="sc2 ok"><div class="sv">${sp}</div><div class="sl">Est. SP (70%)</div></div>`;
+    <div class="sc2 ok"><div class="sv">${sp}</div><div class="sl">Est. SP (70%)</div></div>
+    ${modBadge}`;
 }
 
 // ── SPRINT CONTEXT ─────────────────────────────────────────────────────────────
@@ -500,12 +534,12 @@ function renderCtx(){
     });
   }
 
-  // Epic panel — show loading state, then fetch
-  const isCurrentSprint=cur.s<=new Date().toISOString().slice(0,10)&&new Date().toISOString().slice(0,10)<=cur.e;
-  let epicHtml=`<div class="epic-loading">Loading epics from Jira...</div>`;
-  if(!isCurrentSprint){
-    epicHtml=`<div class="no-rel">Epic data is only available for the current open sprint in Jira.</div>`;
-  }
+  // Sprint notes
+  const note=sprintNotes[sp.id]||'';
+  const notesHtml=`
+    <textarea class="notes-area" id="sprint-notes-ta" placeholder="What is this sprint focused on? Add epics, blockers, release notes, goals…">${note}</textarea>
+    <div class="notes-hint">Saved automatically · synced via Google Sheets</div>
+    <div class="notes-saved" id="notes-saved">Saved</div>`;
 
   document.getElementById('ctx-grid').innerHTML=`
     <div class="ctx-panel">
@@ -518,45 +552,26 @@ function renderCtx(){
     </div>
     <div class="ctx-panel">
       <div class="ctx-hdr">
-        <h3>Active epics — ${sp.l}</h3>
-        <button class="epic-refresh" onclick="refreshEpics()">⟳ Refresh</button>
+        <h3>Sprint notes — ${sp.l}</h3>
+        <span style="font-size:10px;color:var(--tx3)">Free text · epics, goals, blockers</span>
       </div>
-      <div class="ctx-body" id="epic-panel">${epicHtml}</div>
+      <div class="ctx-body">${notesHtml}</div>
     </div>`;
 
-  if(isCurrentSprint) loadAndRenderEpics();
-}
-
-async function loadAndRenderEpics(force){
-  const panel=document.getElementById('epic-panel');
-  if(!panel)return;
-  if(force) liveEpics=null;
-  const epics=await fetchLiveEpics(force);
-  if(!epics){
-    panel.innerHTML=`<div class="epic-error">Could not load epics from Jira. Check that your API token is set in Apps Script properties.</div>`;
-    return;
+  // Auto-save notes on input
+  let notesTimer;
+  const ta=document.getElementById('sprint-notes-ta');
+  if(ta){
+    ta.addEventListener('input',()=>{
+      clearTimeout(notesTimer);
+      notesTimer=setTimeout(()=>{
+        sprintNotes[sp.id]=ta.value;
+        sd();
+        const saved=document.getElementById('notes-saved');
+        if(saved){saved.classList.add('show');setTimeout(()=>saved.classList.remove('show'),1500);}
+      },600);
+    });
   }
-  if(!epics.length){
-    panel.innerHTML=`<div class="no-rel">No epics found in the current sprint.</div>`;
-    return;
-  }
-  const rows=epics.map(e=>`
-    <div class="epic-live-item">
-      <span class="epic-live-key">${e.key}</span>
-      <span class="epic-live-title"><a href="${e.url}" target="_blank">${e.title.replace(/^PVA \| /,'')}</a></span>
-      <span class="epic-live-st ${epicStatusClass(e.status)}">${e.status}</span>
-    </div>`).join('');
-  panel.innerHTML=`${rows}
-    <div style="font-size:10px;color:var(--tx3);padding-top:8px;border-top:.5px solid var(--bd);margin-top:4px">
-      ${epics.length} epic${epics.length!==1?'s':''} active · live from Jira ·
-      <a href="https://pandoradigital.atlassian.net/jira/software/c/projects/PVA/boards" target="_blank" style="color:var(--ac);text-decoration:none">Open board ↗</a>
-    </div>`;
-}
-
-function refreshEpics(){
-  const panel=document.getElementById('epic-panel');
-  if(panel)panel.innerHTML=`<div class="epic-loading">Refreshing from Jira...</div>`;
-  loadAndRenderEpics(true);
 }
 
 // ── CALENDAR ──────────────────────────────────────────────────────────────────
@@ -594,7 +609,7 @@ function renderCal(){
     <div style="display:flex;align-items:center;gap:4px"><div class="ld" style="background:var(--rd-bg);border:1px solid var(--rd-tx)"></div>Leave / OFF</div>
     <div style="display:flex;align-items:center;gap:4px"><div class="ld" style="background:var(--pu-bg);border:1px solid var(--pu-tx)"></div>Guest</div>
     <span style="color:var(--tx3)">Sprint ${cur.l}: ${fdisp(new Date(cur.s))} → ${fdisp(new Date(cur.e))}</span>
-    <span style="color:var(--tx3);margin-left:auto">Hover name to see ✕ remove</span>
+    <span style="color:var(--tx3);margin-left:auto">Hover name → ✕ to remove</span>
   </div>`);
 }
 function tog(sid,mid,ds){
@@ -602,7 +617,7 @@ function tog(sid,mid,ds){
   renderCards();renderCal();renderNav();if(tab==='sp')renderSP();
   showToast(v?'Cleared':'Marked OFF');
 }
-function pick(id){cur=SPRINTS.find(s=>s.id===id);renderNav();renderCards();renderCtx();renderCal();if(tab==='sp')renderSP();}
+function pick(id){cur=getSprint(id);renderNav();renderCards();renderCtx();renderCal();if(tab==='sp')renderSP();}
 
 // ── SP BREAKDOWN ──────────────────────────────────────────────────────────────
 function renderSP(){
@@ -638,18 +653,20 @@ function renderSP(){
 function renderOV(){
   const el=document.getElementById('t-ov');let h='';
   ['Q1','Q2','Q3','Q4'].forEach(q=>{
-    const sps=SPRINTS.filter(s=>s.q===q);
+    const sps=DEFAULT_SPRINTS.filter(s=>s.q===q).map(s=>getSprint(s.id));
     h+=`<div class="qblock"><div class="qlabel">${q} 2026</div><div class="qgrid">`;
     sps.forEach(s=>{
       const dl=dlist(s),wd=dl.filter(d=>!isWk(d)).length,members=allMembers();
       let off=0;members.forEach(m=>{const c=cap(s.id,m.id,dl);off+=c.off;});
       const pct=Math.round((members.length*wd-off)/(members.length*wd)*100);
       const hd=!!(data[s.id]&&Object.keys(data[s.id]).length>0);
+      const mod=!!sprintDates[s.id];
       const cls=hd?(pct<70?'wn':pct>=90?'ok':''):'';
-      h+=`<div class="sc2 ${cls}" style="cursor:pointer" onclick="pick('${s.id}');switchTab('cap',document.querySelectorAll('.tab')[0])">
+      const hasNote=!!(sprintNotes[s.id]&&sprintNotes[s.id].trim());
+      h+=`<div class="sc2 ${cls}" style="cursor:pointer;${mod?'border-color:var(--am-tx)':''}" onclick="pick('${s.id}');switchTab('cap',document.querySelectorAll('.tab')[0])">
         <div style="font-size:9px;color:var(--tx3);margin-bottom:3px">${s.l} · ${fdisp(new Date(s.s))}</div>
         <div class="sv">${hd?pct+'%':'—'}</div>
-        <div class="sl">${wd}d ${hd?'planned':'no data'}</div>
+        <div class="sl">${wd}d${mod?' · custom':''}${hasNote?' · notes':''}${hd?' planned':' no data'}</div>
       </div>`;
     });
     h+='</div></div>';
@@ -657,12 +674,12 @@ function renderOV(){
   el.innerHTML=h;
 }
 
-// ── HOLIDAY MODAL ─────────────────────────────────────────────────────────────
+// ── PLAN LONGER LEAVE ─────────────────────────────────────────────────────────
 function openHolidayModal(){
   const memberOpts=allMembers().map(m=>`<option value="${m.id}">${m.n} (${m.r})</option>`).join('');
   document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)"><div class="modal" onclick="event.stopPropagation()">
     <h3>Plan longer leave</h3>
-    <p>Select a team member and date range. All working days (Mon–Fri) in that period will be marked as OFF — even across multiple sprints.</p>
+    <p>Select a team member and date range. All working days (Mon–Fri) will be marked as OFF across all sprints in the period.</p>
     <div style="margin-bottom:10px">
       <div class="form-label">Team member</div>
       <div class="form-row"><select id="hol-member">${memberOpts}</select></div>
@@ -699,7 +716,7 @@ function previewHoliday(){
 
 function calcHolidayDays(mid,from,to){
   const result=[];
-  SPRINTS.forEach(sp=>{
+  SPRINTS().forEach(sp=>{
     const dl=dlist(sp);
     const affected=dl.filter(d=>{
       if(isWk(d))return false;
@@ -739,7 +756,7 @@ function openGuestModal(pre){
         <button class="rm" onclick="removeGuestById('${g.id}')">Remove</button></div>`;}).join('');
   document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)"><div class="modal" onclick="event.stopPropagation()">
     <h3>Manage guests</h3>
-    <p>Add borrowed team members to a group. You can also remove guests by hovering their name in the calendar and pressing ✕.</p>
+    <p>Add borrowed team members. You can also remove guests by hovering their name in the calendar and pressing ✕.</p>
     <div class="form-row"><input id="g-name" placeholder="Full name"/><input id="g-role" placeholder="Role (optional)"/></div>
     <div class="form-row"><select id="g-group">${opts}</select><button class="btn bp" onclick="addGuest()">Add guest</button></div>
     <div class="guest-list" id="guest-list">${items}</div>
@@ -760,10 +777,10 @@ function removeGuestById(id){
 
 // ── SHARE ─────────────────────────────────────────────────────────────────────
 function showShare(){
-  const enc=btoa(JSON.stringify({data,guests,deleted:deletedMembers}));
+  const enc=btoa(JSON.stringify({data,guests,deleted:deletedMembers,sprintDates,sprintNotes}));
   const u=new URL(location.href.split('?')[0]);u.searchParams.set('d',enc);
   document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)"><div class="modal" onclick="event.stopPropagation()">
-    <h3>Share & export</h3><p>This URL includes all leave data.</p>
+    <h3>Share & export</h3><p>This URL includes all leave data, sprint notes and custom sprint dates.</p>
     <pre id="su">${u.toString()}</pre>
     <div class="mbtns"><button class="btn" onclick="cm()">Close</button>
     <button class="btn bp" onclick="navigator.clipboard.writeText(document.getElementById('su').textContent).then(()=>showToast('URL copied'))">Copy URL</button></div>
@@ -771,14 +788,14 @@ function showShare(){
 }
 function cm(e){if(!e||e.target.classList.contains('mbg'))document.getElementById('ma').innerHTML='';}
 function clearAll(){
-  if(!confirm('Clear all leave data?'))return;
+  if(!confirm('Clear all leave data? Notes, custom sprint dates and guests are kept.'))return;
   data={};sd();renderAll();setSyncStatus('','Cleared — remember to save');
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 ld();
 const todayStr=new Date().toISOString().slice(0,10);
-cur=SPRINTS.find(s=>todayStr>=s.s&&todayStr<=s.e)||SPRINTS[0];
+cur=SPRINTS().find(s=>todayStr>=s.s&&todayStr<=s.e)||SPRINTS()[0];
 renderNav();renderCards();renderCtx();renderCal();
 loadFromSheets();
 </script>
