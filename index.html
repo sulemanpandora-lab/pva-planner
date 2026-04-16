@@ -158,7 +158,8 @@ tr:last-child td{border-bottom:none}
   </div>
   <div class="hr">
     <div class="sync-status"><div class="sync-dot" id="sdot"></div><span id="slbl">Not synced</span></div>
-    <button class="btn" style="background:var(--gn-bg);color:var(--gn-tx);border-color:transparent" onclick="openSyncModal()">⟳ Sync</button>
+    <button class="btn" id="save-btn" style="background:var(--gn-bg);color:var(--gn-tx);border-color:transparent" onclick="syncToSheets()">Save</button>
+    <button class="btn" onclick="loadFromSheets()" title="Load latest from Google Sheets">⟳ Load</button>
     <button class="btn bam" onclick="openHolidayModal()">Plan longer leave</button>
     <button class="btn bpu" onclick="openGuestModal()">+ Guests</button>
     <button class="btn" onclick="showShare()">Share</button>
@@ -387,6 +388,7 @@ function saveSprintDates(id){
   sd();cm();
   if(cur&&cur.id===id){cur=getSprint(id);}
   renderAll();
+  syncToSheets();
   showToast('Sprint dates updated');
 }
 
@@ -395,6 +397,7 @@ function resetSprintDates(id){
   sd();cm();
   if(cur&&cur.id===id){cur=getSprint(id);}
   renderAll();
+  syncToSheets();
   showToast('Sprint dates reset to default');
 }
 
@@ -615,6 +618,7 @@ function renderCal(){
 function tog(sid,mid,ds){
   const v=gs(sid,mid,ds);ss(sid,mid,ds,v?null:'off');
   renderCards();renderCal();renderNav();if(tab==='sp')renderSP();
+  syncToSheets();
   showToast(v?'Cleared':'Marked OFF');
 }
 function pick(id){cur=getSprint(id);renderNav();renderCards();renderCtx();renderCal();if(tab==='sp')renderSP();}
@@ -740,8 +744,9 @@ function bookHoliday(){
   cm();renderAll();
   const total=preview.reduce((a,p)=>a+p.days,0);
   const memberName=allMembers().find(m=>m.id===mid)?.n.split(' ')[0]||'Member';
+  syncToSheets();
   showToast(`${memberName}: ${total} days planned off`,()=>{
-    changes.forEach(c=>ss(c.sid,c.mid,c.ds,null));renderAll();showToast('Leave cancelled');
+    changes.forEach(c=>ss(c.sid,c.mid,c.ds,null));renderAll();syncToSheets();showToast('Leave cancelled');
   },'Cancel leave');
 }
 
