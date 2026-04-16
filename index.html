@@ -57,6 +57,22 @@ tr:last-child td{border-bottom:none}
 .av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;flex-shrink:0}
 .mn{font-size:11px;font-weight:500}.mr{font-size:9px;color:var(--tx3)}
 .guest-badge{font-size:8px;font-weight:500;padding:1px 5px;border-radius:3px;background:var(--pu-bg);color:var(--pu-tx);margin-left:4px;vertical-align:middle}
+.student-badge{font-size:8px;font-weight:500;padding:1px 5px;border-radius:3px;background:var(--gn-bg);color:var(--gn-tx);margin-left:4px;vertical-align:middle}
+
+/* FTE badge — clickable pill on each member row */
+.fte-badge{display:inline-flex;align-items:center;gap:2px;font-size:8px;font-weight:500;padding:1px 6px;border-radius:3px;background:var(--am-bg);color:var(--am-tx);margin-left:5px;vertical-align:middle;cursor:pointer;border:.5px solid transparent;transition:all .1s;position:relative;white-space:nowrap}
+.fte-badge:hover{border-color:var(--am-tx);opacity:.85}
+.fte-badge.fte-half{background:var(--rd-bg);color:var(--rd-tx)}
+.fte-badge.fte-full{display:none}
+
+/* FTE dropdown popup */
+.fte-popup{position:absolute;top:calc(100% + 4px);left:0;z-index:300;background:var(--bg);border:.5px solid var(--bd2);border-radius:var(--rs);box-shadow:0 4px 16px rgba(0,0,0,.12);min-width:130px;padding:4px 0;display:none}
+.fte-popup.open{display:block}
+.fte-opt{display:block;width:100%;text-align:left;padding:6px 12px;font-size:11px;background:none;border:none;color:var(--tx);cursor:pointer;white-space:nowrap}
+.fte-opt:hover{background:var(--bg2)}
+.fte-opt.current{color:var(--ac);font-weight:500}
+.fte-opt.reset{color:var(--tx3);font-size:10px;border-top:.5px solid var(--bd);margin-top:2px;padding-top:6px}
+
 .dtd{text-align:center;padding:2px;border-right:.5px solid var(--bd);border-left:.5px solid var(--bd)}
 .dtd+.dtd{border-left:none}.dtd:last-of-type{border-right:none}
 .db{width:26px;height:26px;border-radius:5px;border:none;background:transparent;cursor:pointer;font-size:9px;color:var(--tx3);margin:auto;display:flex;align-items:center;justify-content:center;transition:all .1s}
@@ -142,6 +158,13 @@ tr:last-child td{border-bottom:none}
 .notes-hint{font-size:10px;color:var(--tx3);margin-top:6px;line-height:1.5}
 .notes-saved{font-size:10px;color:var(--gn-tx);margin-top:4px;opacity:0;transition:opacity .3s}
 .notes-saved.show{opacity:1}
+
+/* Guest type toggle in modal */
+.type-toggle{display:flex;gap:6px;margin-bottom:10px}
+.type-btn{flex:1;padding:7px 10px;border-radius:var(--rs);border:.5px solid var(--bd2);background:var(--bg2);color:var(--tx2);font-size:11px;cursor:pointer;text-align:center;transition:all .1s}
+.type-btn:hover{background:var(--bg3)}
+.type-btn.active{background:var(--ac);color:#fff;border-color:transparent}
+.type-btn.active.student{background:var(--gn-tx);border-color:transparent}
 
 @media(max-width:680px){.main{padding:10px 12px}.mc{min-width:140px}}
 </style>
@@ -245,7 +268,7 @@ const BASE_GROUPS=[
     {id:'finka',n:'Finka',r:'Conversational Expert',sp:'CE',c:'#0f6e56',i:'FI',f:1.0},
   ]},
   {id:'qa',label:'QA / QE',sp:'QE',members:[
-    {id:'saswata',  n:'Saswata Bhattacharya',r:'QA Lead',sp:'QE',c:'#5f5e5a',i:'SB',f:0.5},
+    {id:'saswata',  n:'Saswata Bhattacharya',r:'QA Lead',sp:'QE',c:'#5f5e5a',i:'SB',f:0.3},
     {id:'lakshmi',  n:'Lakshmi Ayothi',      r:'QA',     sp:'QE',c:'#185fa5',i:'LA',f:1.0},
     {id:'shivanand',n:'Shivanand',            r:'QA',     sp:'QE',c:'#993c1d',i:'SH',f:1.0},
   ]},
@@ -289,12 +312,12 @@ const RELEASES=[
 ];
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let data={}, guests=[], deletedMembers=[], sprintDates={}, sprintNotes={}, cur=null, tab='cap';
-// sprintDates[sprintId] = {s:'2026-04-02', e:'2026-04-29'} — overrides default dates
-// sprintNotes[sprintId] = 'text...'
+// fteOverrides: { memberId: 0.5 | 0.8 }  — only stored when != 1.0
+// (base members with hardcoded f<1 like Bahri/Saswata keep their base f,
+//  but can also be overridden here)
+let data={}, guests=[], deletedMembers=[], sprintDates={}, sprintNotes={}, fteOverrides={}, cur=null, tab='cap';
 let lastSynced=null, toastTimer=null;
 
-// Get effective sprint dates (custom or default)
 function getSprint(id){
   const def=DEFAULT_SPRINTS.find(s=>s.id===id);
   if(!def)return null;
@@ -303,15 +326,101 @@ function getSprint(id){
 }
 function SPRINTS(){return DEFAULT_SPRINTS.map(s=>getSprint(s.id));}
 
+// ── FTE HELPERS ───────────────────────────────────────────────────────────────
+// Return effective FTE for a member (override takes precedence over base)
+function getMemberFTE(m){
+  if(fteOverrides[m.id]!==undefined)return fteOverrides[m.id];
+  return m.f;
+}
+function setMemberFTE(mid,fte){
+  const baseMember=BASE_GROUPS.flatMap(g=>g.members).find(m=>m.id===mid)
+    ||guests.find(g=>g.id===mid);
+  const baseF=baseMember?(baseMember.f||1.0):1.0;
+  if(fte===baseF&&fteOverrides[mid]!==undefined){
+    delete fteOverrides[mid];
+  } else if(fte!==baseF){
+    fteOverrides[mid]=fte;
+  }
+  sd();renderAll();syncToSheets();
+}
+
+function fteBadgeHtml(m){
+  const fte=getMemberFTE(m);
+  if(fte===1.0)return '';
+  const pct=Math.round(fte*100);
+  const cls=fte<=0.5?'fte-half':'';
+  return `<span class="fte-badge ${cls}" onclick="openFTEPopup(event,'${m.id}')" title="Click to change FTE">${pct}%</span>`;
+}
+
+function openFTEPopup(e,mid){
+  e.stopPropagation();
+  // Close any open popups first
+  document.querySelectorAll('.fte-popup.open').forEach(p=>p.classList.remove('open'));
+  const badge=e.currentTarget;
+  // Build popup
+  const existing=document.getElementById('fte-popup-'+mid);
+  if(existing){existing.classList.toggle('open');return;}
+  const m=allMembers().find(x=>x.id===mid);
+  const cur=getMemberFTE(m);
+  const baseF=m.f||1.0;
+  const allOpts=[
+    {v:0.3,l:'30% — 1.5 days'},
+    {v:0.5,l:'50% — half time'},
+    {v:0.8,l:'80% — four days'},
+    {v:1.0,l:'100% — full time'},
+  ].map(o=>`<button class="fte-opt${cur===o.v?' current':''}" onclick="setMemberFTE('${mid}',${o.v});closeAllFTEPopups()">${o.l}</button>`).join('');
+  const resetOpt=cur!==baseF?`<button class="fte-opt reset" onclick="setMemberFTE('${mid}',${baseF});closeAllFTEPopups()">Reset to default (${Math.round(baseF*100)}%)</button>`:'';
+  const popup=document.createElement('div');
+  popup.id='fte-popup-'+mid;
+  popup.className='fte-popup open';
+  popup.innerHTML=allOpts+resetOpt;
+  badge.style.position='relative';
+  badge.appendChild(popup);
+}
+
+function openFTEPopupForFull(e,mid){
+  // Called from the member name area when FTE is currently 100% — show badge-less popup
+  e.stopPropagation();
+  document.querySelectorAll('.fte-popup.open').forEach(p=>p.classList.remove('open'));
+  const anchor=e.currentTarget;
+  const existing=document.getElementById('fte-popup-'+mid);
+  if(existing){existing.remove();return;}
+  const m=allMembers().find(x=>x.id===mid);
+  const cur=getMemberFTE(m);
+  const baseF=m.f||1.0;
+  const opts=[
+    {v:0.3,l:'30% — 1.5 days'},
+    {v:0.5,l:'50% — half time'},
+    {v:0.8,l:'80% — four days'},
+    {v:1.0,l:'100% — full time'},
+  ].map(o=>`<button class="fte-opt${cur===o.v?' current':''}" onclick="setMemberFTE('${mid}',${o.v});closeAllFTEPopups()">${o.l}</button>`).join('');
+  const resetOpt=(cur!==1.0||cur!==baseF)?`<button class="fte-opt reset" onclick="setMemberFTE('${mid}',1.0);closeAllFTEPopups()">100% — full time</button>`:'';
+  const popup=document.createElement('div');
+  popup.id='fte-popup-'+mid;
+  popup.className='fte-popup open';
+  popup.style.cssText='position:absolute;top:calc(100% + 4px);left:0;z-index:300';
+  popup.innerHTML=opts+resetOpt;
+  anchor.style.position='relative';
+  anchor.appendChild(popup);
+}
+
+function closeAllFTEPopups(){
+  document.querySelectorAll('.fte-popup').forEach(p=>p.remove());
+}
+
+// Close popups when clicking elsewhere
+document.addEventListener('click',()=>closeAllFTEPopups());
+
+// ── PERSIST ───────────────────────────────────────────────────────────────────
 function ld(){
   try{
     const p=new URLSearchParams(location.search).get('d');
-    if(p){const d=JSON.parse(atob(p));data=d.data||{};guests=d.guests||[];deletedMembers=d.deleted||[];sprintDates=d.sprintDates||{};sprintNotes=d.sprintNotes||{};return;}
+    if(p){const d=JSON.parse(atob(p));data=d.data||{};guests=d.guests||[];deletedMembers=d.deleted||[];sprintDates=d.sprintDates||{};sprintNotes=d.sprintNotes||{};fteOverrides=d.fteOverrides||{};return;}
     const s=JSON.parse(localStorage.getItem('pva26c')||'{}');
-    data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];sprintDates=s.sprintDates||{};sprintNotes=s.sprintNotes||{};
+    data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];sprintDates=s.sprintDates||{};sprintNotes=s.sprintNotes||{};fteOverrides=s.fteOverrides||{};
   }catch(e){}
 }
-function sd(){localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers,sprintDates,sprintNotes}));}
+function sd(){localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers,sprintDates,sprintNotes,fteOverrides}));}
 
 // ── SYNC ──────────────────────────────────────────────────────────────────────
 function setSyncStatus(st,label){
@@ -322,7 +431,7 @@ async function syncToSheets(){
   setSyncStatus('busy','Saving...');
   try{
     const r=await(await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({action:'save',data:{data,guests,deleted:deletedMembers,sprintDates,sprintNotes}}),redirect:'follow'})).json();
+      body:JSON.stringify({action:'save',data:{data,guests,deleted:deletedMembers,sprintDates,sprintNotes,fteOverrides}}),redirect:'follow'})).json();
     if(r.ok){lastSynced=new Date();setSyncStatus('ok','Saved '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));showToast('Saved to Google Sheets');}
     else{setSyncStatus('err','Save failed');showToast('Save failed: '+r.error);}
   }catch(e){setSyncStatus('err','Save failed');showToast('Save failed — '+e.message);}
@@ -334,7 +443,7 @@ async function loadFromSheets(){
       body:JSON.stringify({action:'load'}),redirect:'follow'})).json();
     if(r.ok&&r.data){
       data=r.data.data||{};guests=r.data.guests||[];deletedMembers=r.data.deleted||[];
-      sprintDates=r.data.sprintDates||{};sprintNotes=r.data.sprintNotes||{};
+      sprintDates=r.data.sprintDates||{};sprintNotes=r.data.sprintNotes||{};fteOverrides=r.data.fteOverrides||{};
       sd();renderNav();renderCards();renderCtx();renderCal();
       if(tab==='sp')renderSP();if(tab==='ov')renderOV();
       lastSynced=new Date();setSyncStatus('ok','Loaded '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
@@ -342,16 +451,6 @@ async function loadFromSheets(){
     }else if(r.ok&&!r.data){setSyncStatus('ok','Sheet is empty');showToast('No data yet — save first');}
     else{setSyncStatus('err','Load failed');showToast('Load failed: '+r.error);}
   }catch(e){setSyncStatus('err','Load failed');showToast('Load failed — '+e.message);}
-}
-function openSyncModal(){
-  const t=lastSynced?'Last synced at '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):'Not synced yet this session.';
-  document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)"><div class="modal" onclick="event.stopPropagation()">
-    <h3>Google Sheets sync</h3><p>Load to get latest shared data, or save to push your changes.</p>
-    <p style="color:var(--ac-tx);font-size:11px">${t}</p>
-    <div class="mbtns"><button class="btn" onclick="cm()">Cancel</button>
-    <button class="btn" style="color:var(--ac)" onclick="loadFromSheets();cm()">Load latest</button>
-    <button class="btn bp" onclick="syncToSheets();cm()">Save changes</button></div>
-  </div></div>`;
 }
 
 // ── EDIT SPRINT DATES ─────────────────────────────────────────────────────────
@@ -387,8 +486,7 @@ function saveSprintDates(id){
   sprintDates[id]={s:from,e:to};
   sd();cm();
   if(cur&&cur.id===id){cur=getSprint(id);}
-  renderAll();
-  syncToSheets();
+  renderAll();syncToSheets();
   showToast('Sprint dates updated');
 }
 
@@ -396,8 +494,7 @@ function resetSprintDates(id){
   delete sprintDates[id];
   sd();cm();
   if(cur&&cur.id===id){cur=getSprint(id);}
-  renderAll();
-  syncToSheets();
+  renderAll();syncToSheets();
   showToast('Sprint dates reset to default');
 }
 
@@ -414,15 +511,21 @@ function fdisp(d){return d.toLocaleDateString('en-GB',{day:'2-digit',month:'shor
 function fshort(ds){if(!ds)return'—';return new Date(ds).toLocaleDateString('en-GB',{day:'2-digit',month:'short'});}
 function cap(sid,mid,dl){const w=dl.filter(d=>!isWk(d));const off=w.filter(d=>gs(sid,mid,fd(d))==='off').length;return{t:w.length,off,av:w.length-off};}
 function initials(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
+
 function buildGroups(){
   const groups=BASE_GROUPS.map(g=>({...g,members:g.members.filter(m=>!deletedMembers.includes(m.id))}));
-  guests.forEach(g=>{const grp=groups.find(gr=>gr.id===g.groupId);
-    if(grp&&!grp.members.find(m=>m.id===g.id))
-      grp.members.push({id:g.id,n:g.name,r:g.role||'Guest',sp:grp.sp,c:'#7f77dd',i:initials(g.name),f:1.0,isGuest:true});
+  guests.forEach(g=>{
+    const grp=groups.find(gr=>gr.id===g.groupId);
+    if(grp&&!grp.members.find(m=>m.id===g.id)){
+      // Guest base FTE: students default 0.5, others 1.0
+      const baseF=g.isStudent?0.5:1.0;
+      grp.members.push({id:g.id,n:g.name,r:g.role||'Guest',sp:grp.sp,c:'#7f77dd',i:initials(g.name),f:baseF,isGuest:true,isStudent:g.isStudent||false});
+    }
   });
   return groups.filter(g=>g.members.length>0);
 }
 function allMembers(){return buildGroups().flatMap(g=>g.members);}
+
 function deleteMember(id,isGuest){
   if(isGuest){
     const saved=guests.find(g=>g.id===id);if(!saved)return;
@@ -437,7 +540,7 @@ function deleteMember(id,isGuest){
 function renderAll(){renderNav();renderCards();renderCtx();renderCal();if(tab==='sp')renderSP();if(tab==='ov')renderOV();}
 function roleSP(sp,rid){
   const dl=dlist(sp),ms=allMembers().filter(m=>m.sp===rid);
-  let h=0;ms.forEach(m=>{const c=cap(sp.id,m.id,dl);h+=c.av*8*m.f;});
+  let h=0;ms.forEach(m=>{const c=cap(sp.id,m.id,dl);h+=c.av*8*getMemberFTE(m);});
   return Math.round(h*0.70/8*10)/10;
 }
 function totalSP(sp){return SP_ROLES.reduce((a,r)=>a+roleSP(sp,r.id),0);}
@@ -478,7 +581,6 @@ function renderNav(){
     const mod=sprintDates[s.id]?' modified':'';
     h+=`<button class="sc${on}${dot}${mod}" onclick="pick('${s.id}')" title="${s.s} → ${s.e}${sprintDates[s.id]?' (custom dates)':''}">${s.l}</button>`;
   });
-  // Edit button for current sprint
   if(cur){
     h+=`<button class="btn" style="font-size:10px;padding:3px 9px;margin-left:6px" onclick="openEditSprintModal('${cur.id}')">Edit sprint dates</button>`;
   }
@@ -536,14 +638,11 @@ function renderCtx(){
       </div>`;
     });
   }
-
-  // Sprint notes
   const note=sprintNotes[sp.id]||'';
   const notesHtml=`
     <textarea class="notes-area" id="sprint-notes-ta" placeholder="What is this sprint focused on? Add epics, blockers, release notes, goals…">${note}</textarea>
     <div class="notes-hint">Saved automatically · synced via Google Sheets</div>
     <div class="notes-saved" id="notes-saved">Saved</div>`;
-
   document.getElementById('ctx-grid').innerHTML=`
     <div class="ctx-panel">
       <div class="ctx-hdr">
@@ -560,16 +659,13 @@ function renderCtx(){
       </div>
       <div class="ctx-body">${notesHtml}</div>
     </div>`;
-
-  // Auto-save notes on input
   let notesTimer;
   const ta=document.getElementById('sprint-notes-ta');
   if(ta){
     ta.addEventListener('input',()=>{
       clearTimeout(notesTimer);
       notesTimer=setTimeout(()=>{
-        sprintNotes[sp.id]=ta.value;
-        sd();
+        sprintNotes[sp.id]=ta.value;sd();
         const saved=document.getElementById('notes-saved');
         if(saved){saved.classList.add('show');setTimeout(()=>saved.classList.remove('show'),1500);}
       },600);
@@ -590,18 +686,26 @@ function renderCal(){
     const gn=gc>0?` <span style="color:var(--pu-tx);font-size:9px">(+${gc} guest${gc>1?'s':''})</span>`:'';
     h+=`<tr class="grp-hdr"><td colspan="${dl.length+2}">${g.label}${gn}<button class="add-guest-btn" onclick="openGuestModal('${g.id}')">+ Add guest</button></td></tr>`;
     g.members.forEach(m=>{
-      const c=cap(s.id,m.id,dl),pct=Math.round(c.av/c.t*100);
+      const fte=getMemberFTE(m);
+      const c=cap(s.id,m.id,dl);
+      // Effective available days adjusted for FTE
+      const avEff=Math.round(c.av*fte*10)/10;
+      const pct=Math.round(avEff/(c.t*fte)*100);
       const fc=pct<60?'hi':pct<80?'mi':'lo';
       const gb=m.isGuest?'<span class="guest-badge">GUEST</span>':'';
+      const sb=m.isStudent?'<span class="student-badge">STUDENT</span>':'';
       const db=`<button class="del-btn" onclick="deleteMember('${m.id}',${m.isGuest?'true':'false'})" title="Remove">✕</button>`;
+      // FTE indicator: badge if <100%, or a subtle click target if 100%
+      const fteBadge=fteBadgeHtml(m);
+      const fteFullBtn=fte===1.0?`<span style="font-size:8px;color:var(--tx3);margin-left:5px;cursor:pointer;vertical-align:middle;opacity:0.5" onclick="openFTEPopupForFull(event,'${m.id}')" title="Change FTE">FTE</span>`:'';
       h+=`<tr class="mrow"><td><div class="mc"><div class="av" style="background:${m.c}22;color:${m.c}">${m.i}</div>
-        <div style="flex:1"><div class="mn">${m.n}${gb}${db}</div><div class="mr">${m.r}</div></div></div></td>`;
+        <div style="flex:1"><div class="mn">${m.n}${gb}${sb}${db}${fteBadge}${fteFullBtn}</div><div class="mr">${m.r}</div></div></div></td>`;
       dl.forEach(d=>{
         if(isWk(d)){h+=`<td class="dtd"><button class="db wknd" disabled></button></td>`;return;}
         const ds=fd(d),st=gs(s.id,m.id,ds);
         h+=`<td class="dtd"><button class="db${st==='off'?' off':''}" onclick="tog('${s.id}','${m.id}','${ds}')">${st==='off'?'OFF':''}</button></td>`;
       });
-      h+=`<td class="cc"><div class="cl">${c.av}/${c.t}d</div><div class="cb"><div class="cf ${fc}" style="width:${pct}%"></div></div></td></tr>`;
+      h+=`<td class="cc"><div class="cl">${avEff}/${Math.round(c.t*fte)}d</div><div class="cb"><div class="cf ${fc}" style="width:${pct}%"></div></div></td></tr>`;
     });
   });
   h+=`</tbody>`;
@@ -611,10 +715,12 @@ function renderCal(){
     <span>Click a day to toggle leave / OFF</span>
     <div style="display:flex;align-items:center;gap:4px"><div class="ld" style="background:var(--rd-bg);border:1px solid var(--rd-tx)"></div>Leave / OFF</div>
     <div style="display:flex;align-items:center;gap:4px"><div class="ld" style="background:var(--pu-bg);border:1px solid var(--pu-tx)"></div>Guest</div>
+    <div style="display:flex;align-items:center;gap:4px"><div class="ld" style="background:var(--gn-bg);border:1px solid var(--gn-tx)"></div>Student</div>
     <span style="color:var(--tx3)">Sprint ${cur.l}: ${fdisp(new Date(cur.s))} → ${fdisp(new Date(cur.e))}</span>
-    <span style="color:var(--tx3);margin-left:auto">Hover name → ✕ to remove</span>
+    <span style="color:var(--tx3);margin-left:auto">Click <strong>FTE</strong> badge or "FTE" label to change allocation</span>
   </div>`);
 }
+
 function tog(sid,mid,ds){
   const v=gs(sid,mid,ds);ss(sid,mid,ds,v?null:'off');
   renderCards();renderCal();renderNav();if(tab==='sp')renderSP();
@@ -636,10 +742,13 @@ function renderSP(){
     const v=roleSP(cur,r.id),pct=Math.round(v/mx*100);
     const members=ms.filter(m=>m.sp===r.id);
     const rows=members.map(m=>{
-      const c=cap(cur.id,m.id,dl),msp=Math.round(c.av*8*m.f*0.70/8*10)/10;
+      const fte=getMemberFTE(m);
+      const c=cap(cur.id,m.id,dl);
+      const msp=Math.round(c.av*fte*0.70*10)/10;
       const on=c.off>0?`<span style="color:var(--rd-tx);font-size:8px;margin-left:4px">${c.off}d off</span>`:'';
+      const fteTxt=fte<1.0?`<span style="color:var(--am-tx);font-size:8px;margin-left:4px">${Math.round(fte*100)}%</span>`:'';
       return`<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:.5px solid var(--bd);font-size:10px">
-        <span style="color:var(--tx2)">${m.n.split(' ')[0]}${on}</span>
+        <span style="color:var(--tx2)">${m.n.split(' ')[0]}${on}${fteTxt}</span>
         <span style="font-weight:500;color:var(--tx)">${msp} SP</span></div>`;
     }).join('');
     h+=`<div class="spc"><div class="spr">${r.label}</div>
@@ -753,27 +862,58 @@ function bookHoliday(){
 // ── GUEST MODAL ───────────────────────────────────────────────────────────────
 function openGuestModal(pre){
   const opts=BASE_GROUPS.map(g=>`<option value="${g.id}"${g.id===pre?' selected':''}>${g.label}</option>`).join('');
-  const items=guests.length===0?'<div style="font-size:11px;color:var(--tx3);text-align:center;padding:10px 0">No guests added yet</div>'
-    :guests.map(g=>{const grp=BASE_GROUPS.find(gr=>gr.id===g.groupId);
-      return`<div class="guest-item"><div><span style="font-weight:500">${g.name}</span>
-        <span style="color:var(--tx3);margin-left:6px">${g.role||'Guest'}</span>
-        <span style="color:var(--pu-tx);font-size:10px;margin-left:6px">→ ${grp?grp.label:'?'}</span></div>
-        <button class="rm" onclick="removeGuestById('${g.id}')">Remove</button></div>`;}).join('');
+  const items=guests.length===0
+    ?'<div style="font-size:11px;color:var(--tx3);text-align:center;padding:10px 0">No guests added yet</div>'
+    :guests.map(g=>{
+      const grp=BASE_GROUPS.find(gr=>gr.id===g.groupId);
+      const typeBadge=g.isStudent
+        ?'<span class="student-badge">STUDENT · 50%</span>'
+        :'<span class="guest-badge">GUEST</span>';
+      return`<div class="guest-item">
+        <div>
+          <span style="font-weight:500">${g.name}</span>
+          <span style="color:var(--tx3);margin-left:6px">${g.role||'Guest'}</span>
+          ${typeBadge}
+          <span style="color:var(--pu-tx);font-size:10px;margin-left:6px">→ ${grp?grp.label:'?'}</span>
+        </div>
+        <button class="rm" onclick="removeGuestById('${g.id}')">Remove</button>
+      </div>`;}).join('');
+
   document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)"><div class="modal" onclick="event.stopPropagation()">
     <h3>Manage guests</h3>
-    <p>Add borrowed team members. You can also remove guests by hovering their name in the calendar and pressing ✕.</p>
+    <p>Add borrowed team members or students. Students default to 50% FTE — you can adjust afterwards.</p>
+
+    <div class="form-label" style="margin-bottom:6px">Type</div>
+    <div class="type-toggle" id="type-toggle">
+      <button type="button" class="type-btn active" id="type-guest" onclick="selectGuestType('guest')">Regular guest</button>
+      <button type="button" class="type-btn student" id="type-student" onclick="selectGuestType('student')">Student (50%)</button>
+    </div>
     <div class="form-row"><input id="g-name" placeholder="Full name"/><input id="g-role" placeholder="Role (optional)"/></div>
-    <div class="form-row"><select id="g-group">${opts}</select><button class="btn bp" onclick="addGuest()">Add guest</button></div>
+    <div class="form-row"><select id="g-group">${opts}</select><button class="btn bp" onclick="addGuest()">Add</button></div>
     <div class="guest-list" id="guest-list">${items}</div>
     <div class="mbtns"><button class="btn" onclick="cm()">Close</button></div>
   </div></div>`;
 }
-function addGuest(){
-  const name=document.getElementById('g-name').value.trim(),role=document.getElementById('g-role').value.trim(),groupId=document.getElementById('g-group').value;
-  if(!name)return showToast('Enter a name');
-  guests.push({id:'guest_'+Date.now(),name,role,groupId});
-  sd();openGuestModal(groupId);renderAll();showToast(name+' added as guest');
+
+let _guestType='guest';
+function selectGuestType(type){
+  _guestType=type;
+  document.getElementById('type-guest').classList.toggle('active',type==='guest');
+  document.getElementById('type-student').classList.toggle('active',type==='student');
 }
+
+function addGuest(){
+  const name=document.getElementById('g-name').value.trim();
+  const role=document.getElementById('g-role').value.trim();
+  const groupId=document.getElementById('g-group').value;
+  const isStudent=_guestType==='student';
+  if(!name)return showToast('Enter a name');
+  guests.push({id:'guest_'+Date.now(),name,role,groupId,isStudent});
+  _guestType='guest';
+  sd();openGuestModal(groupId);renderAll();
+  showToast(name+' added'+(isStudent?' (student · 50%)':''));
+}
+
 function removeGuestById(id){
   const g=guests.find(x=>x.id===id);if(!g)return;
   const saved={...g};guests=guests.filter(x=>x.id!==id);sd();openGuestModal();renderAll();
@@ -782,10 +922,10 @@ function removeGuestById(id){
 
 // ── SHARE ─────────────────────────────────────────────────────────────────────
 function showShare(){
-  const enc=btoa(JSON.stringify({data,guests,deleted:deletedMembers,sprintDates,sprintNotes}));
+  const enc=btoa(JSON.stringify({data,guests,deleted:deletedMembers,sprintDates,sprintNotes,fteOverrides}));
   const u=new URL(location.href.split('?')[0]);u.searchParams.set('d',enc);
   document.getElementById('ma').innerHTML=`<div class="mbg" onclick="cm(event)"><div class="modal" onclick="event.stopPropagation()">
-    <h3>Share & export</h3><p>This URL includes all leave data, sprint notes and custom sprint dates.</p>
+    <h3>Share & export</h3><p>This URL includes all leave data, sprint notes, FTE overrides and custom sprint dates.</p>
     <pre id="su">${u.toString()}</pre>
     <div class="mbtns"><button class="btn" onclick="cm()">Close</button>
     <button class="btn bp" onclick="navigator.clipboard.writeText(document.getElementById('su').textContent).then(()=>showToast('URL copied'))">Copy URL</button></div>
