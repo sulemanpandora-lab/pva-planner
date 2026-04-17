@@ -30,6 +30,10 @@ header{background:var(--bg);border-bottom:.5px solid var(--bd2);padding:12px 22p
 .sc.dot::after{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:#97c459;margin-left:4px;vertical-align:middle}
 .sc.modified{border-color:var(--am-tx);color:var(--am-tx)}
 .sc.modified.on{background:var(--am-tx);color:#fff;border-color:transparent}
+.sc.today{border-color:var(--gn-tx);color:var(--gn-tx);font-weight:500}
+.sc.today::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--gn-tx);margin-right:4px;vertical-align:middle}
+.sc.today.on{background:var(--ac);color:#fff;border-color:transparent}
+.sc.today.on::before{background:#fff;opacity:.7}
 .srow{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px;margin-bottom:18px}
 .sc2{background:var(--bg);border-radius:var(--rs);border:.5px solid var(--bd);padding:11px 13px}
 .sv{font-size:20px;font-weight:500}.sl{font-size:10px;color:var(--tx3);margin-top:2px}
@@ -571,6 +575,9 @@ function switchTab(name,el){
 
 // ── SPRINT NAV ────────────────────────────────────────────────────────────────
 function renderNav(){
+  const _n=new Date();
+  const nowStr=_n.getFullYear()+'-'+String(_n.getMonth()+1).padStart(2,'0')+'-'+String(_n.getDate()).padStart(2,'0');
+  const activeSprint=SPRINTS().find(s=>nowStr>=s.s&&nowStr<=s.e);
   let h='',lq=null;
   DEFAULT_SPRINTS.forEach(def=>{
     const s=getSprint(def.id);
@@ -579,7 +586,8 @@ function renderNav(){
     const on=cur&&cur.id===s.id?' on':'';
     const dot=hd&&!on?' dot':'';
     const mod=sprintDates[s.id]?' modified':'';
-    h+=`<button class="sc${on}${dot}${mod}" onclick="pick('${s.id}')" title="${s.s} → ${s.e}${sprintDates[s.id]?' (custom dates)':''}">${s.l}</button>`;
+    const isToday=activeSprint&&activeSprint.id===s.id?' today':'';
+    h+=`<button class="sc${on}${dot}${mod}${isToday}" onclick="pick('${s.id}')" title="${s.s} → ${s.e}${sprintDates[s.id]?' (custom dates)':''}${isToday?' · Current sprint':''}">${s.l}</button>`;
   });
   if(cur){
     h+=`<button class="btn" style="font-size:10px;padding:3px 9px;margin-left:6px" onclick="openEditSprintModal('${cur.id}')">Edit sprint dates</button>`;
@@ -939,7 +947,8 @@ function clearAll(){
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 ld();
-const todayStr=new Date().toISOString().slice(0,10);
+const _t=new Date();
+const todayStr=_t.getFullYear()+'-'+String(_t.getMonth()+1).padStart(2,'0')+'-'+String(_t.getDate()).padStart(2,'0');
 cur=SPRINTS().find(s=>todayStr>=s.s&&todayStr<=s.e)||SPRINTS()[0];
 renderNav();renderCards();renderCtx();renderCal();
 loadFromSheets();
