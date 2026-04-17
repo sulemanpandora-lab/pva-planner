@@ -13,6 +13,8 @@ A sprint capacity planning tool for visualising and managing team capacity acros
 ### Sprint navigation
 - 25 sprints across Q1–Q4 2026, all in 2-week cycles
 - Click any sprint (S1–S25) to navigate to it
+- The **current sprint** is highlighted in green so you always know where you are
+- The **selected sprint** (the one you are viewing) is highlighted in blue
 - Sprints with data show a green dot indicator
 - Sprints with custom dates are highlighted in amber
 
@@ -158,6 +160,55 @@ FTE describes what percentage of a person's working time is dedicated to the tea
 3. Confirm **Who has access** is set to **Anyone**
 4. Deploy and copy the new URL if it changed
 5. Update `PROXY_URL` in `index.html`
+
+---
+
+## Testing after deployment
+
+After every deployment, run a quick sanity check in your browser.
+
+**How to open the console:**
+1. Open the planner at https://sulemanpandora-lab.github.io/pva-planner/
+2. Press **F12** on your keyboard
+3. Click the **Console** tab
+4. Paste the test code below and press **Enter**
+
+**Quick full test — paste this into the console:**
+
+```javascript
+console.clear();
+console.log('=== PVA Planner Test Suite ===\n');
+
+// Test 1 — correct sprint selected
+const today = localDateStr();
+const correct = today >= cur.s && today <= cur.e;
+console.log('1. Current sprint:', correct ? '✅ ' + cur.l : '❌ Wrong sprint, got ' + cur.l + ' for date ' + today);
+
+// Test 2 — green today marker in nav
+const todayBtns = document.querySelectorAll('.sc.today');
+console.log('2. Green today marker:', todayBtns.length === 1 ? '✅ ' + todayBtns[0].textContent.trim() : '❌ Found ' + todayBtns.length + ' markers');
+
+// Test 3 — FTE values
+const members = allMembers();
+const bahri = members.find(m => m.id === 'bahri');
+const saswata = members.find(m => m.id === 'saswata');
+console.log('3. Bahri FTE (expect 0.8):', getMemberFTE(bahri) === 0.8 ? '✅' : '❌ Got ' + getMemberFTE(bahri));
+console.log('4. Saswata FTE (expect 0.3):', getMemberFTE(saswata) === 0.3 ? '✅' : '❌ Got ' + getMemberFTE(saswata));
+
+// Test 4 — removed members are gone
+const shouldBeGone = ['jake', 'satyabrata', 'shivanand'];
+const stillPresent = shouldBeGone.filter(id => members.find(m => m.id === id));
+console.log('5. Removed members:', stillPresent.length === 0 ? '✅ All removed correctly' : '❌ Still present: ' + stillPresent.join(', '));
+
+// Test 5 — team size
+console.log('6. Team size (expect 11):', members.length === 11 ? '✅ ' + members.length : '❌ Got ' + members.length);
+
+console.log('\n=== Done ===');
+```
+
+All lines should show ✅. If any show ❌, take a screenshot and share it to get it fixed.
+
+For the full testing guide see [TESTING.md](TESTING.md).
 
 ---
 
