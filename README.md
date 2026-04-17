@@ -134,17 +134,14 @@ FTE describes what percentage of a person's working time is dedicated to the tea
 | Agentforce / AI | Vinod Karpurne | 100% |
 | Agentforce / AI | Manish Chetani | 100% |
 | Agentforce / AI | Twinkle Garg | 100% |
-| Agentforce / AI | Jake McCarthy | 100% |
 | Frontend | Neeraj Upadhyay | 100% |
 | Frontend | Upender Upender | 100% |
 | Frontend | Mohammed | 100% |
 | Data | Bahri Benguesmia | 80% |
-| Data | Satyabrata | 100% |
 | UX | Aren | 100% |
 | Conversational Expert | Finka | 100% |
 | QA / QE | Saswata Bhattacharya | 30% |
 | QA / QE | Lakshmi Ayothi | 100% |
-| QA / QE | Shivanand | 100% |
 
 ---
 
