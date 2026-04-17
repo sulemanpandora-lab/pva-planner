@@ -6,6 +6,8 @@ A sprint capacity planning tool for visualising and managing team capacity acros
 
 🔗 **Live tool:** https://sulemanpandora-lab.github.io/pva-planner/
 
+> ⚠️ **Internal use only.** This tool is built for the PVA Agentforce team at Pandora Digital. It is not licensed for use by other teams or organisations without explicit permission from Suleman Malik.
+
 ---
 
 ## Features
@@ -16,7 +18,7 @@ A sprint capacity planning tool for visualising and managing team capacity acros
 - The **current sprint** is highlighted in green so you always know where you are
 - The **selected sprint** (the one you are viewing) is highlighted in blue
 - Sprints with data show a green dot indicator
-- Sprints with custom dates are highlighted in amber
+- Sprints with custom dates are highlighted with a yellow dot
 
 ### Summary cards
 At the top of each sprint view:
@@ -24,7 +26,7 @@ At the top of each sprint view:
 - Number of working days in the sprint
 - Capacity percentage (colour-coded green/amber)
 - Total available days
-- Estimated story points (based on 70% feature allocation)
+- Estimated story points (based on configurable feature allocation %)
 
 ### Calendar view
 - Table showing all team members against every day in the sprint
@@ -38,11 +40,7 @@ FTE describes what percentage of a person's working time is dedicated to the tea
 
 - **Default is 100%** — not shown unless changed
 - Reduced FTE appears as an amber badge (e.g. `80%` or `30%`)
-- Click the badge to change FTE — options available:
-  - 30% — approx. 1.5 days per week
-  - 50% — half time
-  - 80% — four days per week
-  - 100% — full time
+- Click the badge to change FTE — options: 30% / 50% / 80% / 100%
 - FTE changes apply globally across all sprints
 - Changes are saved automatically to Google Sheets
 
@@ -54,67 +52,57 @@ FTE describes what percentage of a person's working time is dedicated to the tea
 | Saswata Bhattacharya | 30% |
 | All others | 100% |
 
+### SP settings
+- Configurable via the **⚙ Settings** button in the header
+- Set **feature allocation %** (60% / 65% / 70% / 75% / 80%)
+- Set **SP per day** (0.5 / 1.0 / 1.5 / 2.0)
+- Settings are saved to Google Sheets and apply across all sprints
+
 ### Plan longer leave
-- Mark leave across multiple sprints in one action
-- Select a team member and a date range — all working days in the period are marked as OFF
+- Mark leave across multiple sprints in one action using a date range
 - Preview shows exactly which sprints are affected and how many days
-- Full undo support (8-second window after confirming)
+- Full undo support (8-second window)
 
 ### Guests and students
 - Add borrowed team members as guests to any group
-- Choose a type when adding:
-  - **Regular guest** — defaults to 100% FTE
-  - **Student (50%)** — automatically set to 50% FTE, shown with a green STUDENT badge
-- Remove guests by hovering their name in the calendar and clicking ✕, or via the guest panel
+- **Regular guest** — defaults to 100% FTE
+- **Student (50%)** — automatically set to 50% FTE, shown with a green STUDENT badge
 - Full undo support when removing guests
 
 ### Custom sprint dates
-- Edit the start and end date of any individual sprint (useful for double sprints or shortened sprints)
-- Capacity recalculates automatically when dates change
-- Modified sprints are shown in amber in the navigation bar
-- Reset to the default date with one click
+- Edit the start and end date of any individual sprint
+- Capacity recalculates automatically
+- Modified sprints shown with a yellow dot in the navigation bar
 
 ### Sprint notes
 - Free-text field per sprint for epics, goals, blockers and release notes
-- Auto-saves 600ms after the last keystroke
-- Synced via Google Sheets
+- Auto-saves and syncs via Google Sheets
 
-### SP breakdown (Story Points)
-- Story points broken down by role group: Agentforce/SF, Frontend, UX Design, Conversational Expert, QA/QE, Data
-- Shows story points per person with leave days indicated
-- Capacity allocation model: 10% ceremonies, 70% feature development, 10% enhancements, 10% unplanned
+### SP breakdown
+- Story points broken down by role group
+- Shows SP per person with leave days and FTE indicated
 
 ### Quarter view
-- Overview of all sprints across Q1–Q4
-- Shows capacity percentage, working days, and whether the sprint has notes
+- Overview of all 25 sprints with capacity percentage
 - Click any sprint card to jump directly to it
 
 ### Release calendar
-- Shows relevant platform and PVA releases for each sprint
-- Releases going live during the current sprint are highlighted in amber
-- Direct link to Pandora's full release calendar in Confluence
+- Shows platform and PVA releases per sprint
+- Go-live releases highlighted in amber
 
 ### Google Sheets sync
-- Data auto-saves to Google Sheets on every change
-- Manual **Save** button available in the header
-- **⟳ Load** button pulls the latest data from Google Sheets
-- Sync status shown in the header with a green/amber/red dot and timestamp
-- Data saved includes: leave, guests, deleted members, FTE overrides, custom sprint dates, sprint notes
+- Auto-saves on every change
+- Manual **Save** and **⟳ Load** buttons in the header
+- Sync status shown with a coloured dot and timestamp
 
 ### Share via URL
-- Generate a share link with all current data encoded in the URL
-- Useful for sharing a planning snapshot with stakeholders
+- Generate a snapshot link with all current data encoded
 
 ### Offline resilience
-- Data is cached in the browser's localStorage as a fallback
-- Works even if Google Sheets is temporarily unavailable
+- Data cached in localStorage as fallback
 
 ### Dark mode
-- Automatically adapts to the system's dark mode setting
-
-### Reset
-- **Reset** button clears all leave data
-- Notes, custom sprint dates, and guests are preserved
+- Automatically adapts to system setting
 
 ---
 
@@ -165,50 +153,38 @@ FTE describes what percentage of a person's working time is dedicated to the tea
 
 ## Testing after deployment
 
-After every deployment, run a quick sanity check in your browser.
-
-**How to open the console:**
-1. Open the planner at https://sulemanpandora-lab.github.io/pva-planner/
-2. Press **F12** on your keyboard
-3. Click the **Console** tab
-4. Paste the test code below and press **Enter**
-
-**Quick full test — paste this into the console:**
+1. Open https://sulemanpandora-lab.github.io/pva-planner/
+2. Press **F12** → click **Console**
+3. Type `allow pasting` and press Enter if prompted
+4. Paste and run:
 
 ```javascript
 console.clear();
 console.log('=== PVA Planner Test Suite ===\n');
-
-// Test 1 — correct sprint selected
 const today = localDateStr();
 const correct = today >= cur.s && today <= cur.e;
 console.log('1. Current sprint:', correct ? '✅ ' + cur.l : '❌ Wrong sprint, got ' + cur.l + ' for date ' + today);
-
-// Test 2 — green today marker in nav
 const todayBtns = document.querySelectorAll('.sc.today');
 console.log('2. Green today marker:', todayBtns.length === 1 ? '✅ ' + todayBtns[0].textContent.trim() : '❌ Found ' + todayBtns.length + ' markers');
-
-// Test 3 — FTE values
 const members = allMembers();
 const bahri = members.find(m => m.id === 'bahri');
 const saswata = members.find(m => m.id === 'saswata');
 console.log('3. Bahri FTE (expect 0.8):', getMemberFTE(bahri) === 0.8 ? '✅' : '❌ Got ' + getMemberFTE(bahri));
 console.log('4. Saswata FTE (expect 0.3):', getMemberFTE(saswata) === 0.3 ? '✅' : '❌ Got ' + getMemberFTE(saswata));
-
-// Test 4 — removed members are gone
 const shouldBeGone = ['jake', 'satyabrata', 'shivanand'];
 const stillPresent = shouldBeGone.filter(id => members.find(m => m.id === id));
 console.log('5. Removed members:', stillPresent.length === 0 ? '✅ All removed correctly' : '❌ Still present: ' + stillPresent.join(', '));
-
-// Test 5 — team size
 console.log('6. Team size (expect 11):', members.length === 11 ? '✅ ' + members.length : '❌ Got ' + members.length);
-
 console.log('\n=== Done ===');
 ```
 
-All lines should show ✅. If any show ❌, take a screenshot and share it to get it fixed.
+All lines should show ✅. See [TESTING.md](TESTING.md) for the full guide.
 
-For the full testing guide see [TESTING.md](TESTING.md).
+---
+
+## License
+
+Built for internal use by the PVA Agentforce team at Pandora Digital. Please contact Suleman Malik before using or adapting this tool.
 
 ---
 
