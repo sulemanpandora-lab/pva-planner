@@ -220,6 +220,11 @@ tr:last-child td{border-bottom:none}
 <script>
 const PROXY_URL='https://script.google.com/macros/s/AKfycbzKZycM8lxvENB1x3ZQfhOorKkBfkLAKKCQhgzrUDqb1kanXL7dUPdQDastQ5K3gA7V/exec';
 
+function localDateStr(){
+  const d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
 // ── DEFAULT SPRINTS ───────────────────────────────────────────────────────────
 const DEFAULT_SPRINTS=[
   {id:'Q1-S1',l:'S1',q:'Q1',s:'2026-01-08',e:'2026-01-21'},
@@ -949,10 +954,6 @@ function clearAll(){
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-function localDateStr(){
-  const d=new Date();
-  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-}
 ld();
 cur=SPRINTS().find(s=>{const t=localDateStr();return t>=s.s&&t<=s.e;})||SPRINTS()[0];
 renderNav();renderCards();renderCtx();renderCal();
