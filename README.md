@@ -1,28 +1,118 @@
 # PVA Sprint Capacity Planner 2026
 
-**Owner:** Suleman Malik — Scrum Master, Pandora Digital  
-**Team:** PVA (Agentforce) · Engage Product Area  
-**Live URL:** https://sulemanpandora-lab.github.io/pva-planner/  
-**GitHub repo:** https://github.com/sulemanpandora-lab/pva-planner  
+**Pandora Digital · Agentforce · SM: Suleman Malik**
+
+A sprint capacity planning tool for visualising and managing team capacity across all 25 sprints in 2026.
+
+🔗 **Live tool:** https://sulemanpandora-lab.github.io/pva-planner/
 
 ---
 
-## What is this?
+## Features
 
-A web-based sprint capacity planner for the PVA team at Pandora Digital. It replaces the old Excel-based resource plan and gives the whole team a shared, online view of capacity, leave days, and estimated story points per sprint.
+### Sprint navigation
+- 25 sprints across Q1–Q4 2026, all in 2-week cycles
+- Click any sprint (S1–S25) to navigate to it
+- Sprints with data show a green dot indicator
+- Sprints with custom dates are highlighted in amber
 
----
+### Summary cards
+At the top of each sprint view:
+- Number of team members
+- Number of working days in the sprint
+- Capacity percentage (colour-coded green/amber)
+- Total available days
+- Estimated story points (based on 70% feature allocation)
 
-## How it works
+### Calendar view
+- Table showing all team members against every day in the sprint
+- Click any working day to mark it as **OFF / leave**
+- Click again to clear the mark
+- Weekends are automatically excluded and cannot be toggled
+- Capacity bar per person changes colour: green → amber → red
 
-The planner is a single HTML file (`index.html`) hosted on GitHub Pages. All data is stored in a Google Sheet via Google Apps Script — no server, no database, no tokens that expire.
+### FTE (Full-Time Equivalent)
+FTE describes what percentage of a person's working time is dedicated to the team.
 
-```
-User marks leave days in the planner
-  → Clicks "Sync" → "Save changes"
-    → Google Apps Script writes JSON to Google Sheet (cell A1, "Data" tab)
-      → Any team member clicks "Sync" → "Load latest" to see updated data
-```
+- **Default is 100%** — not shown unless changed
+- Reduced FTE appears as an amber badge (e.g. `80%` or `30%`)
+- Click the badge to change FTE — options available:
+  - 30% — approx. 1.5 days per week
+  - 50% — half time
+  - 80% — four days per week
+  - 100% — full time
+- FTE changes apply globally across all sprints
+- Changes are saved automatically to Google Sheets
+
+**Default FTE per team member:**
+
+| Name | Default FTE |
+|---|---|
+| Bahri Benguesmia | 80% |
+| Saswata Bhattacharya | 30% |
+| All others | 100% |
+
+### Plan longer leave
+- Mark leave across multiple sprints in one action
+- Select a team member and a date range — all working days in the period are marked as OFF
+- Preview shows exactly which sprints are affected and how many days
+- Full undo support (8-second window after confirming)
+
+### Guests and students
+- Add borrowed team members as guests to any group
+- Choose a type when adding:
+  - **Regular guest** — defaults to 100% FTE
+  - **Student (50%)** — automatically set to 50% FTE, shown with a green STUDENT badge
+- Remove guests by hovering their name in the calendar and clicking ✕, or via the guest panel
+- Full undo support when removing guests
+
+### Custom sprint dates
+- Edit the start and end date of any individual sprint (useful for double sprints or shortened sprints)
+- Capacity recalculates automatically when dates change
+- Modified sprints are shown in amber in the navigation bar
+- Reset to the default date with one click
+
+### Sprint notes
+- Free-text field per sprint for epics, goals, blockers and release notes
+- Auto-saves 600ms after the last keystroke
+- Synced via Google Sheets
+
+### SP breakdown (Story Points)
+- Story points broken down by role group: Agentforce/SF, Frontend, UX Design, Conversational Expert, QA/QE, Data
+- Shows story points per person with leave days indicated
+- Capacity allocation model: 10% ceremonies, 70% feature development, 10% enhancements, 10% unplanned
+
+### Quarter view
+- Overview of all sprints across Q1–Q4
+- Shows capacity percentage, working days, and whether the sprint has notes
+- Click any sprint card to jump directly to it
+
+### Release calendar
+- Shows relevant platform and PVA releases for each sprint
+- Releases going live during the current sprint are highlighted in amber
+- Direct link to Pandora's full release calendar in Confluence
+
+### Google Sheets sync
+- Data auto-saves to Google Sheets on every change
+- Manual **Save** button available in the header
+- **⟳ Load** button pulls the latest data from Google Sheets
+- Sync status shown in the header with a green/amber/red dot and timestamp
+- Data saved includes: leave, guests, deleted members, FTE overrides, custom sprint dates, sprint notes
+
+### Share via URL
+- Generate a share link with all current data encoded in the URL
+- Useful for sharing a planning snapshot with stakeholders
+
+### Offline resilience
+- Data is cached in the browser's localStorage as a fallback
+- Works even if Google Sheets is temporarily unavailable
+
+### Dark mode
+- Automatically adapts to the system's dark mode setting
+
+### Reset
+- **Reset** button clears all leave data
+- Notes, custom sprint dates, and guests are preserved
 
 ---
 
@@ -30,125 +120,48 @@ User marks leave days in the planner
 
 | Layer | Technology |
 |---|---|
-| Frontend | Plain HTML + CSS + JavaScript (single file) |
-| Hosting | GitHub Pages (`main` branch) |
-| Database | Google Sheets (JSON in cell A1, "Data" tab) |
-| API layer | Google Apps Script (Web App deployment) |
+| Frontend | Plain HTML + CSS + JS — single `index.html` file |
+| Hosting | GitHub Pages — auto-deploys from main branch |
+| Database | Google Sheets — JSON stored in cell A1, tab "Data" |
+| API | Google Apps Script — Web App |
 
 ---
 
-## Key files
+## Team members
 
-| File | Description |
-|---|---|
-| `index.html` | The entire application — HTML, CSS, and JS in one file |
-| `README.md` | This file |
-
----
-
-## Data storage
-
-**Google Sheet:** https://docs.google.com/spreadsheets/d/1ip1MPwJ0a5grDHpoNfaA7SEyqfZzl8UXCb7M5APjSks  
-**Tab:** `Data`  
-**Cell:** `A1` — contains the full JSON payload with all leave data, guests, and deleted members
-
-**Google Apps Script URL:**
-```
-https://script.google.com/macros/s/AKfycbzKZycM8lxvENB1x3ZQfhOorKkBfkLAKKCQhgzrUDqb1kanXL7dUPdQDastQ5K3gA7V/exec
-```
-
-The script accepts two actions via POST:
-- `{ action: "save", data: { ... } }` — overwrites A1 with new JSON
-- `{ action: "load" }` — returns the JSON from A1
+| Group | Name | FTE |
+|---|---|---|
+| Agentforce / AI | Vinod Karpurne | 100% |
+| Agentforce / AI | Manish Chetani | 100% |
+| Agentforce / AI | Twinkle Garg | 100% |
+| Agentforce / AI | Jake McCarthy | 100% |
+| Frontend | Neeraj Upadhyay | 100% |
+| Frontend | Upender Upender | 100% |
+| Frontend | Mohammed | 100% |
+| Data | Bahri Benguesmia | 80% |
+| Data | Satyabrata | 100% |
+| UX | Aren | 100% |
+| Conversational Expert | Finka | 100% |
+| QA / QE | Saswata Bhattacharya | 30% |
+| QA / QE | Lakshmi Ayothi | 100% |
+| QA / QE | Shivanand | 100% |
 
 ---
 
-## Team structure (hardcoded in index.html)
-
-| Group | Members |
-|---|---|
-| Agentforce / AI | Vinod Karpurne, Manish Chetani, Twinkle Garg, Jake McCarthy |
-| Frontend | Neeraj Upadhyay, Upender Upender, Mohammed |
-| Data | Bahri Benguesmia (0.8 FTE), Satyabrata |
-| UX | Aren |
-| Conversational Expert | Finka |
-| QA / QE | Saswata Bhattacharya (0.5 FTE), Lakshmi Ayothi, Shivanand |
-
-To add or remove permanent team members, edit the `BASE_GROUPS` array in `index.html`. Temporary members can be added via the **"+ Guests"** button in the app without touching the code.
-
----
-
-## Sprint setup
-
-Sprints run from S1 (Jan 2026) to S25 (Dec 2026) in 2-week cycles across Q1–Q4. Defined in the `SPRINTS` array in `index.html`. Each sprint has a start date, end date, and quarter label.
-
----
-
-## How to use
-
-### Marking leave
-1. Open the planner at https://sulemanpandora-lab.github.io/pva-planner/
-2. Select the relevant sprint from the navigation bar
-3. Click any working day for a team member to toggle it as **OFF**
-4. Click **"⟳ Sync"** → **"Save changes"** to push to Google Sheets
-
-### Loading latest data
-1. Click **"⟳ Sync"** → **"Load latest"**
-2. The planner updates with all data saved by the team
-
-### Adding a guest (borrowed team member)
-1. Click **"+ Guests"**
-2. Enter name, role, and select which group they belong to
-3. They appear with a **GUEST** badge and are included in capacity calculations
-
-### Removing a team member
-- Hover over a member's name and click the small **✕** button
-- They are hidden from the planner but their data is preserved
-- This is useful for members who have left the team temporarily
-
----
-
-## Capacity model
-
-| Allocation | Percentage |
-|---|---|
-| Meetings & ceremonies | 10% |
-| Feature development | 70% |
-| Enhancements & fixes | 10% |
-| Jira / unplanned | 10% |
-
-Story point estimates on the **SP breakdown** tab are based on **70% feature allocation** of available working days.
-
----
-
-## How to update the code
+## Updating the code
 
 1. Go to https://github.com/sulemanpandora-lab/pva-planner/edit/main/index.html
-2. Make your changes
-3. Click **"Commit changes"**
-4. GitHub Pages updates automatically within ~1 minute
+2. Select all → delete → paste the new content
+3. Commit — GitHub Pages updates within ~1 minute
 
-For bigger changes, bring the full `index.html` into a Claude conversation with this README for context.
+## If sync stops working
 
----
-
-## History
-
-| Version | Change |
-|---|---|
-| v1 | Initial build with Atlassian/Confluence sync (OAuth token — expired quickly) |
-| v2 | Replaced Confluence sync with Google Sheets + Google Apps Script (no expiry) |
+1. Go to https://script.google.com and open **PVA Planner Sync**
+2. Deploy → Manage deployments → click the pencil icon
+3. Confirm **Who has access** is set to **Anyone**
+4. Deploy and copy the new URL if it changed
+5. Update `PROXY_URL` in `index.html`
 
 ---
 
-## If the sync stops working
-
-The most likely cause is that the Google Apps Script deployment settings changed. To fix:
-
-1. Go to https://script.google.com
-2. Open **"PVA Planner Sync"**
-3. Click **Deploy** → **Manage deployments**
-4. Click the pencil icon → make sure **"Who has access"** is set to **"Anyone"**
-5. Click **Deploy** → copy the new URL
-6. Update `PROXY_URL` in `index.html` (line ~3 of the script section)
-7. Commit to GitHub
+*Maintained by Suleman Malik, Pandora Digital*
