@@ -23,6 +23,9 @@ header{background:var(--bg);border-bottom:.5px solid var(--bd2);padding:12px 22p
 .tab:hover{color:var(--tx);background:var(--bg2)}.tab.on{color:var(--ac);border-bottom-color:var(--ac);font-weight:500}
 .main{max-width:1320px;margin:0 auto;padding:18px 22px}
 .snav{display:flex;align-items:center;gap:5px;margin-bottom:18px;overflow-x:auto;padding-bottom:3px;flex-wrap:wrap}
+.year-toggle{display:flex;background:var(--bg2);border:.5px solid var(--bd2);border-radius:14px;padding:2px;gap:2px;margin-right:6px;flex-shrink:0}
+.ytb{padding:3px 12px;border-radius:12px;border:none;cursor:pointer;font-size:11px;font-weight:500;background:transparent;color:var(--tx2);transition:all .1s}
+.ytb.on{background:var(--ac);color:#fff}
 .ql{font-size:10px;font-weight:500;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-right:2px;white-space:nowrap}
 .qsep{color:var(--bd2);font-size:14px;margin:0 2px}
 .sc{padding:4px 11px;border-radius:20px;border:.5px solid var(--bd2);background:var(--bg);color:var(--tx2);font-size:11px;cursor:pointer;white-space:nowrap;transition:all .1s}
@@ -180,7 +183,7 @@ tr:last-child td{border-bottom:none}
   <div class="logo">
     <div class="lm">PVA</div>
     <div>
-      <div class="lt">Sprint Capacity Planner 2026</div>
+      <div class="lt">Sprint Capacity Planner</div>
       <div class="ls">Pandora Digital · Agentforce · SM: Suleman Malik</div>
     </div>
   </div>
@@ -228,31 +231,62 @@ function localDateStr(){
 
 // ── DEFAULT SPRINTS ───────────────────────────────────────────────────────────
 const DEFAULT_SPRINTS=[
-  {id:'Q1-S1',l:'S1',q:'Q1',s:'2026-01-08',e:'2026-01-21'},
-  {id:'Q1-S2',l:'S2',q:'Q1',s:'2026-01-22',e:'2026-02-04'},
-  {id:'Q1-S3',l:'S3',q:'Q1',s:'2026-02-05',e:'2026-02-18'},
-  {id:'Q1-S4',l:'S4',q:'Q1',s:'2026-02-19',e:'2026-03-04'},
-  {id:'Q1-S5',l:'S5',q:'Q1',s:'2026-03-05',e:'2026-03-18'},
-  {id:'Q2-S1',l:'S6',q:'Q2',s:'2026-03-19',e:'2026-04-01'},
-  {id:'Q2-S2',l:'S7',q:'Q2',s:'2026-04-02',e:'2026-04-15'},
-  {id:'Q2-S3',l:'S8',q:'Q2',s:'2026-04-16',e:'2026-04-29'},
-  {id:'Q2-S4',l:'S9',q:'Q2',s:'2026-04-30',e:'2026-05-13'},
-  {id:'Q2-S5',l:'S10',q:'Q2',s:'2026-05-14',e:'2026-05-27'},
-  {id:'Q2-S6',l:'S11',q:'Q2',s:'2026-05-28',e:'2026-06-10'},
-  {id:'Q3-S1',l:'S12',q:'Q3',s:'2026-06-11',e:'2026-06-24'},
-  {id:'Q3-S2',l:'S13',q:'Q3',s:'2026-06-25',e:'2026-07-08'},
-  {id:'Q3-S3',l:'S14',q:'Q3',s:'2026-07-09',e:'2026-07-22'},
-  {id:'Q3-S4',l:'S15',q:'Q3',s:'2026-07-23',e:'2026-08-05'},
-  {id:'Q3-S5',l:'S16',q:'Q3',s:'2026-08-06',e:'2026-08-19'},
-  {id:'Q3-S6',l:'S17',q:'Q3',s:'2026-08-20',e:'2026-09-02'},
-  {id:'Q3-S7',l:'S18',q:'Q3',s:'2026-09-03',e:'2026-09-16'},
-  {id:'Q4-S1',l:'S19',q:'Q4',s:'2026-09-17',e:'2026-09-30'},
-  {id:'Q4-S2',l:'S20',q:'Q4',s:'2026-10-01',e:'2026-10-14'},
-  {id:'Q4-S3',l:'S21',q:'Q4',s:'2026-10-15',e:'2026-10-28'},
-  {id:'Q4-S4',l:'S22',q:'Q4',s:'2026-10-29',e:'2026-11-11'},
-  {id:'Q4-S5',l:'S23',q:'Q4',s:'2026-11-12',e:'2026-11-25'},
-  {id:'Q4-S6',l:'S24',q:'Q4',s:'2026-11-26',e:'2026-12-09'},
-  {id:'Q4-S7',l:'S25',q:'Q4',s:'2026-12-10',e:'2026-12-23'},
+  // 2026
+  {id:'Q1-S1',l:'S1',q:'Q1',y:2026,s:'2026-01-08',e:'2026-01-21'},
+  {id:'Q1-S2',l:'S2',q:'Q1',y:2026,s:'2026-01-22',e:'2026-02-04'},
+  {id:'Q1-S3',l:'S3',q:'Q1',y:2026,s:'2026-02-05',e:'2026-02-18'},
+  {id:'Q1-S4',l:'S4',q:'Q1',y:2026,s:'2026-02-19',e:'2026-03-04'},
+  {id:'Q1-S5',l:'S5',q:'Q1',y:2026,s:'2026-03-05',e:'2026-03-18'},
+  {id:'Q2-S1',l:'S6',q:'Q2',y:2026,s:'2026-03-19',e:'2026-04-01'},
+  {id:'Q2-S2',l:'S7',q:'Q2',y:2026,s:'2026-04-02',e:'2026-04-15'},
+  {id:'Q2-S3',l:'S8',q:'Q2',y:2026,s:'2026-04-16',e:'2026-04-29'},
+  {id:'Q2-S4',l:'S9',q:'Q2',y:2026,s:'2026-04-30',e:'2026-05-13'},
+  {id:'Q2-S5',l:'S10',q:'Q2',y:2026,s:'2026-05-14',e:'2026-05-27'},
+  {id:'Q2-S6',l:'S11',q:'Q2',y:2026,s:'2026-05-28',e:'2026-06-10'},
+  {id:'Q3-S1',l:'S12',q:'Q3',y:2026,s:'2026-06-11',e:'2026-06-24'},
+  {id:'Q3-S2',l:'S13',q:'Q3',y:2026,s:'2026-06-25',e:'2026-07-08'},
+  {id:'Q3-S3',l:'S14',q:'Q3',y:2026,s:'2026-07-09',e:'2026-07-22'},
+  {id:'Q3-S4',l:'S15',q:'Q3',y:2026,s:'2026-07-23',e:'2026-08-05'},
+  {id:'Q3-S5',l:'S16',q:'Q3',y:2026,s:'2026-08-06',e:'2026-08-19'},
+  {id:'Q3-S6',l:'S17',q:'Q3',y:2026,s:'2026-08-20',e:'2026-09-02'},
+  {id:'Q3-S7',l:'S18',q:'Q3',y:2026,s:'2026-09-03',e:'2026-09-16'},
+  {id:'Q4-S1',l:'S19',q:'Q4',y:2026,s:'2026-09-17',e:'2026-09-30'},
+  {id:'Q4-S2',l:'S20',q:'Q4',y:2026,s:'2026-10-01',e:'2026-10-14'},
+  {id:'Q4-S3',l:'S21',q:'Q4',y:2026,s:'2026-10-15',e:'2026-10-28'},
+  {id:'Q4-S4',l:'S22',q:'Q4',y:2026,s:'2026-10-29',e:'2026-11-11'},
+  {id:'Q4-S5',l:'S23',q:'Q4',y:2026,s:'2026-11-12',e:'2026-11-25'},
+  {id:'Q4-S6',l:'S24',q:'Q4',y:2026,s:'2026-11-26',e:'2026-12-09'},
+  {id:'Q4-S7',l:'S25',q:'Q4',y:2026,s:'2026-12-10',e:'2026-12-23'},
+  // 2027 — Q1 (5 sprints)
+  {id:'27-Q1-S1',l:'S1', q:'Q1',y:2027,s:'2027-01-28',e:'2027-02-10'},
+  {id:'27-Q1-S2',l:'S2', q:'Q1',y:2027,s:'2027-02-11',e:'2027-02-24'},
+  {id:'27-Q1-S3',l:'S3', q:'Q1',y:2027,s:'2027-02-25',e:'2027-03-10'},
+  {id:'27-Q1-S4',l:'S4', q:'Q1',y:2027,s:'2027-03-11',e:'2027-03-24'},
+  {id:'27-Q1-S5',l:'S5', q:'Q1',y:2027,s:'2027-04-01',e:'2027-04-07'},
+  // 2027 — Q2 (6 sprints)
+  {id:'27-Q2-S1',l:'S6', q:'Q2',y:2027,s:'2027-04-08',e:'2027-04-21'},
+  {id:'27-Q2-S2',l:'S7', q:'Q2',y:2027,s:'2027-04-22',e:'2027-05-05'},
+  {id:'27-Q2-S3',l:'S8', q:'Q2',y:2027,s:'2027-05-06',e:'2027-05-19'},
+  {id:'27-Q2-S4',l:'S9', q:'Q2',y:2027,s:'2027-05-20',e:'2027-06-02'},
+  {id:'27-Q2-S5',l:'S10',q:'Q2',y:2027,s:'2027-06-03',e:'2027-06-16'},
+  {id:'27-Q2-S6',l:'S11',q:'Q2',y:2027,s:'2027-06-17',e:'2027-06-30'},
+  // 2027 — Q3 (7 sprints)
+  {id:'27-Q3-S1',l:'S12',q:'Q3',y:2027,s:'2027-07-01',e:'2027-07-14'},
+  {id:'27-Q3-S2',l:'S13',q:'Q3',y:2027,s:'2027-07-15',e:'2027-07-28'},
+  {id:'27-Q3-S3',l:'S14',q:'Q3',y:2027,s:'2027-07-29',e:'2027-08-11'},
+  {id:'27-Q3-S4',l:'S15',q:'Q3',y:2027,s:'2027-08-12',e:'2027-08-25'},
+  {id:'27-Q3-S5',l:'S16',q:'Q3',y:2027,s:'2027-08-26',e:'2027-09-08'},
+  {id:'27-Q3-S6',l:'S17',q:'Q3',y:2027,s:'2027-09-09',e:'2027-09-22'},
+  {id:'27-Q3-S7',l:'S18',q:'Q3',y:2027,s:'2027-09-23',e:'2027-10-06'},
+  // 2027 — Q4 (8 sprints) — S5 dates from Confluence with year corrected 2026→2027
+  {id:'27-Q4-S1',l:'S19',q:'Q4',y:2027,s:'2027-10-07',e:'2027-10-20'},
+  {id:'27-Q4-S2',l:'S20',q:'Q4',y:2027,s:'2027-10-21',e:'2027-11-03'},
+  {id:'27-Q4-S3',l:'S21',q:'Q4',y:2027,s:'2027-11-04',e:'2027-11-17'},
+  {id:'27-Q4-S4',l:'S22',q:'Q4',y:2027,s:'2027-11-18',e:'2027-12-01'},
+  {id:'27-Q4-S5',l:'S23',q:'Q4',y:2027,s:'2027-11-12',e:'2027-11-25'},
+  {id:'27-Q4-S6',l:'S24',q:'Q4',y:2027,s:'2027-12-02',e:'2027-12-15'},
+  {id:'27-Q4-S7',l:'S25',q:'Q4',y:2027,s:'2027-12-16',e:'2027-12-29'},
+  {id:'27-Q4-S8',l:'S26',q:'Q4',y:2027,s:'2027-12-30',e:'2028-01-12'},
 ];
 
 const BASE_GROUPS=[
@@ -316,7 +350,7 @@ const RELEASES=[
 // fteOverrides: { memberId: 0.5 | 0.8 }  — only stored when != 1.0
 // (base members with hardcoded f<1 like Bahri/Saswata keep their base f,
 //  but can also be overridden here)
-let data={}, guests=[], deletedMembers=[], sprintDates={}, sprintNotes={}, fteOverrides={}, spConfig={spPerDay:1.0,featurePct:0.70}, cur=null, tab='cap';
+let data={}, guests=[], deletedMembers=[], sprintDates={}, sprintNotes={}, fteOverrides={}, spConfig={spPerDay:1.0,featurePct:0.70}, curYear=new Date().getFullYear()<2027?2026:2027, cur=null, tab='cap';
 let lastSynced=null, toastTimer=null;
 
 function getSprint(id){
@@ -325,7 +359,8 @@ function getSprint(id){
   if(sprintDates[id])return {...def,...sprintDates[id]};
   return def;
 }
-function SPRINTS(){return DEFAULT_SPRINTS.map(s=>getSprint(s.id));}
+function SPRINTS(){return DEFAULT_SPRINTS.filter(s=>s.y===curYear).map(s=>getSprint(s.id));}
+function setYear(y){curYear=y;cur=SPRINTS().find(s=>{const t=localDateStr();return t>=s.s&&t<=s.e;})||SPRINTS()[0];renderAll();}
 
 // ── FTE HELPERS ───────────────────────────────────────────────────────────────
 // Return effective FTE for a member (override takes precedence over base)
@@ -602,8 +637,10 @@ function switchTab(name,el){
 // ── SPRINT NAV ────────────────────────────────────────────────────────────────
 function renderNav(){
   const activeSprint=SPRINTS().find(s=>{const t=localDateStr();return t>=s.s&&t<=s.e;});
-  let h='',lq=null;
-  DEFAULT_SPRINTS.forEach(def=>{
+  const y26=curYear===2026;
+  let h=`<span class="year-toggle"><button class="ytb${y26?' on':''}" onclick="setYear(2026)">2026</button><button class="ytb${!y26?' on':''}" onclick="setYear(2027)">2027</button></span>`;
+  let lq=null;
+  SPRINTS().forEach(def=>{
     const s=getSprint(def.id);
     if(s.q!==lq){if(lq)h+='<span class="qsep">|</span>';h+=`<span class="ql">${s.q}</span>`;lq=s.q;}
     const hd=!!(data[s.id]&&Object.keys(data[s.id]).length>0);
@@ -800,8 +837,8 @@ function renderSP(){
 function renderOV(){
   const el=document.getElementById('t-ov');let h='';
   ['Q1','Q2','Q3','Q4'].forEach(q=>{
-    const sps=DEFAULT_SPRINTS.filter(s=>s.q===q).map(s=>getSprint(s.id));
-    h+=`<div class="qblock"><div class="qlabel">${q} 2026</div><div class="qgrid">`;
+    const sps=SPRINTS().filter(s=>s.q===q);
+    h+=`<div class="qblock"><div class="qlabel">${q} ${curYear}</div><div class="qgrid">`;
     sps.forEach(s=>{
       const dl=dlist(s),wd=dl.filter(d=>!isWk(d)).length,members=allMembers();
       let off=0;members.forEach(m=>{const c=cap(s.id,m.id,dl);off+=c.off;});
