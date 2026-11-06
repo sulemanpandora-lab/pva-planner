@@ -428,7 +428,7 @@ function ld(){
     data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];sprintDates=s.sprintDates||{};sprintNotes=s.sprintNotes||{};fteOverrides=s.fteOverrides||{};spConfig=s.spConfig||{spPerDay:1.0,featurePct:0.70};
   }catch(e){}
   // Remove guests who are now permanent team members
-  const permanentIds=['siva','vikram','victor'];
+  const permanentIds=['siva','vikram','victor','twinkle'];
   const before=guests.length;
   guests=guests.filter(g=>!permanentIds.some(n=>g.name.toLowerCase().includes(n)));
   if(guests.length!==before)sd();
