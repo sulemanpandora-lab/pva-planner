@@ -420,11 +420,16 @@ function ld(){
     const s=JSON.parse(localStorage.getItem('pva26c')||'{}');
     data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];sprintDates=s.sprintDates||{};sprintNotes=s.sprintNotes||{};fteOverrides=s.fteOverrides||{};spConfig=s.spConfig||{spPerDay:1.0,featurePct:0.70};
   }catch(e){}
-  // Remove guests/deleted entries who are permanent team members
+  // Migrate data + remove guests/deleted entries who are now permanent members
   const baseMembers=BASE_GROUPS.flatMap(g=>g.members);
   const basePermanentIds=baseMembers.map(m=>m.id);
   const permFirstNames=baseMembers.map(m=>m.n.toLowerCase().split(' ')[0]);
   const beforeG=guests.length, beforeD=deletedMembers.length;
+  guests.forEach(g=>{
+    const gFirst=g.name.toLowerCase().split(' ')[0];
+    const perm=baseMembers.find(m=>m.n.toLowerCase().split(' ')[0]===gFirst);
+    if(perm){Object.keys(data).forEach(sid=>{if(data[sid]&&data[sid][g.id]){data[sid][perm.id]=Object.assign({},data[sid][perm.id]||{},data[sid][g.id]);delete data[sid][g.id];}});}
+  });
   guests=guests.filter(g=>!permFirstNames.includes(g.name.toLowerCase().split(' ')[0]));
   deletedMembers=deletedMembers.filter(id=>!basePermanentIds.includes(id));
   if(guests.length!==beforeG||deletedMembers.length!==beforeD)sd();
@@ -453,9 +458,14 @@ async function loadFromSheets(){
     if(r.ok&&r.data){
       data=r.data.data||{};guests=r.data.guests||[];deletedMembers=r.data.deleted||[];
       sprintDates=r.data.sprintDates||{};sprintNotes=r.data.sprintNotes||{};fteOverrides=r.data.fteOverrides||{};spConfig=r.data.spConfig||{spPerDay:1.0,featurePct:0.70};
-      // Strip permanent members from stale Sheets data
+      // Migrate data + strip permanent members from stale Sheets data
       const _bm=BASE_GROUPS.flatMap(g=>g.members);
       const _pi=_bm.map(m=>m.id);const _pn=_bm.map(m=>m.n.toLowerCase().split(' ')[0]);
+      guests.forEach(g=>{
+        const gF=g.name.toLowerCase().split(' ')[0];
+        const pm=_bm.find(m=>m.n.toLowerCase().split(' ')[0]===gF);
+        if(pm){Object.keys(data).forEach(sid=>{if(data[sid]&&data[sid][g.id]){data[sid][pm.id]=Object.assign({},data[sid][pm.id]||{},data[sid][g.id]);delete data[sid][g.id];}});}
+      });
       guests=guests.filter(g=>!_pn.includes(g.name.toLowerCase().split(' ')[0]));
       deletedMembers=deletedMembers.filter(id=>!_pi.includes(id));
       sd();
