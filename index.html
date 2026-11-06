@@ -260,11 +260,9 @@ const BASE_GROUPS=[
     {id:'vinod',  n:'Vinod Karpurne',  r:'Developer Lead',        sp:'AF',c:'#185fa5',i:'VK',f:1.0},
     {id:'manish', n:'Manish Chetani',  r:'Developer (Salesforce)',sp:'AF',c:'#854f0b',i:'MC',f:1.0},
     {id:'twinkle',n:'Twinkle Garg',    r:'Developer (Salesforce)',sp:'AF',c:'#993556',i:'TG',f:1.0},
-    {id:'siva',   n:'Siva',            r:'Developer (AgentForce)',sp:'AF',c:'#0d7a6e',i:'SI',f:1.0},
     {id:'vikram', n:'Vikram',          r:'Developer (AgentForce)',sp:'AF',c:'#6b3a8a',i:'VI',f:1.0},
   ]},
   {id:'fe',label:'Frontend',sp:'FE',members:[
-    {id:'neeraj',   n:'Neeraj Upadhyay',r:'FE Engineer',sp:'FE',c:'#534ab7',i:'NU',f:1.0},
     {id:'upender',  n:'Upender Upender',r:'FE Engineer',sp:'FE',c:'#3b6d11',i:'UU',f:1.0},
     {id:'mohammed', n:'Mohammed',       r:'Developer',  sp:'FE',c:'#0f6e56',i:'MO',f:1.0},
     {id:'victor',   n:'Victor',         r:'FE Engineer',sp:'FE',c:'#b35c00',i:'VC',f:1.0},
@@ -272,13 +270,8 @@ const BASE_GROUPS=[
   {id:'ux',label:'UX',sp:'UX',members:[
     {id:'aren',n:'Aren',r:'UX Designer',sp:'UX',c:'#854f0b',i:'AR',f:1.0},
   ]},
-  {id:'conv',label:'Conversational Expert',sp:'AF',members:[
-    {id:'finka',n:'Finka',r:'Conversational Expert',sp:'CE',c:'#0f6e56',i:'FI',f:1.0},
-  ]},
   {id:'qa',label:'QA / QE',sp:'QE',members:[
-    {id:'saswata',  n:'Saswata Bhattacharya',r:'QA Lead',sp:'QE',c:'#5f5e5a',i:'SB',f:0.3},
-    {id:'lakshmi',  n:'Lakshmi Ayothi',      r:'QA',     sp:'QE',c:'#185fa5',i:'LA',f:1.0},
-
+    {id:'lakshmi',  n:'Lakshmi Ayothi',r:'QA',sp:'QE',c:'#185fa5',i:'LA',f:1.0},
   ]},
 ];
 
@@ -428,7 +421,7 @@ function ld(){
     data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];sprintDates=s.sprintDates||{};sprintNotes=s.sprintNotes||{};fteOverrides=s.fteOverrides||{};spConfig=s.spConfig||{spPerDay:1.0,featurePct:0.70};
   }catch(e){}
   // Remove guests/deleted entries who are now permanent team members
-  const permanentIds=['siva','vikram','victor','twinkle','neeraj','finka','saswata'];
+  const permanentIds=['vikram','victor','twinkle'];
   const basePermanentIds=BASE_GROUPS.flatMap(g=>g.members).map(m=>m.id);
   const beforeG=guests.length, beforeD=deletedMembers.length;
   guests=guests.filter(g=>!permanentIds.some(n=>g.name.toLowerCase().includes(n)));
