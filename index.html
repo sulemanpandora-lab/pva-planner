@@ -420,11 +420,12 @@ function ld(){
     const s=JSON.parse(localStorage.getItem('pva26c')||'{}');
     data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];sprintDates=s.sprintDates||{};sprintNotes=s.sprintNotes||{};fteOverrides=s.fteOverrides||{};spConfig=s.spConfig||{spPerDay:1.0,featurePct:0.70};
   }catch(e){}
-  // Remove guests/deleted entries who are now permanent team members
-  const permanentIds=['vikram','victor','twinkle'];
-  const basePermanentIds=BASE_GROUPS.flatMap(g=>g.members).map(m=>m.id);
+  // Remove guests/deleted entries who are permanent team members
+  const baseMembers=BASE_GROUPS.flatMap(g=>g.members);
+  const basePermanentIds=baseMembers.map(m=>m.id);
+  const permFirstNames=baseMembers.map(m=>m.n.toLowerCase().split(' ')[0]);
   const beforeG=guests.length, beforeD=deletedMembers.length;
-  guests=guests.filter(g=>!permanentIds.some(n=>g.name.toLowerCase().includes(n)));
+  guests=guests.filter(g=>!permFirstNames.includes(g.name.toLowerCase().split(' ')[0]));
   deletedMembers=deletedMembers.filter(id=>!basePermanentIds.includes(id));
   if(guests.length!==beforeG||deletedMembers.length!==beforeD)sd();
 }
@@ -527,10 +528,11 @@ function initials(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase().sli
 
 function buildGroups(){
   const groups=BASE_GROUPS.map(g=>({...g,members:g.members.filter(m=>!deletedMembers.includes(m.id))}));
+  const permFirstNames=BASE_GROUPS.flatMap(g=>g.members).map(m=>m.n.toLowerCase().split(' ')[0]);
   guests.forEach(g=>{
     const grp=groups.find(gr=>gr.id===g.groupId);
-    if(grp&&!grp.members.find(m=>m.id===g.id)){
-      // Guest base FTE: students default 0.5, others 1.0
+    const gFirst=g.name.toLowerCase().split(' ')[0];
+    if(grp&&!grp.members.find(m=>m.id===g.id)&&!permFirstNames.includes(gFirst)){
       const baseF=g.isStudent?0.5:1.0;
       grp.members.push({id:g.id,n:g.name,r:g.role||'Guest',sp:grp.sp,c:'#7f77dd',i:initials(g.name),f:baseF,isGuest:true,isStudent:g.isStudent||false});
     }
