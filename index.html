@@ -453,6 +453,11 @@ async function loadFromSheets(){
     if(r.ok&&r.data){
       data=r.data.data||{};guests=r.data.guests||[];deletedMembers=r.data.deleted||[];
       sprintDates=r.data.sprintDates||{};sprintNotes=r.data.sprintNotes||{};fteOverrides=r.data.fteOverrides||{};spConfig=r.data.spConfig||{spPerDay:1.0,featurePct:0.70};
+      // Strip permanent members from stale Sheets data
+      const _bm=BASE_GROUPS.flatMap(g=>g.members);
+      const _pi=_bm.map(m=>m.id);const _pn=_bm.map(m=>m.n.toLowerCase().split(' ')[0]);
+      guests=guests.filter(g=>!_pn.includes(g.name.toLowerCase().split(' ')[0]));
+      deletedMembers=deletedMembers.filter(id=>!_pi.includes(id));
       sd();
       // Re-evaluate current sprint using local date after data load
       const _loaded=localDateStr();
