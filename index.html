@@ -427,11 +427,13 @@ function ld(){
     const s=JSON.parse(localStorage.getItem('pva26c')||'{}');
     data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];sprintDates=s.sprintDates||{};sprintNotes=s.sprintNotes||{};fteOverrides=s.fteOverrides||{};spConfig=s.spConfig||{spPerDay:1.0,featurePct:0.70};
   }catch(e){}
-  // Remove guests who are now permanent team members
-  const permanentIds=['siva','vikram','victor','twinkle'];
-  const before=guests.length;
+  // Remove guests/deleted entries who are now permanent team members
+  const permanentIds=['siva','vikram','victor','twinkle','neeraj','finka','saswata'];
+  const basePermanentIds=BASE_GROUPS.flatMap(g=>g.members).map(m=>m.id);
+  const beforeG=guests.length, beforeD=deletedMembers.length;
   guests=guests.filter(g=>!permanentIds.some(n=>g.name.toLowerCase().includes(n)));
-  if(guests.length!==before)sd();
+  deletedMembers=deletedMembers.filter(id=>!basePermanentIds.includes(id));
+  if(guests.length!==beforeG||deletedMembers.length!==beforeD)sd();
 }
 function sd(){localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers,sprintDates,sprintNotes,fteOverrides,spConfig}));}
 
