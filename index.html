@@ -133,32 +133,12 @@ tr:last-child td{border-bottom:none}
 .hol-days{color:var(--rd-tx);font-weight:500}
 
 /* Sprint context */
-.ctx-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
-@media(max-width:800px){.ctx-grid{grid-template-columns:1fr}}
+.ctx-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:18px}
 .ctx-panel{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd);overflow:hidden}
 .ctx-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:.5px solid var(--bd);background:var(--bg3);gap:8px;flex-wrap:wrap}
 .ctx-hdr h3{font-size:10px;font-weight:500;color:var(--tx2);text-transform:uppercase;letter-spacing:.5px}
 .ctx-body{padding:12px 14px}
 
-/* Release cards */
-.rel-card{padding:10px 12px;border-radius:var(--rs);border:.5px solid var(--bd);margin-bottom:8px;background:var(--bg2)}
-.rel-card:last-child{margin-bottom:0}
-.rel-card.live-in-sprint{border-color:var(--am-tx);background:var(--am-bg)}
-.rel-name{font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px;margin-bottom:7px;flex-wrap:wrap}
-.rbadge{font-size:9px;padding:1px 6px;border-radius:3px;font-weight:500;white-space:nowrap}
-.rbadge-pva{background:#185fa5;color:#fff}
-.rbadge-platform{background:var(--bg3);color:var(--tx2);border:.5px solid var(--bd2)}
-.rbadge-live{background:var(--am-bg);color:var(--am-tx)}
-.rel-row{display:flex;align-items:center;gap:7px;font-size:10px;color:var(--tx2);margin-bottom:3px}
-.rel-row:last-child{margin-bottom:0}
-.rdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.rdot-green{background:#97c459}.rdot-yellow{background:#ef9f27}
-.rdot-blue{background:#185fa5}.rdot-purple{background:#7f77dd}
-.rlabel{color:var(--tx3);min-width:76px;flex-shrink:0}
-.rval{color:var(--tx);font-weight:500}
-.rvers{font-size:9px;color:var(--tx3);margin-top:4px;font-family:monospace;line-height:1.5}
-.rnote{font-size:9px;color:var(--tx2);margin-top:4px;line-height:1.4}
-.no-rel{padding:20px;text-align:center;color:var(--tx3);font-size:11px}
 
 /* Sprint notes */
 .notes-area{width:100%;min-height:140px;border:.5px solid var(--bd2);border-radius:var(--rs);background:var(--bg2);color:var(--tx);font-size:12px;padding:10px 12px;line-height:1.6;resize:vertical;font-family:inherit}
@@ -319,32 +299,6 @@ const ALLOC=[
   {l:'Enhancements & fixes',p:0.10},{l:'Jira / unplanned',p:0.10},
 ];
 const DAYS=['Su','Mo','Tu','We','Th','Fr','Sa'];
-
-const RELEASES=[
-  {id:'PVA-2.0', label:'PVA 2.0',type:'pva',goLive:'2026-02-17',notes:'Major Agentforce release — React frontend, multi-country scalability'},
-  {id:'PVA-26.1',label:'26.1.0 PVA',type:'pva',goLive:'2026-03-18',notes:'React SPARK release — UI improvements, FAB icon, favorites notifications'},
-  {id:'R126',label:'R126',type:'platform',team:'Inspire Team',branchCut:'2026-01-06',translations2:'2026-01-12',staging:'2026-01-12',goLive:'2026-01-14',versions:'26.1.0_SFRA · 26.1.0_SAMP · 26.1.0_PWA · 26.1.0_INTS'},
-  {id:'R226',label:'R226',type:'platform',team:'Decide Team',branchCut:'2026-01-19',translations2:'2026-01-26',staging:'2026-01-21',goLive:'2026-01-28',versions:'26.2.0_SFCC · 26.2.0_PWA · 26.2.0_AMP · 26.2.0_INTS'},
-  {id:'R326',label:'R326',type:'platform',team:'Pay Team',branchCut:'2026-02-16',translations2:'2026-02-23',staging:'2026-02-23',goLive:'2026-02-25',versions:'26.3.0_SFCC · 26.3.0_PWA · 26.3.0_AMP · 26.3.0_INTS'},
-  {id:'R426',label:'R426',type:'platform',team:'Styling Studio',branchCut:'2026-03-02',translations2:'2026-03-09',staging:'2026-03-09',goLive:'2026-03-18',versions:'26.4.0_SFCC · 26.4.0_PWA · 26.4.0_AMP · 26.4.0_INTS'},
-  {id:'R526',label:'R526',type:'platform',team:'Find Team',branchCut:'2026-03-16',translations2:'2026-03-23',staging:'2026-03-23',goLive:'2026-03-25',versions:'26.5.0_SFCC · 26.5.0_PWA · 26.5.0_AMP · 26.5.0_INTS'},
-  {id:'R626',label:'R626',type:'platform',team:'Loyalty Team',branchCut:'2026-04-07',translations2:'2026-04-13',staging:'2026-04-13',goLive:'2026-04-15',versions:'26.6.0_SFCC · 26.6.0_PWA · 26.6.0_AMP · 26.6.0_INTS'},
-  {id:'R726',label:'R726',type:'platform',team:'Engraving Team',branchCut:'2026-04-20',translations2:'2026-04-27',staging:'2026-04-27',goLive:'2026-04-22',versions:'26.7.0_SFCC · 26.7.0_PWA · 26.7.0_AMP · 26.7.0_INTS'},
-  {id:'R826',label:'R826',type:'platform',team:'Deliver Team',branchCut:'2026-05-05',translations2:'2026-05-11',staging:'2026-05-11',goLive:'2026-05-13',versions:'26.8.0_SFCC · 26.8.0_PWA · 26.8.0_AMP · 26.8.0_INTS'},
-  {id:'R926',label:'R926',type:'platform',team:'Inspire Team',branchCut:'2026-05-18',translations2:'2026-05-25',staging:'2026-05-25',goLive:'2026-05-27',versions:'26.9.0_SFCC · 26.9.0_PWA · 26.9.0_AMP · 26.9.0_INTS'},
-  {id:'R1026',label:'R1026',type:'platform',team:'Decide Team',branchCut:'2026-06-02',translations2:'2026-06-08',staging:'2026-06-08',goLive:'2026-06-10',versions:'26.10.0_SFCC · 26.10.0_PWA · 26.10.0_AMP · 26.10.0_INTS'},
-  {id:'R1126',label:'R1126',type:'platform',team:'Pay Team',branchCut:'2026-06-15',translations2:'2026-06-22',staging:'2026-06-22',goLive:'2026-06-24',versions:'26.11.0_SFCC · 26.11.0_PWA · 26.11.0_AMP · 26.11.0_INTS'},
-  {id:'R1226',label:'R1226',type:'platform',team:'Styling Studio',branchCut:'2026-07-06',translations2:'2026-07-13',staging:'2026-07-13',goLive:'2026-07-08',versions:'26.12.0_SFCC · 26.12.0_PWA · 26.12.0_AMP · 26.12.0_INTS'},
-  {id:'R1326',label:'R1326',type:'platform',team:'Find Team',branchCut:null,translations2:'2026-07-27',staging:'2026-07-27',goLive:'2026-07-22',versions:'26.13.0_SFCC · 26.13.0_PWA · 26.13.0_AMP · 26.13.0_INTS'},
-  {id:'R1426',label:'R1426',type:'platform',team:'Loyalty Team',branchCut:'2026-08-17',translations2:'2026-08-10',staging:'2026-08-10',goLive:'2026-08-12',versions:'26.14.0_SFCC · 26.14.0_PWA · 26.14.0_AMP · 26.14.0_INTS'},
-  {id:'R1526',label:'R1526',type:'platform',team:'Engraving Team',branchCut:'2026-08-24',translations2:'2026-08-31',staging:'2026-08-31',goLive:'2026-08-26',versions:'26.15.0_SFCC · 26.15.0_PWA · 26.15.0_AMP · 26.15.0_INTS'},
-  {id:'R1626',label:'R1626',type:'platform',team:'Deliver Team',branchCut:'2026-09-07',translations2:'2026-09-14',staging:'2026-09-14',goLive:'2026-09-09',versions:'26.16.0_SFCC · 26.16.0_PWA · 26.16.0_AMP · 26.16.0_INTS'},
-  {id:'R1726',label:'R1726',type:'platform',team:'Decide Team',branchCut:'2026-09-21',translations2:'2026-09-28',staging:'2026-09-28',goLive:'2026-09-23',versions:'26.17.0_SFCC · 26.17.0_PWA · 26.17.0_AMP · 26.17.0_INTS'},
-  {id:'R1826',label:'R1826',type:'platform',team:'Pay Team',branchCut:'2026-10-06',translations2:'2026-10-12',staging:'2026-10-12',goLive:'2026-10-14',versions:'26.18.0_SFCC · 26.18.0_PWA · 26.18.0_AMP · 26.18.0_INTS'},
-  {id:'R1926',label:'R1926',type:'platform',team:'Engraving Team',branchCut:'2026-10-26',translations2:'2026-10-19',staging:'2026-10-19',goLive:'2026-10-28',versions:'26.19.0_SFCC · 26.19.0_PWA · 26.19.0_AMP · 26.19.0_INTS'},
-  {id:'R2026',label:'R2026',type:'platform',team:'Find Team',branchCut:'2026-10-20',translations2:null,staging:null,goLive:'2026-11-11',versions:'26.20.0_SFCC · 26.20.0_PWA · 26.20.0_AMP · 26.20.0_INTS'},
-  {id:'R2126',label:'R2126',type:'platform',team:'Deliver Team',branchCut:null,translations2:null,staging:null,goLive:'2026-11-25',versions:'26.21.0_SFCC · 26.21.0_PWA · 26.21.0_AMP · 26.21.0_INTS',notes:'Soft Freeze'},
-];
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 // fteOverrides: { memberId: 0.5 | 0.8 }  — only stored when != 1.0
@@ -572,7 +526,6 @@ function dlist(sp){const a=[],d=new Date(sp.s),e=new Date(sp.e);while(d<=e){a.pu
 function isWk(d){return d.getDay()===0||d.getDay()===6;}
 function fd(d){return d.toISOString().slice(0,10);}
 function fdisp(d){return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});}
-function fshort(ds){if(!ds)return'—';return new Date(ds).toLocaleDateString('en-GB',{day:'2-digit',month:'short'});}
 function cap(sid,mid,dl){const w=dl.filter(d=>!isWk(d));const off=w.filter(d=>gs(sid,mid,fd(d))==='off').length;return{t:w.length,off,av:w.length-off};}
 function initials(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
 
@@ -675,52 +628,14 @@ function renderCards(){
 }
 
 // ── SPRINT CONTEXT ─────────────────────────────────────────────────────────────
-function relOverlapsSprint(rel,ss,se){
-  const buf=2*86400000;
-  const lo=new Date(ss).getTime()-buf,hi=new Date(se).getTime()+buf;
-  return [rel.goLive,rel.branchCut,rel.translations2,rel.staging]
-    .filter(Boolean).some(d=>new Date(d).getTime()>=lo&&new Date(d).getTime()<=hi);
-}
-
 function renderCtx(){
   const sp=cur;
-  const relevant=RELEASES.filter(r=>relOverlapsSprint(r,sp.s,sp.e));
-  let relHtml='';
-  if(!relevant.length){relHtml=`<div class="no-rel">No releases in or around this sprint</div>`;}
-  else{
-    relevant.forEach(r=>{
-      const inSprint=r.goLive&&r.goLive>=sp.s&&r.goLive<=sp.e;
-      const cardCls=inSprint?'rel-card live-in-sprint':'rel-card';
-      const bc=r.type==='pva'?'rbadge rbadge-pva':'rbadge rbadge-platform';
-      let rows='';
-      if(r.branchCut)    rows+=`<div class="rel-row"><div class="rdot rdot-green"></div><span class="rlabel">Branch cut</span><span class="rval">${fshort(r.branchCut)}</span></div>`;
-      if(r.translations2)rows+=`<div class="rel-row"><div class="rdot rdot-yellow"></div><span class="rlabel">Translations</span><span class="rval">${fshort(r.translations2)}</span></div>`;
-      if(r.staging)      rows+=`<div class="rel-row"><div class="rdot rdot-purple"></div><span class="rlabel">Staging / Go-No-Go</span><span class="rval">${fshort(r.staging)}</span></div>`;
-      if(r.goLive)       rows+=`<div class="rel-row"><div class="rdot rdot-blue"></div><span class="rlabel">Go live</span><span class="rval">${fshort(r.goLive)}</span></div>`;
-      const teamTxt=r.team?`<span style="font-size:9px;color:var(--tx3)">${r.team}</span>`:'';
-      const liveBadge=inSprint?`<span class="rbadge rbadge-live" style="margin-left:auto">Go-live this sprint</span>`:'';
-      relHtml+=`<div class="${cardCls}">
-        <div class="rel-name"><span class="${bc}">${r.type==='pva'?'PVA':'Platform'}</span><strong>${r.label}</strong>${teamTxt}${liveBadge}</div>
-        ${rows}
-        ${r.versions?`<div class="rvers">${r.versions}</div>`:''}
-        ${r.notes?`<div class="rnote">${r.notes}</div>`:''}
-      </div>`;
-    });
-  }
   const note=sprintNotes[sp.id]||'';
   const notesHtml=`
     <textarea class="notes-area" id="sprint-notes-ta" placeholder="What is this sprint focused on? Add epics, blockers, release notes, goals…">${note}</textarea>
     <div class="notes-hint">Saved automatically · synced via Google Sheets</div>
     <div class="notes-saved" id="notes-saved">Saved</div>`;
   document.getElementById('ctx-grid').innerHTML=`
-    <div class="ctx-panel">
-      <div class="ctx-hdr">
-        <h3>Release calendar — ${sp.l} (${fdisp(new Date(sp.s))} – ${fdisp(new Date(sp.e))})</h3>
-        <a href="https://pandoradigital.atlassian.net/wiki/spaces/Architecture/pages/5564235896"
-           target="_blank" style="font-size:10px;color:var(--ac);text-decoration:none">Full calendar ↗</a>
-      </div>
-      <div class="ctx-body">${relHtml}</div>
-    </div>
     <div class="ctx-panel">
       <div class="ctx-hdr">
         <h3>Sprint notes — ${sp.l}</h3>
