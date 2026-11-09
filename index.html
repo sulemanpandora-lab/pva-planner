@@ -41,6 +41,9 @@ header{background:var(--bg);border-bottom:.5px solid var(--bd2);padding:12px 22p
 .srow{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px;margin-bottom:18px}
 .sc2{background:var(--bg);border-radius:var(--rs);border:.5px solid var(--bd);padding:11px 13px}
 .sv{font-size:20px;font-weight:500}.sl{font-size:10px;color:var(--tx3);margin-top:2px}
+.vel-input{font-size:20px;font-weight:500;color:var(--tx);line-height:1;width:100%;background:transparent;border:none;border-bottom:1px dashed var(--bd2);padding:0;font-family:inherit}
+.vel-input:focus{outline:none;border-bottom-color:var(--ac)}
+.vel-input::placeholder{color:var(--bd2)}
 .sc2.wn .sv{color:var(--am-tx)}.sc2.ok .sv{color:var(--gn-tx)}
 .spsec{background:var(--bg);border-radius:var(--r);border:.5px solid var(--bd);padding:16px 18px;margin-bottom:18px}
 .spsec h3{font-size:11px;font-weight:500;color:var(--tx2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
@@ -203,6 +206,9 @@ tr:last-child td{border-bottom:none}
 
 <script>
 const PROXY_URL='https://script.google.com/macros/s/AKfycbzKZycM8lxvENB1x3ZQfhOorKkBfkLAKKCQhgzrUDqb1kanXL7dUPdQDastQ5K3gA7V/exec';
+// Served from a dev machine the sheet is the live team one, so reviewing a
+// change locally would write test data into it. Local runs stay on localStorage.
+const SYNC_ENABLED=!['localhost','127.0.0.1','::1',''].includes(location.hostname);
 
 function localDateStr(){
   const d=new Date();
@@ -304,7 +310,7 @@ const DAYS=['Su','Mo','Tu','We','Th','Fr','Sa'];
 // fteOverrides: { memberId: 0.5 | 0.8 }  — only stored when != 1.0
 // (base members with hardcoded f<1 like Bahri/Saswata keep their base f,
 //  but can also be overridden here)
-let data={}, guests=[], deletedMembers=[], sprintDates={}, sprintNotes={}, fteOverrides={}, spConfig={spPerDay:1.0,featurePct:0.70}, curYear=new Date().getFullYear()<2027?2026:2027, cur=null, tab='cap';
+let data={}, guests=[], deletedMembers=[], sprintDates={}, sprintNotes={}, fteOverrides={}, spConfig={spPerDay:1.0,featurePct:0.70}, velocity={}, curYear=new Date().getFullYear()<2027?2026:2027, cur=null, tab='cap';
 let lastSynced=null, toastTimer=null;
 
 function getSprint(id){
@@ -407,7 +413,7 @@ function ld(){
     const p=new URLSearchParams(location.search).get('d');
     if(p){const d=JSON.parse(atob(p));data=d.data||{};guests=d.guests||[];deletedMembers=d.deleted||[];sprintDates=d.sprintDates||{};sprintNotes=d.sprintNotes||{};fteOverrides=d.fteOverrides||{};spConfig=d.spConfig||{spPerDay:1.0,featurePct:0.70};return;}
     const s=JSON.parse(localStorage.getItem('pva26c')||'{}');
-    data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];sprintDates=s.sprintDates||{};sprintNotes=s.sprintNotes||{};fteOverrides=s.fteOverrides||{};spConfig=s.spConfig||{spPerDay:1.0,featurePct:0.70};
+    data=s.data||{};guests=s.guests||[];deletedMembers=s.deleted||[];sprintDates=s.sprintDates||{};sprintNotes=s.sprintNotes||{};velocity=s.velocity||{};fteOverrides=s.fteOverrides||{};spConfig=s.spConfig||{spPerDay:1.0,featurePct:0.70};
   }catch(e){}
   // Migrate data + remove guests/deleted entries who are now permanent members
   const baseMembers=BASE_GROUPS.flatMap(g=>g.members);
@@ -423,7 +429,7 @@ function ld(){
   deletedMembers=deletedMembers.filter(id=>!basePermanentIds.includes(id));
   if(guests.length!==beforeG||deletedMembers.length!==beforeD)sd();
 }
-function sd(){localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers,sprintDates,sprintNotes,fteOverrides,spConfig}));}
+function sd(){localStorage.setItem('pva26c',JSON.stringify({data,guests,deleted:deletedMembers,sprintDates,sprintNotes,velocity,fteOverrides,spConfig}));}
 
 // ── SYNC ──────────────────────────────────────────────────────────────────────
 function setSyncStatus(st,label){
@@ -431,22 +437,24 @@ function setSyncStatus(st,label){
   document.getElementById('slbl').textContent=label;
 }
 async function syncToSheets(){
+  if(!SYNC_ENABLED){setSyncStatus('','Local');return;}
   setSyncStatus('busy','Saving...');
   try{
     const r=await(await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({action:'save',data:{data,guests,deleted:deletedMembers,sprintDates,sprintNotes,fteOverrides,spConfig}}),redirect:'follow'})).json();
+      body:JSON.stringify({action:'save',data:{data,guests,deleted:deletedMembers,sprintDates,sprintNotes,velocity,fteOverrides,spConfig}}),redirect:'follow'})).json();
     if(r.ok){lastSynced=new Date();setSyncStatus('ok','Saved '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));showToast('Saved to Google Sheets');}
     else{setSyncStatus('err','Save failed');showToast('Save failed: '+r.error);}
   }catch(e){setSyncStatus('err','Save failed');showToast('Save failed — '+e.message);}
 }
 async function loadFromSheets(){
+  if(!SYNC_ENABLED){setSyncStatus('','Local');return;}
   setSyncStatus('busy','Loading...');
   try{
     const r=await(await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'text/plain'},
       body:JSON.stringify({action:'load'}),redirect:'follow'})).json();
     if(r.ok&&r.data){
       data=r.data.data||{};guests=r.data.guests||[];deletedMembers=r.data.deleted||[];
-      sprintDates=r.data.sprintDates||{};sprintNotes=r.data.sprintNotes||{};fteOverrides=r.data.fteOverrides||{};spConfig=r.data.spConfig||{spPerDay:1.0,featurePct:0.70};
+      sprintDates=r.data.sprintDates||{};sprintNotes=r.data.sprintNotes||{};velocity=r.data.velocity||{};fteOverrides=r.data.fteOverrides||{};spConfig=r.data.spConfig||{spPerDay:1.0,featurePct:0.70};
       // Migrate data + strip permanent members from stale Sheets data
       const _bm=BASE_GROUPS.flatMap(g=>g.members);
       const _pi=_bm.map(m=>m.id);const _pn=_bm.map(m=>m.n.toLowerCase().split(' ')[0]);
@@ -617,6 +625,9 @@ function renderCards(){
   const tot=members.length*wd,av=tot-off,pct=Math.round(av/tot*100);
   const sp=Math.round(totalSP(cur));
   const cls=pct<70?'wn':pct>=90?'ok':'';
+  const prev=prevSprintId(cur.id);
+  const done=prev?velocity[prev]:null;
+  const avg=velocityAvg();
   const modBadge=sprintDates[cur.id]?`<div class="sc2" style="border-color:var(--am-tx)"><div class="sv" style="font-size:13px;color:var(--am-tx)">${fdisp(new Date(cur.s))}–${fdisp(new Date(cur.e))}</div><div class="sl">Custom dates</div></div>`:'';
   document.getElementById('scards').innerHTML=`
     <div class="sc2"><div class="sv">${members.length}</div><div class="sl">Team members</div></div>
@@ -624,7 +635,65 @@ function renderCards(){
     <div class="sc2 ${cls}"><div class="sv">${pct}%</div><div class="sl">Capacity</div></div>
     <div class="sc2"><div class="sv">${av}</div><div class="sl">Available days</div></div>
     <div class="sc2 ok"><div class="sv">${sp}</div><div class="sl">Est. SP (70%)</div></div>
+    <div class="sc2">
+      <div class="sv">${prev
+        ? `<input class="vel-input" id="velInput" type="number" min="0" step="0.5" placeholder="–" value="${done!=null?done:''}" oninput="onVelocityInput()">`
+        : '–'}</div>
+      <div class="sl">Delivered in ${prev?getSprint(prev).l:'previous sprint'}</div>
+      <div class="sl" id="velSub" style="color:var(--tx3)">${velocitySub()}</div>
+    </div>
+    <div class="sc2">
+      <div class="sv" id="velAvgVal">${avg!=null?avg:'–'}</div>
+      <div class="sl">Avg velocity</div>
+      <div class="sl" id="velAvgSub" style="color:var(--tx3)">${velocityAvgSub(sp)}</div>
+    </div>
     ${modBadge}`;
+}
+
+// The sprint being planned has delivered nothing yet, so the card always
+// reports the one before it — across the year boundary too, since
+// DEFAULT_SPRINTS runs 2026 then 2027 in order.
+function prevSprintId(id){
+  const i=DEFAULT_SPRINTS.findIndex(s=>s.id===id);
+  return i>0 ? DEFAULT_SPRINTS[i-1].id : null;
+}
+function velocityCount(){return Object.values(velocity).filter(n=>typeof n==='number').length;}
+function velocityAvg(){
+  const v=Object.values(velocity).filter(n=>typeof n==='number');
+  if(!v.length)return null;
+  return Math.round(v.reduce((a,b)=>a+b,0)/v.length*10)/10;
+}
+function velocityAvgSub(est){
+  const n=velocityCount();
+  if(!n)return 'fill in closed sprints';
+  return `over ${n} sprint${n===1?'':'s'}${est>0?` · est. says ${est}`:''}`;
+}
+function velocitySub(){
+  const prev=prevSprintId(cur.id);
+  if(!prev)return 'no earlier sprint';
+  const done=velocity[prev],est=Math.round(totalSP(getSprint(prev)));
+  if(done==null)return 'enter SP once closed';
+  if(!(est>0))return 'delivered';
+  const d=Math.round((done-est)/est*100);
+  return `${d>0?'+':''}${d}% vs its estimate`;
+}
+function onVelocityInput(){
+  const prev=prevSprintId(cur.id);
+  if(!prev)return;
+  const el=document.getElementById('velInput');
+  const raw=el.value.trim();
+  if(raw===''){delete velocity[prev];}
+  else{
+    const n=parseFloat(raw);
+    if(isNaN(n)||n<0)return;
+    velocity[prev]=n;
+  }
+  // Patch captions in place; renderCards() would rebuild the input and drop focus.
+  const avg=velocityAvg();
+  document.getElementById('velSub').textContent=velocitySub();
+  document.getElementById('velAvgVal').textContent=avg!=null?avg:'–';
+  document.getElementById('velAvgSub').textContent=velocityAvgSub(Math.round(totalSP(cur)));
+  sd();
 }
 
 // ── SPRINT CONTEXT ─────────────────────────────────────────────────────────────
