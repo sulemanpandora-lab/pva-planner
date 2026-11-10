@@ -1,190 +1,78 @@
-# Testing Guide — PVA Sprint Capacity Planner
+# Testing Guide
 
-This guide explains how to manually test the planner after making code changes.  
-No technical setup needed — everything runs in your browser.
-
----
-
-## How to open the browser console
-
-The console is a built-in tool in every browser that lets you run test commands.
-
-1. Open the planner: https://sulemanpandora-lab.github.io/pva-planner/
-2. Press **F12** on your keyboard (or right-click anywhere on the page → **Inspect**)
-3. Click the **Console** tab at the top of the panel that opens
-4. You can now type or paste commands and press **Enter** to run them
+How to check the planner still works after a code change. Covers both the PVA and Care planners — they share no code, but they share most of their failure modes.
 
 ---
 
-## Tests to run after every deployment
+## 1. The regression suite
 
-Copy and paste each block into the console and press **Enter**.  
-A ✅ means the test passed. A ❌ means something is wrong.
+A browser-based suite asserts against both planners' real state. **Run it before every push.**
 
----
+It lives outside both repositories, because it loads *both* apps from the same origin and so belongs to neither:
 
-### Test 1 — Local date is correct (UTC fix)
-
-Checks that the planner uses your local date, not UTC time.
-
-```javascript
-const d = new Date();
-const local = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-const utc = d.toISOString().slice(0,10);
-console.log('Local date:', local);
-console.log('UTC date:  ', utc);
-if (local === utc) {
-  console.log('✅ Same — no issue right now (but fix is still important for early mornings)');
-} else {
-  console.log('✅ Different — fix is working correctly, local date is used');
-}
+```
+C:\Users\sulma\planner-tests\tests.html
 ```
 
-**What to look for:** Both dates print. If they differ, the fix is doing its job.
+Serve the parent folder over localhost and open it:
 
----
-
-### Test 2 — Current sprint is correct
-
-Checks that the planner has selected the sprint that contains today's date.
-
-```javascript
-const today = localDateStr();
-console.log('Today (local):', today);
-console.log('Current sprint selected:', cur.l, '→', cur.s, 'to', cur.e);
-const correct = today >= cur.s && today <= cur.e;
-console.log(correct ? '✅ Correct sprint selected' : '❌ Wrong sprint! Expected sprint containing ' + today);
+```
+http://localhost:3737/planner-tests/tests.html
 ```
 
-**What to look for:** `✅ Correct sprint selected`
+46 tests, grouped by what they protect:
+
+| Group | What it catches |
+| --- | --- |
+| Dates | The off-by-one-day bug — leave landing one column too far left |
+| Sprint calendar | Overlaps, duplicate IDs, sprints ending before they start, the corrected Q4-2027 dates |
+| Previous-sprint lookup | `prevSprintId` across the turn of the year |
+| Velocity | Averaging only what was entered; ignoring non-numeric input |
+| FTE overrides | An override stored only when it differs from the roster |
+| Capacity flag | Members on the roster but out of the capacity maths |
+| Disconnected state | The banner appearing, and saving being blocked, when a load failed |
+| Sheet concurrency | The revision field, and that sync is off on localhost |
+
+### Two things that make it work
+
+**It reads through the frame's own `eval`.** The planners declare their state with `const`/`let` at top level, which lands in the frame's lexical scope and **not** on `window`. `frame.contentWindow.DEFAULT_SPRINTS` is `undefined`; `frame.contentWindow.eval('DEFAULT_SPRINTS')` is not.
+
+**It refuses to run if either frame has sync enabled.** Otherwise a test run would write to the team's real Google Sheet. This is not theoretical — it has happened twice. `SYNC_ENABLED` is false only on localhost, which is what makes the suite safe.
+
+### Keep it honest
+
+A green suite that cannot go red is worth nothing. After adding tests, break the thing on purpose and confirm the right test fails. Both times this suite has been extended, it was verified that way:
+
+- reintroducing the date bug → two date tests fail immediately
+- making `setConnected` set the flag but skip the banner → exactly one test fails, and it is the right one
 
 ---
 
-### Test 3 — Today sprint has green marker in nav
+## 2. Manual checks
 
-Checks that the correct sprint button has the green "today" highlight.
+Things the suite cannot see, because they need a real server or a real browser.
 
-```javascript
-const todayButtons = document.querySelectorAll('.sc.today');
-console.log('Sprints marked as today:', todayButtons.length);
-if (todayButtons.length === 1) {
-  console.log('✅ Exactly one sprint has the green today marker:', todayButtons[0].textContent.trim());
-} else if (todayButtons.length === 0) {
-  console.log('❌ No sprint is marked as today — check localDateStr() and sprint date ranges');
-} else {
-  console.log('❌ Multiple sprints marked as today — something is wrong');
-}
-```
+### After any change
 
-**What to look for:** `✅ Exactly one sprint has the green today marker: S8` (or whichever sprint is current)
+1. Open the planner and confirm today's date falls inside the sprint outlined in green
+2. Mark a leave day, reload, confirm it is still there
+3. Switch between 2026 and 2027 and back
 
----
+### After a sync or Apps Script change
 
-### Test 4 — FTE calculates correctly
+4. Press **⟳ Load** — status goes green, no error toast
+5. Press **Save** — status goes green
+6. Open the planner in **two tabs**. Load in both, change something in each, save both. The second should be refused with *"Someone else saved — press Load, then redo this change"*. If it saves silently instead, the Apps Script has not been redeployed.
+7. Go offline (devtools → Network → Offline) and reload. The red **"Not connected"** bar should appear, and saving should be refused.
 
-Checks that reduced FTE members have the right capacity.  
-Uses Bahri (80% FTE) and Saswata (30% FTE) as test cases.
+### After an Apps Script change specifically
 
-```javascript
-const members = allMembers();
-const bahri = members.find(m => m.id === 'bahri');
-const saswata = members.find(m => m.id === 'saswata');
-console.log('Bahri FTE:', getMemberFTE(bahri), bahri && getMemberFTE(bahri) === 0.8 ? '✅' : '❌ Expected 0.8');
-console.log('Saswata FTE:', getMemberFTE(saswata), saswata && getMemberFTE(saswata) === 0.3 ? '✅' : '❌ Expected 0.3');
-```
-
-**What to look for:** Both lines show `✅`
+Editing the script is not enough. **Deploy → Manage deployments → pencil → New version.** Until then `/exec` serves the old code and nothing you changed is live.
 
 ---
 
-### Test 5 — Google Sheets sync works
+## 3. If something looks wrong in the data
 
-Checks that the planner can communicate with Google Sheets.
+Google Sheets keeps full version history: File → Version history → See version history → restore → press **⟳ Load** in the planner.
 
-```javascript
-console.log('Testing Google Sheets connection...');
-fetch('https://script.google.com/macros/s/AKfycbzKZycM8lxvENB1x3ZQfhOorKkBfkLAKKCQhgzrUDqb1kanXL7dUPdQDastQ5K3gA7V/exec', {
-  method: 'POST',
-  headers: {'Content-Type': 'text/plain'},
-  body: JSON.stringify({action: 'load'}),
-  redirect: 'follow'
-})
-.then(r => r.json())
-.then(r => console.log(r.ok ? '✅ Google Sheets connection OK' : '❌ Connection failed: ' + r.error))
-.catch(e => console.log('❌ Network error: ' + e.message));
-```
-
-**What to look for:** `✅ Google Sheets connection OK`
-
----
-
-### Test 6 — Team members are correct
-
-Checks that the right people are in the team (and removed members are gone).
-
-```javascript
-const members = allMembers();
-console.log('Total members:', members.length);
-members.forEach(m => console.log(' -', m.n, '|', m.r, '| FTE:', getMemberFTE(m)));
-
-const shouldBeGone = ['jake', 'satyabrata', 'shivanand'];
-shouldBeGone.forEach(id => {
-  const found = members.find(m => m.id === id);
-  console.log(found ? '❌ ' + id + ' should have been removed!' : '✅ ' + id + ' correctly removed');
-});
-```
-
-**What to look for:** All 11 members listed, and three `✅ correctly removed` lines at the bottom.
-
----
-
-## Quick full test — run all at once
-
-Paste this entire block to run all tests in one go:
-
-```javascript
-console.clear();
-console.log('=== PVA Planner Test Suite ===\n');
-
-// Test 1
-const today = localDateStr();
-const correct = today >= cur.s && today <= cur.e;
-console.log('1. Current sprint:', correct ? '✅ ' + cur.l : '❌ Wrong sprint, got ' + cur.l + ' for date ' + today);
-
-// Test 2
-const todayBtns = document.querySelectorAll('.sc.today');
-console.log('2. Green today marker:', todayBtns.length === 1 ? '✅ ' + todayBtns[0].textContent.trim() : '❌ Found ' + todayBtns.length + ' markers');
-
-// Test 3
-const members = allMembers();
-const bahri = members.find(m => m.id === 'bahri');
-const saswata = members.find(m => m.id === 'saswata');
-console.log('3. Bahri FTE (expect 0.8):', getMemberFTE(bahri) === 0.8 ? '✅' : '❌ Got ' + getMemberFTE(bahri));
-console.log('4. Saswata FTE (expect 0.3):', getMemberFTE(saswata) === 0.3 ? '✅' : '❌ Got ' + getMemberFTE(saswata));
-
-// Test 4
-const shouldBeGone = ['jake', 'satyabrata', 'shivanand'];
-const stillPresent = shouldBeGone.filter(id => members.find(m => m.id === id));
-console.log('5. Removed members:', stillPresent.length === 0 ? '✅ All removed correctly' : '❌ Still present: ' + stillPresent.join(', '));
-
-// Test 5
-console.log('6. Team size (expect 11):', members.length === 11 ? '✅ ' + members.length : '❌ Got ' + members.length);
-
-console.log('\n=== Done ===');
-```
-
----
-
-## When to run these tests
-
-| Situation | Tests to run |
-|---|---|
-| After any code deployment | All tests (quick full test) |
-| After adding/removing a team member | Test 6 |
-| After changing FTE values | Test 3 + 4 |
-| If sync stops working | Test 5 |
-| If wrong sprint is selected on load | Test 1 + 2 |
-
----
-
-*If any test shows ❌, take a screenshot and share it with Claude to get it fixed.*
+Nothing is lost permanently, including a bad test run.

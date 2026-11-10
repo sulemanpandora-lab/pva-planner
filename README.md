@@ -1,190 +1,108 @@
-# PVA Sprint Capacity Planner 2026
+# PVA Sprint Capacity Planner
 
-**Pandora Digital · Agentforce · SM: Suleman Malik**
+**Pandora Digital · Agentforce**
 
-A sprint capacity planning tool for visualising and managing team capacity across all 25 sprints in 2026.
+A sprint capacity planning tool for the PVA team: everyone marks their own leave, and the planner works out the team's real capacity and story points per sprint.
 
-🔗 **Live tool:** https://sulemanpandora-lab.github.io/pva-planner/
+🔗 **Live:** https://sulemanpandora-lab.github.io/pva-planner/
+📘 **How to use it:** see the Confluence page, *PVA — Sprint Capacity Planner* (Online space)
 
-> ⚠️ **Internal use only.** This tool is built for the PVA Agentforce team at Pandora Digital. It is not licensed for use by other teams or organisations without explicit permission from Suleman Malik.
+> ⚠️ **Internal tool.** Built for the PVA team at Pandora Digital. Please ask before adapting it for another team.
 
 ---
 
 ## Features
 
 ### Sprint navigation
-- 25 sprints across Q1–Q4 2026, all in 2-week cycles
-- Click any sprint (S1–S25) to navigate to it
-- The **current sprint** is highlighted in green so you always know where you are
-- The **selected sprint** (the one you are viewing) is highlighted in blue
-- Sprints with data show a green dot indicator
-- Sprints with custom dates are highlighted with a yellow dot
+- 2026 (25 sprints) and 2027 (26 sprints), all 2-week cycles, with a year toggle
+- The **current** sprint is outlined in green; the **selected** sprint has a blue background
+- A green dot marks sprints with leave entered; a yellow dot marks sprints with custom dates
 
-### Summary cards
-At the top of each sprint view:
-- Number of team members
-- Number of working days in the sprint
-- Capacity percentage (colour-coded green/amber)
-- Total available days
-- Estimated story points (based on configurable feature allocation %)
+### Capacity calendar
+- Every team member against every day of the sprint
+- Click a working day to mark it as leave, click again to clear
+- Weekends are excluded automatically
+- Per-person capacity bar: green ≥80%, amber 60–80%, red <60%
 
-### Calendar view
-- Table showing all team members against every day in the sprint
-- Click any working day to mark it as **OFF / leave**
-- Click again to clear the mark
-- Weekends are automatically excluded and cannot be toggled
-- Capacity bar per person changes colour: green → amber → red
+### Story points
+- Estimated SP per sprint, per group and per person
+- Configurable via **⚙ Settings**: SP per day (0.5–2.0) and feature allocation % (60–80%)
+- Formula: `available days × FTE × SP per day × feature %`
 
-### FTE (Full-Time Equivalent)
-FTE describes what percentage of a person's working time is dedicated to the team.
+### Velocity tracking
+- **Delivered in S*XX*** — actual SP completed, entered by hand from Jira's Velocity Report
+- **Avg velocity** — running average of everything entered
 
-- **Default is 100%** — not shown unless changed
-- Reduced FTE appears as an amber badge (e.g. `80%` or `30%`)
-- Click the badge to change FTE — options: 30% / 50% / 80% / 100%
-- FTE changes apply globally across all sprints
-- Changes are saved automatically to Google Sheets
+The "delivered" card always refers to the **previous** sprint, never the one on screen: the sprint being planned has not finished yet. The average is the reality check on the estimate — if they drift apart, check the roster before changing the formula.
 
-**Default FTE per team member:**
+### FTE
+Per-person FTE, editable from an amber badge next to the name. Applies across all sprints. Stored as an override only when it differs from the roster default, so the roster stays the source of truth.
 
-| Name | Default FTE |
-|---|---|
-| Bahri Benguesmia | 80% |
-| Saswata Bhattacharya | 30% |
-| All others | 100% |
+### Leave and guests
+- **Plan longer leave** — one date range fills every working day across however many sprints it spans, including across the turn of the year. 8-second undo.
+- **Guests** — borrowed team members (100% FTE) or students (50%), removable with undo
 
-### SP settings
-- Configurable via the **⚙ Settings** button in the header
-- Set **feature allocation %** (60% / 65% / 70% / 75% / 80%)
-- Set **SP per day** (0.5 / 1.0 / 1.5 / 2.0)
-- Settings are saved to Google Sheets and apply across all sprints
+### Other
+- Custom start/end dates per sprint, with capacity recalculated
+- Free-text notes per sprint
+- Quarter view — every sprint in the year with capacity %
+- Share link with the current data encoded as a snapshot
+- Dark mode follows the system setting
 
-### Plan longer leave
-- Mark leave across multiple sprints in one action using a date range
-- Preview shows exactly which sprints are affected and how many days
-- Full undo support (8-second window)
+---
 
-### Guests and students
-- Add borrowed team members as guests to any group
-- **Regular guest** — defaults to 100% FTE
-- **Student (50%)** — automatically set to 50% FTE, shown with a green STUDENT badge
-- Full undo support when removing guests
+## Saving
 
-### Custom sprint dates
-- Edit the start and end date of any individual sprint
-- Capacity recalculates automatically
-- Modified sprints shown with a yellow dot in the navigation bar
+**PVA does not save automatically.** Press **Save** in the header, or the change stays in your browser only. (The Care planner behaves differently — it autosaves.)
 
-### Sprint notes
-- Free-text field per sprint for epics, goals, blockers and release notes
-- Auto-saves and syncs via Google Sheets
+Data lives in a shared Google Sheet, reached through a Google Apps Script web app. `localStorage` is a per-browser cache, not the source of truth.
 
-### SP breakdown
-- Story points broken down by role group
-- Shows SP per person with leave days and FTE indicated
+### Three things protect the data
 
-### Quarter view
-- Overview of all 25 sprints with capacity percentage
-- Click any sprint card to jump directly to it
+| Guard | What it stops |
+| --- | --- |
+| `LockService` | Two saves interleaving and leaving broken JSON in the sheet |
+| Revision check | A save silently overwriting someone else's edit — it is refused instead |
+| Empty-sheet rule | A client that never loaded replacing a populated sheet |
 
-### Release calendar
-- Shows platform and PVA releases per sprint
-- Go-live releases highlighted in amber
+The last one matters more than it looks: if the sheet fetch fails, the app holds whatever the browser had — possibly nothing — and saving that would wipe everyone's data. The app also shows a red **"Not connected to the team sheet"** bar and refuses to save while it is up.
 
-### Google Sheets sync
-- Auto-saves on every change
-- Manual **Save** and **⟳ Load** buttons in the header
-- Sync status shown with a coloured dot and timestamp
-
-### Share via URL
-- Generate a snapshot link with all current data encoded
-
-### Offline resilience
-- Data cached in localStorage as fallback
-
-### Dark mode
-- Automatically adapts to system setting
+**Recovery:** Google Sheets keeps full version history. File → Version history → See version history, restore, then press **⟳ Load** in the planner.
 
 ---
 
 ## Tech stack
 
 | Layer | Technology |
-|---|---|
-| Frontend | Plain HTML + CSS + JS — single `index.html` file |
-| Hosting | GitHub Pages — auto-deploys from main branch |
-| Database | Google Sheets — JSON stored in cell A1, tab "Data" |
-| API | Google Apps Script — Web App |
+| --- | --- |
+| Frontend | Plain HTML + CSS + JS, one `index.html` |
+| Hosting | GitHub Pages, auto-deploys from `main` |
+| Storage | Google Sheets — JSON in cell A1, tab `Data` |
+| API | Google Apps Script web app |
+
+**Note on storage:** the whole state sits in one cell, which caps at 50,000 characters. Measured at 7,375 (15%) in November 2026 — fine for now. Run `=LEN(A1)` in a spare cell to check; past ~30,000, switch to chunking across rows (the Care planner already does this).
+
+> The Apps Script is **not** interchangeable with the Care one. PVA's uses `output()` rather than `respond()`, reaches the sheet via `openById()` rather than `getActiveSpreadsheet()`, and has an extra `loadEpics` action that pulls epics from Jira. Replacing `doPost` wholesale deletes that.
 
 ---
 
-## Team members
+## Team roster
 
-| Group | Name | FTE |
-|---|---|---|
-| Agentforce / AI | Vinod Karpurne | 100% |
-| Agentforce / AI | Manish Chetani | 100% |
-| Agentforce / AI | Twinkle Garg | 100% |
-| Frontend | Neeraj Upadhyay | 100% |
-| Frontend | Upender Upender | 100% |
-| Frontend | Mohammed | 100% |
-| Data | Bahri Benguesmia | 80% |
-| UX | Aren | 100% |
-| Conversational Expert | Finka | 100% |
-| QA / QE | Saswata Bhattacharya | 30% |
-| QA / QE | Lakshmi Ayothi | 100% |
+Deliberately not listed here — this repository is public. The current roster lives in `BASE_GROUPS` in `index.html` and, in readable form, on the Confluence page.
 
 ---
 
-## Updating the code
+## Making changes
 
-1. Go to https://github.com/sulemanpandora-lab/pva-planner/edit/main/index.html
-2. Select all → delete → paste the new content
-3. Commit — GitHub Pages updates within ~1 minute
+1. Edit `index.html` and push to `main`. GitHub Pages redeploys in 1–5 minutes.
+2. Run the regression suite first — see [TESTING.md](TESTING.md).
 
-## If sync stops working
+### If sync stops working
 
-1. Go to https://script.google.com and open **PVA Planner Sync**
-2. Deploy → Manage deployments → click the pencil icon
-3. Confirm **Who has access** is set to **Anyone**
-4. Deploy and copy the new URL if it changed
-5. Update `PROXY_URL` in `index.html`
-
----
-
-## Testing after deployment
-
-1. Open https://sulemanpandora-lab.github.io/pva-planner/
-2. Press **F12** → click **Console**
-3. Type `allow pasting` and press Enter if prompted
-4. Paste and run:
-
-```javascript
-console.clear();
-console.log('=== PVA Planner Test Suite ===\n');
-const today = localDateStr();
-const correct = today >= cur.s && today <= cur.e;
-console.log('1. Current sprint:', correct ? '✅ ' + cur.l : '❌ Wrong sprint, got ' + cur.l + ' for date ' + today);
-const todayBtns = document.querySelectorAll('.sc.today');
-console.log('2. Green today marker:', todayBtns.length === 1 ? '✅ ' + todayBtns[0].textContent.trim() : '❌ Found ' + todayBtns.length + ' markers');
-const members = allMembers();
-const bahri = members.find(m => m.id === 'bahri');
-const saswata = members.find(m => m.id === 'saswata');
-console.log('3. Bahri FTE (expect 0.8):', getMemberFTE(bahri) === 0.8 ? '✅' : '❌ Got ' + getMemberFTE(bahri));
-console.log('4. Saswata FTE (expect 0.3):', getMemberFTE(saswata) === 0.3 ? '✅' : '❌ Got ' + getMemberFTE(saswata));
-const shouldBeGone = ['jake', 'satyabrata', 'shivanand'];
-const stillPresent = shouldBeGone.filter(id => members.find(m => m.id === id));
-console.log('5. Removed members:', stillPresent.length === 0 ? '✅ All removed correctly' : '❌ Still present: ' + stillPresent.join(', '));
-console.log('6. Team size (expect 11):', members.length === 11 ? '✅ ' + members.length : '❌ Got ' + members.length);
-console.log('\n=== Done ===');
-```
-
-All lines should show ✅. See [TESTING.md](TESTING.md) for the full guide.
-
----
-
-## License
-
-Built for internal use by the PVA Agentforce team at Pandora Digital. Please contact Suleman Malik before using or adapting this tool.
+1. Open the Apps Script project from the Google Sheet: **Extensions → Apps Script**
+2. **Deploy → Manage deployments →** pencil icon
+3. Check **Who has access**
+4. Changing the code is not enough — you must deploy a **New version**, or `/exec` keeps serving the old one
 
 ---
 
