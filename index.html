@@ -158,6 +158,9 @@ tr:last-child td{border-bottom:none}
 .type-btn.active.student{background:var(--gn-tx);border-color:transparent}
 
 @media(max-width:680px){.main{padding:10px 12px}.mc{min-width:140px}}
+.offline-bar{background:var(--rd-bg);border:.5px solid var(--rd-tx);border-radius:8px;padding:9px 22px;display:none;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px;font-size:12px;color:var(--rd-tx)}
+.offline-bar.show{display:flex}
+.offline-bar .retry{cursor:pointer;font-weight:600;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -180,6 +183,11 @@ tr:last-child td{border-bottom:none}
     <button class="btn" onclick="openSettingsModal()" title="SP settings">⚙ Settings</button>
   </div>
 </header>
+
+<div id="offlineBar" class="offline-bar">
+  <span>⚠ Not connected to the team sheet. Changes stay in this browser and will not reach your team.</span>
+  <span class="retry" onclick="loadFromSheets()">Try again</span>
+</div>
 
 <div class="tabs">
   <div class="tab on" onclick="switchTab('cap',this)">Capacity</div>
@@ -313,6 +321,7 @@ const DAYS=['Su','Mo','Tu','We','Th','Fr','Sa'];
 let data={}, guests=[], deletedMembers=[], sprintDates={}, sprintNotes={}, fteOverrides={}, spConfig={spPerDay:1.0,featurePct:0.70}, velocity={}, curYear=new Date().getFullYear()<2027?2026:2027, cur=null, tab='cap';
 let lastSynced=null, toastTimer=null;
 let sheetRev=null; // revision last loaded; null until the Apps Script reports one
+let loadOk=false;  // has a load from the sheet succeeded? saving before one can wipe it
 
 function getSprint(id){
   const def=DEFAULT_SPRINTS.find(s=>s.id===id);
@@ -437,8 +446,18 @@ function setSyncStatus(st,label){
   document.getElementById('sdot').className='sync-dot'+(st?' '+st:'');
   document.getElementById('slbl').textContent=label;
 }
+function setConnected(ok){
+  loadOk=ok;
+  document.getElementById('offlineBar').classList.toggle('show',!ok);
+}
 async function syncToSheets(){
   if(!SYNC_ENABLED){setSyncStatus('','Local');return;}
+  if(!loadOk){
+    // We never saw the sheet's contents, so our state is whatever this browser
+    // happened to hold — possibly nothing. Writing it would replace the team's.
+    sd(); setSyncStatus('err','Not connected'); setConnected(false);
+    showToast('Not connected — press Try again before saving');return;
+  }
   setSyncStatus('busy','Saving...');
   try{
     const req={action:'save',data:{data,guests,deleted:deletedMembers,sprintDates,sprintNotes,velocity,fteOverrides,spConfig}};
@@ -456,7 +475,7 @@ async function syncToSheets(){
   }catch(e){setSyncStatus('err','Save failed');showToast('Save failed — '+e.message);}
 }
 async function loadFromSheets(){
-  if(!SYNC_ENABLED){setSyncStatus('','Local');return;}
+  if(!SYNC_ENABLED){setSyncStatus('','Local');setConnected(true);return;}
   setSyncStatus('busy','Loading...');
   try{
     const r=await(await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'text/plain'},
@@ -483,10 +502,11 @@ async function loadFromSheets(){
       renderNav();renderCards();renderCtx();renderCal();
       if(tab==='sp')renderSP();if(tab==='ov')renderOV();
       lastSynced=new Date();setSyncStatus('ok','Loaded '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
+      setConnected(true);
       showToast('Loaded from Google Sheets');
-    }else if(r.ok&&!r.data){setSyncStatus('ok','Sheet is empty');showToast('No data yet — save first');}
-    else{setSyncStatus('err','Load failed');showToast('Load failed: '+r.error);}
-  }catch(e){setSyncStatus('err','Load failed');showToast('Load failed — '+e.message);}
+    }else if(r.ok&&!r.data){setConnected(true);setSyncStatus('ok','Sheet is empty');showToast('No data yet — save first');}
+    else{setSyncStatus('err','Load failed');setConnected(false);showToast('Load failed: '+r.error);}
+  }catch(e){setSyncStatus('err','Load failed');setConnected(false);showToast('Load failed — '+e.message);}
 }
 
 // ── EDIT SPRINT DATES ─────────────────────────────────────────────────────────
