@@ -312,6 +312,7 @@ const DAYS=['Su','Mo','Tu','We','Th','Fr','Sa'];
 //  but can also be overridden here)
 let data={}, guests=[], deletedMembers=[], sprintDates={}, sprintNotes={}, fteOverrides={}, spConfig={spPerDay:1.0,featurePct:0.70}, velocity={}, curYear=new Date().getFullYear()<2027?2026:2027, cur=null, tab='cap';
 let lastSynced=null, toastTimer=null;
+let sheetRev=null; // revision last loaded; null until the Apps Script reports one
 
 function getSprint(id){
   const def=DEFAULT_SPRINTS.find(s=>s.id===id);
@@ -440,9 +441,17 @@ async function syncToSheets(){
   if(!SYNC_ENABLED){setSyncStatus('','Local');return;}
   setSyncStatus('busy','Saving...');
   try{
+    const req={action:'save',data:{data,guests,deleted:deletedMembers,sprintDates,sprintNotes,velocity,fteOverrides,spConfig}};
+    if(sheetRev!==null)req.rev=sheetRev;
     const r=await(await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({action:'save',data:{data,guests,deleted:deletedMembers,sprintDates,sprintNotes,velocity,fteOverrides,spConfig}}),redirect:'follow'})).json();
-    if(r.ok){lastSynced=new Date();setSyncStatus('ok','Saved '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));showToast('Saved to Google Sheets');}
+      body:JSON.stringify(req),redirect:'follow'})).json();
+    if(r.conflict){
+      // Someone saved between our load and this write. Overwriting would drop
+      // their edit silently, so refuse and make the user pull theirs in first.
+      sheetRev=r.rev;setSyncStatus('err','Conflict');
+      showToast('Someone else saved — press Load, then redo this change');return;
+    }
+    if(r.ok){if(r.rev!==undefined)sheetRev=r.rev;lastSynced=new Date();setSyncStatus('ok','Saved '+lastSynced.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));showToast('Saved to Google Sheets');}
     else{setSyncStatus('err','Save failed');showToast('Save failed: '+r.error);}
   }catch(e){setSyncStatus('err','Save failed');showToast('Save failed — '+e.message);}
 }
@@ -452,6 +461,7 @@ async function loadFromSheets(){
   try{
     const r=await(await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'text/plain'},
       body:JSON.stringify({action:'load'}),redirect:'follow'})).json();
+    if(r.ok&&r.rev!==undefined)sheetRev=r.rev;
     if(r.ok&&r.data){
       data=r.data.data||{};guests=r.data.guests||[];deletedMembers=r.data.deleted||[];
       sprintDates=r.data.sprintDates||{};sprintNotes=r.data.sprintNotes||{};velocity=r.data.velocity||{};fteOverrides=r.data.fteOverrides||{};spConfig=r.data.spConfig||{spPerDay:1.0,featurePct:0.70};
